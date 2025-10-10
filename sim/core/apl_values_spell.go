@@ -405,7 +405,7 @@ func (value *APLValueSpellInFlight) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeBool
 }
 func (value *APLValueSpellInFlight) GetBool(sim *Simulation) bool {
-	return (value.spell.Unit.SpellsInFlight[value.spell] > 0)
+	return value.spell.Unit.SpellInFlight(value.spell)
 }
 func (value *APLValueSpellInFlight) String() string {
 	return fmt.Sprintf("SpellInFlight(%s)", value.spell.ActionID)
