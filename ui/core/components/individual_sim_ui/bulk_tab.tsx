@@ -663,20 +663,20 @@ export class BulkTab extends SimTab {
 		});
 	}
 
+	private resetResultsTabContent() {
+		this.resultsTabElem.replaceChildren();
+	}
+
 	private buildResultsTabContent() {
-		this.simUI.sim.bulkSimStartEmitter.on(() => this.resultsTabElem.replaceChildren());
+		if (!this.topGearResults || !this.originalGearResults) {
+			return;
+		}
 
-		this.simUI.sim.bulkSimResultEmitter.on(() => {
-			if (!this.topGearResults || !this.originalGearResults) {
-				return;
-			}
-
-			for (const topGearResult of this.topGearResults) {
-				new BulkSimResultRenderer(this.resultsTabElem, this.simUI, topGearResult, this.originalGearResults);
-			}
-			this.isPending = false;
-			this.resultsTab.show();
-		});
+		for (const topGearResult of this.topGearResults) {
+			new BulkSimResultRenderer(this.resultsTabElem, this.simUI, topGearResult, this.originalGearResults);
+		}
+		this.isPending = false;
+		this.resultsTab.show();
 	}
 
 	// Return whether or not the slot is considered secondary and the item should be grouped
@@ -735,8 +735,8 @@ export class BulkTab extends SimTab {
 
 				let simStart = new Date().getTime();
 
+				this.resetResultsTabContent();
 				await this.calculateBulkCombinations();
-				this.simUI.sim.bulkSimStartEmitter.emit(TypedEvent.nextEventID());
 				await this.simUI.runSim((progressMetrics: ProgressMetrics) => {
 					const msSinceStart = new Date().getTime() - simStart;
 					this.setSimProgress(progressMetrics, msSinceStart / 1000, 0, this.combinations);
@@ -787,8 +787,7 @@ export class BulkTab extends SimTab {
 						}
 					}
 
-					this.simUI.player.setGear(TypedEvent.nextEventID(), updatedGear);
-					await this.simUI.sim.updateCharacterStats(TypedEvent.nextEventID());
+					await this.simUI.player.setGearAsync(TypedEvent.nextEventID(), updatedGear);
 
 					if (this.simUI.reforger) {
 						this.simUI.reforger.setIncludeGems(TypedEvent.nextEventID(), true);
@@ -805,8 +804,7 @@ export class BulkTab extends SimTab {
 						try {
 							await this.simUI.reforger.optimizeReforges(true);
 						} catch (error) {
-							this.simUI.player.setGear(TypedEvent.nextEventID(), updatedGear);
-							await this.simUI.sim.updateCharacterStats(TypedEvent.nextEventID());
+							await this.simUI.player.setGearAsync(TypedEvent.nextEventID(), updatedGear);
 							this.simUI.reforger.setIncludeGems(TypedEvent.nextEventID(), false);
 							if (RelativeStatCap.hasRoRo(this.simUI.player) && this.simUI.reforger.defaultRelativeStatCap) {
 								this.simUI.reforger.relativeStatCap = new RelativeStatCap(
@@ -823,8 +821,6 @@ export class BulkTab extends SimTab {
 							}
 						}
 					}
-
-					await this.simUI.sim.updateCharacterStats(TypedEvent.nextEventID());
 
 					const result = await this.simUI.runSim(
 						(progressMetrics: ProgressMetrics) => {
@@ -850,12 +846,7 @@ export class BulkTab extends SimTab {
 					if (topGearResults.length > 5) topGearResults.pop();
 				}
 
-				this.simUI.player.setGear(TypedEvent.nextEventID(), this.originalGear);
-				await this.simUI.sim.updateCharacterStats(TypedEvent.nextEventID());
-
-				await this.simUI.runSim((progressMetrics: ProgressMetrics) => {
-					this.simUI.raidSimResultsManager?.setSimProgress(progressMetrics);
-				});
+				await this.simUI.player.setGearAsync(TypedEvent.nextEventID(), this.originalGear);
 
 				this.topGearResults = topGearResults;
 				this.originalGearResults = {
@@ -865,11 +856,12 @@ export class BulkTab extends SimTab {
 
 				this.topGearResults.push(this.originalGearResults);
 				this.topGearResults.sort((a, b) => b.dpsMetrics.avg - a.dpsMetrics.avg);
-				this.simUI.sim.bulkSimResultEmitter.emit(TypedEvent.nextEventID());
+
+				this.simUI.resultsViewer.hideAll();
+				this.buildResultsTabContent();
 			} catch (error) {
 				console.error(error);
-				this.simUI.player.setGear(TypedEvent.nextEventID(), this.originalGear!);
-				await this.simUI.sim.updateCharacterStats(TypedEvent.nextEventID());
+				await this.simUI.player.setGearAsync(TypedEvent.nextEventID(), this.originalGear!);
 			} finally {
 				this.isRunning = false;
 				if (!waitAbort) this.bulkSimButton.disabled = false;
