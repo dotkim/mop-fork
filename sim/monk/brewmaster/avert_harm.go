@@ -15,7 +15,7 @@ func (bm *BrewmasterMonk) registerAvertHarm() {
 		Name:     "Avert Harm" + bm.Label,
 		ActionID: actionID,
 		Duration: duration,
-		Outcome:  core.OutcomeHit,
+		Outcome:  core.OutcomeLanded,
 		Callback: core.CallbackOnSpellHitTaken,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.RelatedSelfBuff != nil && result.Target.CurrentHealthPercent() <= 0.1 {

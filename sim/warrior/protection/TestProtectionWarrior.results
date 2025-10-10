@@ -105,9 +105,9 @@ dps_results: {
 dps_results: {
  key: "TestProtectionWarrior-AllItems-BattleplateoftheLastMogu"
  value: {
-  dps: 117054.80552
-  tps: 737345.70812
-  dtps: 22796.58483
+  dps: 117276.30009
+  tps: 739645.22534
+  dtps: 22639.01294
  }
 }
 dps_results: {
@@ -1738,9 +1738,9 @@ dps_results: {
 dps_results: {
  key: "TestProtectionWarrior-AllItems-PlateoftheLastMogu"
  value: {
-  dps: 114624.08124
-  tps: 722884.3394
-  dtps: 21918.13557
+  dps: 114514.97548
+  tps: 722107.73399
+  dtps: 21886.09404
  }
 }
 dps_results: {

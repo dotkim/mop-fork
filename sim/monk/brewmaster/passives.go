@@ -259,7 +259,7 @@ func (bm *BrewmasterMonk) registerDesperateMeasures() {
 		Name:     "Desperate Measures Health Monitor" + bm.Label,
 		ActionID: actionID,
 		Duration: 0,
-		Outcome:  core.OutcomeHit,
+		Outcome:  core.OutcomeLanded,
 		Callback: core.CallbackOnSpellHitTaken,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Target.CurrentHealthPercent() <= 0.35 {

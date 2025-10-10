@@ -846,10 +846,11 @@ export class BulkTab extends SimTab {
 						throw new Error(result.message);
 					}
 
+					updatedGear = this.simUI.player.getGear();
 					const isOriginalGear = this.originalGear.equals(updatedGear);
 					if (!isOriginalGear)
 						topGearResults.push({
-							gear: this.simUI.player.getGear(),
+							gear: updatedGear,
 							dpsMetrics: result!.getFirstPlayer()!.dps,
 						});
 
@@ -875,9 +876,9 @@ export class BulkTab extends SimTab {
 				this.simUI.sim.bulkSimResultEmitter.emit(TypedEvent.nextEventID());
 			} catch (error) {
 				console.error(error);
-			} finally {
 				this.simUI.player.setGear(TypedEvent.nextEventID(), this.originalGear!);
 				await this.simUI.sim.updateCharacterStats(TypedEvent.nextEventID());
+			} finally {
 				this.isRunning = false;
 				if (!waitAbort) this.bulkSimButton.disabled = false;
 				if (isAborted) {

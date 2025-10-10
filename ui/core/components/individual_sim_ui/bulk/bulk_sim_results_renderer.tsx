@@ -9,7 +9,7 @@ import { ItemRenderer } from '../../gear_picker/gear_picker';
 import Toast from '../../toast';
 import { TopGearResult } from '../bulk_tab';
 import { RaidSimResultsManager } from '../../raid_sim_action';
-import { ItemSpec } from '../../../proto/common';
+import { ItemSlot, ItemSpec } from '../../../proto/common';
 
 export default class BulkSimResultRenderer extends Component {
 	readonly simUI: IndividualSimUI<any>;
@@ -20,7 +20,7 @@ export default class BulkSimResultRenderer extends Component {
 		this.simUI = simUI;
 
 		const iterations = this.simUI.sim.getIterations();
-		const isBaseResult = result.gear.equals(this.simUI.player.getGear());
+		const isBaseResult = result.gear.equals(baseResult.gear);
 
 		const equipButtonRef = ref<HTMLButtonElement>();
 		const dpsDeltaRef = ref<HTMLDivElement>();
@@ -70,12 +70,34 @@ export default class BulkSimResultRenderer extends Component {
 		});
 
 		const items = (<></>) as HTMLElement;
+		const resultAsSpec = result.gear.asSpec();
 		const originalEquipmentSpec = baseResult.gear.asSpec();
-		for (const [idx, spec] of result.gear.asSpec().items.entries()) {
+		for (const [idx, spec] of resultAsSpec.items.entries()) {
 			const itemContainer = (<div className="bulk-result-item" />) as HTMLElement;
+
+			if (spec.id != originalEquipmentSpec.items[idx].id) {
+				itemContainer.style.border = '3px solid red';
+			} else {
+				itemContainer.style.border = '3px solid transparent';
+			}
+
 			const renderer = new ItemRenderer(items, itemContainer, simUI.player);
 
-			if (spec.id != 0 && !ItemSpec.equals(spec, originalEquipmentSpec.items[idx])) {
+			var shouldRenderItem: boolean;
+
+			if (spec.id == 0) {
+				shouldRenderItem = false;
+			} else if (!ItemSpec.equals(spec, originalEquipmentSpec.items[idx])) {
+				shouldRenderItem = true;
+			} else if ([ItemSlot.ItemSlotFinger1, ItemSlot.ItemSlotTrinket1].includes(idx) && !ItemSpec.equals(resultAsSpec.items[idx + 1], originalEquipmentSpec.items[idx + 1])) {
+				shouldRenderItem = true;
+			} else if ([ItemSlot.ItemSlotFinger2, ItemSlot.ItemSlotTrinket2].includes(idx) && !ItemSpec.equals(resultAsSpec.items[idx - 1], originalEquipmentSpec.items[idx - 1])) {
+				shouldRenderItem = true;
+			} else {
+				shouldRenderItem = false;
+			}
+
+			if (shouldRenderItem) {
 				const item = simUI.sim.db.lookupItemSpec(spec);
 				renderer.update(item!);
 			} else {

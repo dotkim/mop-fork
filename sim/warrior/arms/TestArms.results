@@ -61,15 +61,15 @@ dps_results: {
 dps_results: {
  key: "TestArms-AllItems-BattleplateoftheLastMogu"
  value: {
-  dps: 144685.7865
-  tps: 97143.09891
+  dps: 144527.71557
+  tps: 96942.20285
  }
 }
 dps_results: {
  key: "TestArms-AllItems-BattleplateofthePrehistoricMarauder"
  value: {
-  dps: 150658.02813
-  tps: 100654.88845
+  dps: 153513.04025
+  tps: 103744.52513
  }
 }
 dps_results: {
