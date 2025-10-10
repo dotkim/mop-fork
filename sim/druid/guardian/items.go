@@ -37,6 +37,8 @@ var ItemSetArmorOfTheHauntedForest = core.NewItemSet(core.ItemSet{
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			// You generate 50% more Rage from your attacks while Enrage is active.
+			bear := agent.(*GuardianDruid)
+			bear.has4PT15 = true
 		},
 	},
 })
