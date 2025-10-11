@@ -193,7 +193,7 @@ export class RelativeStatCap {
 	updateWeights(statWeights: Stats) {
 		const averagedWeight = 0.5 * (statWeights.getUnitStat(this.constrainedStats[0]) + statWeights.getUnitStat(this.constrainedStats[1]));
 		const secondaryGemmingThreshold = 0.5 * statWeights.getStat(Stat.StatAgility) + 0.01;
-		const highestStatWeight = (averagedWeight > secondaryGemmingThreshold) ? secondaryGemmingThreshold : 0;
+		const highestStatWeight = averagedWeight > secondaryGemmingThreshold ? secondaryGemmingThreshold : 0;
 
 		for (const stat of RelativeStatCap.relevantStats) {
 			statWeights = statWeights.withStat(stat, this.forcedHighestStat.equalsStat(stat) ? highestStatWeight : averagedWeight);
@@ -880,7 +880,9 @@ export class ReforgeOptimizer {
 										</div>
 									</td>
 									<td colSpan={3}>{percentagePicker.rootElem}</td>
-									<td colSpan={1} className="text-end">{undershootPicker.rootElem}</td>
+									<td colSpan={1} className="text-end">
+										{undershootPicker.rootElem}
+									</td>
 								</tr>
 								{presets && (
 									<tr>
@@ -1123,13 +1125,21 @@ export class ReforgeOptimizer {
 		const constraints = this.buildYalpsConstraints(baseGear, baseStats);
 
 		// Solve in multiple passes to enforce caps
-		await this.solveModel(baseGear, validatedWeights, reforgeCaps, reforgeSoftCaps, variables, constraints, 5000000, (this.includeTimeout ? (this.relativeStatCap ? 120 : 30) : 3600) / (batchRun ? 4 : 1));
+		await this.solveModel(
+			baseGear,
+			validatedWeights,
+			reforgeCaps,
+			reforgeSoftCaps,
+			variables,
+			constraints,
+			5000000,
+			(this.includeTimeout ? (this.relativeStatCap ? 120 : 30) : 3600) / (batchRun ? 4 : 1),
+		);
 		this.currentReforges = this.player.getGear().getAllReforges();
 	}
 
 	async updateGear(gear: Gear): Promise<Stats> {
-		this.player.setGear(TypedEvent.nextEventID(), gear);
-		await this.sim.updateCharacterStats(TypedEvent.nextEventID());
+		await this.player.setGearAsync(TypedEvent.nextEventID(), gear);
 		let baseStats = Stats.fromProto(this.player.getCurrentStats().finalStats);
 		baseStats = baseStats.addStat(Stat.StatMasteryRating, this.player.getBaseMastery() * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
 		if (this.updateGearStatsModifier) baseStats = this.updateGearStatsModifier(baseStats);
@@ -1204,7 +1214,7 @@ export class ReforgeOptimizer {
 
 			let socketBonusNormalization: number = socketColors.length || 1;
 
-			if ((socketBonusNormalization > 1) && (socketColors[0] === GemColor.GemColorMeta)) {
+			if (socketBonusNormalization > 1 && socketColors[0] === GemColor.GemColorMeta) {
 				socketBonusNormalization -= 1;
 			}
 
@@ -1218,7 +1228,7 @@ export class ReforgeOptimizer {
 				this.applyReforgeStat(socketBonusAsCoeff, stat, value, preCapEPs);
 			}
 
-			if (ReforgeOptimizer.includesCappedStat(socketBonusAsCoeff, reforgeCaps, reforgeSoftCaps) && (socketBonusNormalization > 1)) {
+			if (ReforgeOptimizer.includesCappedStat(socketBonusAsCoeff, reforgeCaps, reforgeSoftCaps) && socketBonusNormalization > 1) {
 				forceSocketBonus = true;
 			}
 
@@ -1252,7 +1262,10 @@ export class ReforgeOptimizer {
 
 			const scoredDummyVariables = this.updateReforgeScores(dummyVariables, preCapEPs);
 
-			if ((scoredDummyVariables.get('matched')!.get('score')! > scoredDummyVariables.get('unmatched')!.get('score')!) && ((socketBonusNormalization > 1) || !ReforgeOptimizer.includesCappedStat(scoredDummyVariables.get('matched')!, reforgeCaps, reforgeSoftCaps))) {
+			if (
+				scoredDummyVariables.get('matched')!.get('score')! > scoredDummyVariables.get('unmatched')!.get('score')! &&
+				(socketBonusNormalization > 1 || !ReforgeOptimizer.includesCappedStat(scoredDummyVariables.get('matched')!, reforgeCaps, reforgeSoftCaps))
+			) {
 				forceSocketBonus = true;
 			}
 
@@ -1331,7 +1344,10 @@ export class ReforgeOptimizer {
 			let weightsForSorting = preCapEPs;
 
 			if (this.relativeStatCap) {
-				weightsForSorting = weightsForSorting.withUnitStat(this.relativeStatCap.forcedHighestStat, weightsForSorting.getUnitStat(this.relativeStatCap.constrainedStats[0]));
+				weightsForSorting = weightsForSorting.withUnitStat(
+					this.relativeStatCap.forcedHighestStat,
+					weightsForSorting.getUnitStat(this.relativeStatCap.constrainedStats[0]),
+				);
 			}
 
 			for (const gem of allGemsOfColor) {
@@ -1385,7 +1401,7 @@ export class ReforgeOptimizer {
 			// Go down the list and include all gems until we find the highest EP option with zero capped stats.
 			let maxGemOptionsForStat: number = this.isTankSpec ? 3 : 4;
 
-			if ((socketColor == GemColor.GemColorYellow) && !this.relativeStatCap) {
+			if (socketColor == GemColor.GemColorYellow && !this.relativeStatCap) {
 				let foundCritOrHasteCap = false;
 
 				for (const parentStat of [Stat.StatCritRating, Stat.StatHasteRating]) {
@@ -1421,7 +1437,7 @@ export class ReforgeOptimizer {
 					}
 				}
 
-				if ((!gemData.isJC || !foundUncappedJCGem) && !isRedundantGem && ((cappedStatKeys.length == 0) || !foundUncappedNormalGem)) {
+				if ((!gemData.isJC || !foundUncappedJCGem) && !isRedundantGem && (cappedStatKeys.length == 0 || !foundUncappedNormalGem)) {
 					includedGemDataForColor.push(gemData);
 				}
 
@@ -1432,7 +1448,7 @@ export class ReforgeOptimizer {
 						foundUncappedNormalGem = true;
 						numUncappedNormalGems++;
 
-						if (!this.relativeStatCap || (numUncappedNormalGems == 3)) {
+						if (!this.relativeStatCap || numUncappedNormalGems == 3) {
 							break;
 						}
 					}
@@ -1569,7 +1585,7 @@ export class ReforgeOptimizer {
 			if (maxIterations > 4000000 || elapsedSeconds > maxSeconds) {
 				if (solution.status == 'infeasible') {
 					throw 'The specified stat caps are impossible to achieve. Consider changing any upper bound stat caps to lower bounds instead.';
-				} else if ((solution.status == 'timedout') && this.includeTimeout) {
+				} else if (solution.status == 'timedout' && this.includeTimeout) {
 					throw 'Solver timed out before finding a feasible solution. Consider un-checking "Limit execution time" in the Reforge settings.';
 				} else {
 					throw solution.status;
@@ -1873,7 +1889,15 @@ export class ReforgeOptimizer {
 		if (this.previousGear) this.updateGear(this.previousGear);
 		new Toast({
 			variant: 'error',
-			body: <>{i18n.t('sidebar.buttons.suggest_reforges.reforge_optimization_failed')}<p></p><p><b>Reason for failure:</b> <i>{error}</i></p></>,
+			body: (
+				<>
+					{i18n.t('sidebar.buttons.suggest_reforges.reforge_optimization_failed')}
+					<p></p>
+					<p>
+						<b>Reason for failure:</b> <i>{error}</i>
+					</p>
+				</>
+			),
 			delay: 10000,
 		});
 	}

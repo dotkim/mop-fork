@@ -118,11 +118,6 @@ export class Sim {
 	// Fires when a raid sim API call completes.
 	readonly simResultEmitter = new TypedEvent<SimResult>();
 
-	// Fires when a bulk sim starts.
-	readonly bulkSimStartEmitter = new TypedEvent<void>();
-	// Fires when a bulk sim completes..
-	readonly bulkSimResultEmitter = new TypedEvent<void>();
-
 	private readonly _initPromise: Promise<any>;
 	private lastUsedRngSeed = 0;
 
