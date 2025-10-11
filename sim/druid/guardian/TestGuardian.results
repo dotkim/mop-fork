@@ -67,6 +67,15 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-ArmoroftheHauntedForest"
+ value: {
+  dps: 114882.99052
+  tps: 588470.40177
+  dtps: 12885.29589
+  hps: 11547.23373
+ }
+}
+dps_results: {
  key: "TestGuardian-AllItems-ArrowflightMedallion-93258"
  value: {
   dps: 117469.11993
