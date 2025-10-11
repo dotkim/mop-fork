@@ -209,9 +209,9 @@ dps_results: {
 dps_results: {
  key: "TestFrostMasterfrost-AllItems-EvilEyeofGalakras-105491"
  value: {
-  dps: 175782.92291
-  tps: 162480.19119
-  hps: 1694.91582
+  dps: 170670.2931
+  tps: 157664.58026
+  hps: 1691.50236
  }
 }
 dps_results: {
