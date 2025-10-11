@@ -28,16 +28,6 @@ func (bear *GuardianDruid) registerEnrageSpell() {
 					}
 				},
 			})
-
-			if bear.has4PT15 {
-				bear.MultiplyRageGen(1.5)
-			}
-		},
-
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if bear.has4PT15 {
-				bear.MultiplyRageGen(1.0 / 1.5)
-			}
 		},
 	})
 

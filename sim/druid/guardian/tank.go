@@ -77,9 +77,6 @@ type GuardianDruid struct {
 	HeartOfTheWild *druid.DruidSpell
 	SavageDefense  *druid.DruidSpell
 	SonOfUrsoc     *druid.DruidSpell
-
-	// Set references
-	has4PT15 bool
 }
 
 func (bear *GuardianDruid) GetDruid() *druid.Druid {

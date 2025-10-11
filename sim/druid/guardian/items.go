@@ -26,11 +26,8 @@ var ItemSetArmorOfTheHauntedForest = core.NewItemSet(core.ItemSet{
 
 				Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
 					if bear.SavageDefenseAura.IsActive() {
-						if !bear.ImprovedRegenerationAura.IsActive() {
-							bear.ImprovedRegenerationAura.Activate(sim)
-						}
+						bear.ImprovedRegenerationAura.Activate(sim)
 						bear.ImprovedRegenerationAura.AddStack(sim)
-						bear.ImprovedRegenerationAura.Refresh(sim)
 					}
 				},
 			}).ExposeToAPL(138216)
@@ -38,7 +35,19 @@ var ItemSetArmorOfTheHauntedForest = core.NewItemSet(core.ItemSet{
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			// You generate 50% more Rage from your attacks while Enrage is active.
 			bear := agent.(*GuardianDruid)
-			bear.has4PT15 = true
+			bear.Env.RegisterPreFinalizeEffect(func() {
+				bear.EnrageAura.ApplyOnGain(func(_ *core.Aura, _ *core.Simulation) {
+					if setBonusAura.IsActive() {
+						bear.MultiplyRageGen(1.5)
+					}
+				})
+
+				bear.EnrageAura.ApplyOnExpire(func(_ *core.Aura, _ *core.Simulation) {
+					if setBonusAura.IsActive() {
+						bear.MultiplyRageGen(1.0 / 1.5)
+					}
+				})
+			})
 		},
 	},
 })
@@ -65,10 +74,9 @@ func (bear *GuardianDruid) registerImprovedRegeneration(setBonusTracker *core.Au
 		},
 
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if !spell.Matches(druid.DruidSpellFrenziedRegeneration) {
-				return
+			if spell.Matches(druid.DruidSpellFrenziedRegeneration) {
+				aura.Deactivate(sim)
 			}
-			aura.Deactivate(sim)
 		},
 
 		OnExpire: func(_ *core.Aura, _ *core.Simulation) {
