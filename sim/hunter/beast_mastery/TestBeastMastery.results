@@ -1748,8 +1748,8 @@ dps_results: {
 dps_results: {
  key: "TestBeastMastery-AllItems-RuneofRe-Origination-96918"
  value: {
-  dps: 165015.69734
-  tps: 83887.59707
+  dps: 164801.93814
+  tps: 83728.75006
  }
 }
 dps_results: {

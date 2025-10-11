@@ -1748,8 +1748,8 @@ dps_results: {
 dps_results: {
  key: "TestMarksmanship-AllItems-RuneofRe-Origination-96918"
  value: {
-  dps: 173867.45205
-  tps: 142466.9328
+  dps: 173223.64994
+  tps: 141877.07704
  }
 }
 dps_results: {

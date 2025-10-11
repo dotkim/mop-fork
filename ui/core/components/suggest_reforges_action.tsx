@@ -141,6 +141,17 @@ export class RelativeStatCap {
 				coefficients.set(coefficientKey, currentValue - amount);
 			}
 		}
+
+		if ((stat != Stat.StatMasteryRating) && this.forcedHighestStat.equalsStat(Stat.StatMasteryRating) && (this.player.getSpec() == Spec.SpecFeralDruid)) {
+			const coefficientKey = 'HasteMinusCrit';
+			const currentValue = coefficients.get(coefficientKey) || 0;
+
+			if (stat == Stat.StatHasteRating) {
+				coefficients.set(coefficientKey, currentValue + amount);
+			} else {
+				coefficients.set(coefficientKey, currentValue - amount);
+			}
+		}
 	}
 
 	updateConstraints(constraints: YalpsConstraints, gear: Gear, baseStats: Stats) {
@@ -171,6 +182,11 @@ export class RelativeStatCap {
 			}
 
 			constraints.set(this.constraintKeys[idx], greaterEq(minReforgeContribution));
+		}
+
+		if (this.forcedHighestStat.equalsStat(Stat.StatMasteryRating) && (this.player.getSpec() == Spec.SpecFeralDruid)) {
+			const minReforgeContribution = baseStats.getStat(Stat.StatCritRating) - baseStats.getStat(Stat.StatHasteRating) + 1;
+			constraints.set('HasteMinusCrit', greaterEq(minReforgeContribution));
 		}
 	}
 

@@ -255,6 +255,9 @@ func (unit *Unit) GetInitialStat(stat stats.Stat) float64 {
 func (unit *Unit) GetStats() stats.Stats {
 	return unit.stats
 }
+func (unit *Unit) GetStatsWithoutDeps() stats.Stats {
+	return unit.statsWithoutDeps
+}
 
 // Given an array of Stat types, return the Stat whose value is largest for this
 // Unit.

@@ -1776,8 +1776,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-RuneofRe-Origination-96918"
  value: {
-  dps: 153513.64856
-  tps: 130615.9068
+  dps: 152610.82083
+  tps: 129994.87554
  }
 }
 dps_results: {

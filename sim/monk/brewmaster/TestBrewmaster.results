@@ -2265,10 +2265,10 @@ dps_results: {
 dps_results: {
  key: "TestBrewmaster-AllItems-RuneofRe-Origination-96918"
  value: {
-  dps: 121210.22145
-  tps: 680735.59364
-  dtps: 19728.43676
-  hps: 26969.84543
+  dps: 120205.85716
+  tps: 673691.21418
+  dtps: 19829.58992
+  hps: 26848.556
  }
 }
 dps_results: {

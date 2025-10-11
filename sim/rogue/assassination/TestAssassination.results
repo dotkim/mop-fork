@@ -401,8 +401,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-RuneofRe-Origination-96918"
  value: {
-  dps: 109129.82677
-  tps: 76843.2481
+  dps: 109872.30625
+  tps: 77370.40854
  }
 }
 dps_results: {
