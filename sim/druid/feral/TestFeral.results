@@ -73,9 +73,9 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-AssuranceofConsequence-105472"
  value: {
-  dps: 166114.82287
-  tps: 262944.58711
-  hps: 12149.80628
+  dps: 160377.15471
+  tps: 224495.73549
+  hps: 11899.15289
  }
 }
 dps_results: {

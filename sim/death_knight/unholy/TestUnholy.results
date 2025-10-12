@@ -209,9 +209,9 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-EvilEyeofGalakras-105491"
  value: {
-  dps: 163526.34982
-  tps: 112421.17795
-  hps: 2048.28987
+  dps: 152503.72991
+  tps: 109544.28786
+  hps: 1992.11961
  }
 }
 dps_results: {

@@ -879,10 +879,10 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-EvilEyeofGalakras-105491"
  value: {
-  dps: 99413.53472
-  tps: 544926.6905
-  dtps: 34316.03612
-  hps: 36796.38361
+  dps: 102502.40544
+  tps: 563046.42638
+  dtps: 34423.0784
+  hps: 37385.79148
  }
 }
 dps_results: {
