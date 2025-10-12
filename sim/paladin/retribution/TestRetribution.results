@@ -670,8 +670,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-AllItems-EvilEyeofGalakras-105491"
  value: {
-  dps: 166209.10431
-  tps: 157681.20903
+  dps: 155752.82888
+  tps: 147405.86327
  }
 }
 dps_results: {

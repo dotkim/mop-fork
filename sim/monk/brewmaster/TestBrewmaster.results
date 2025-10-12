@@ -87,10 +87,10 @@ dps_results: {
 dps_results: {
  key: "TestBrewmaster-AllItems-AssuranceofConsequence-105472"
  value: {
-  dps: 115430.44699
-  tps: 646477.90484
-  dtps: 17041.81095
-  hps: 27173.15481
+  dps: 115969.31665
+  tps: 650961.91195
+  dtps: 18818.63535
+  hps: 26412.58596
  }
 }
 dps_results: {
