@@ -40,7 +40,7 @@ func (monk *Monk) registerGlyphOfFortuitousSpheres() {
 	core.MakeProcTriggerAura(&monk.Unit, core.ProcTrigger{
 		Name:     "Glyph of Fortuitous Spheres" + monk.Label,
 		ICD:      30 * time.Second,
-		Outcome:  core.OutcomeHit,
+		Outcome:  core.OutcomeLanded,
 		Callback: core.CallbackOnSpellHitTaken,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Target.CurrentHealthPercent() < 0.25 {

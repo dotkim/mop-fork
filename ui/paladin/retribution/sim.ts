@@ -184,7 +184,7 @@ export class RetributionPaladinSimUI extends IndividualSimUI<Spec.SpecRetributio
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this, {
+			this.reforger = new ReforgeOptimizer(this, {
 				getEPDefaults,
 			});
 		});

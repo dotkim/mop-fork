@@ -172,7 +172,7 @@ export class FrostMageSimUI extends IndividualSimUI<Spec.SpecFrostMage> {
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this, {
+			this.reforger = new ReforgeOptimizer(this, {
 				statSelectionPresets: [MAGE_BREAKPOINTS],
 				enableBreakpointLimits: true,
 				getEPDefaults: player => {

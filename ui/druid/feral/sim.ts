@@ -237,7 +237,7 @@ export class FeralDruidSimUI extends IndividualSimUI<Spec.SpecFeralDruid> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecFeralDruid>) {
 		super(parentElem, player, SPEC_CONFIG);
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this, {
+			this.reforger = new ReforgeOptimizer(this, {
 				getEPDefaults: (player: Player<Spec.SpecFeralDruid>) => {
 					if (this.sim.getUseCustomEPValues()) {
 						return player.getEpWeights();

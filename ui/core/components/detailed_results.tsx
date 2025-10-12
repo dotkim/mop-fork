@@ -1,11 +1,7 @@
-import { ref } from 'tsx-vanilla';
-import { REPO_NAME } from '../constants/other';
-import { IndividualSimUI } from '../individual_sim_ui';
-import { DetailedResultsUpdate, SimRun, SimRunData } from '../proto/ui';
+import { SimRun, SimRunData } from '../proto/ui';
 import { SimResult } from '../proto_utils/sim_result';
 import { SimUI } from '../sim_ui';
 import { TypedEvent } from '../typed_event';
-import { isDevMode } from '../utils';
 import { Component } from './component';
 import { AuraMetricsTable } from './detailed_results/aura_metrics';
 import { CastMetricsTable } from './detailed_results/cast_metrics';
@@ -24,6 +20,9 @@ import { ToplineResults } from './detailed_results/topline_results';
 import { RaidSimResultsManager } from './raid_sim_action';
 import { StickyToolbar } from './sticky_toolbar';
 import i18n from '../../i18n/config';
+import { ref } from 'tsx-vanilla';
+import { isDevMode } from '../utils';
+import { IndividualSimUI } from '../individual_sim_ui';
 
 type Tab = {
 	isActive?: boolean;
@@ -75,24 +74,27 @@ const tabs: Tab[] = [
 	},
 ];
 
-export abstract class DetailedResults extends Component {
-	protected readonly simUI: SimUI | null;
+export class DetailedResults extends Component {
+	protected readonly simUI: SimUI;
 	protected latestRun: SimRunData | null = null;
-	protected latestDeathSeeds: BigInt[] = [];
+	protected latestDeathSeeds: bigint[] = [];
 	protected recentlyEditedSeed: boolean = false;
 
 	private currentSimResult: SimResult | null = null;
 	private resultsEmitter: TypedEvent<SimResultData | null> = new TypedEvent<SimResultData | null>();
 	private resultsFilter: ResultsFilter;
-	private rootDiv: HTMLElement;
+	private rootDiv: Element;
 
-	constructor(parent: HTMLElement, simUI: SimUI | null, cssScheme: string) {
+	constructor(parent: HTMLElement, simUI: SimUI, simResultsManager: RaidSimResultsManager) {
 		super(parent, 'detailed-results-manager-root');
 
-		this.rootElem.appendChild(
+		this.simUI = simUI;
+
+		this.rootDiv = (
 			<div className="dr-root dr-no-results">
-				<div className="dr-toolbar sticky-toolbar">
+				<div className="dr-toolbar">
 					<div className="results-filter"></div>
+					<div className="tabs-filler"></div>
 					<ul className="nav nav-tabs" attributes={{ role: 'tablist' }}>
 						{tabs.map(({ label, targetId, isActive, classes }) => (
 							<li className={`nav-item dr-tab-tab ${classes?.join(' ') || ''}`} attributes={{ role: 'presentation' }}>
@@ -183,12 +185,27 @@ export abstract class DetailedResults extends Component {
 						</div>
 					</div>
 				</div>
-			</div>,
+			</div>
 		);
-		this.rootDiv = this.rootElem.querySelector('.dr-root')!;
-		this.simUI = simUI;
 
-		this.simUI?.sim.settingsChangeEmitter.on(async () => await this.updateSettings());
+		const simButtonRef = ref<HTMLButtonElement>();
+		const deathButtonRef = ref<HTMLButtonElement>();
+
+		this.rootElem.appendChild(
+			<>
+				<div className="detailed-results-controls-div">
+					<button className="detailed-results-1-iteration-button btn btn-primary" ref={simButtonRef} disabled={simUI.disabled}>
+						{i18n.t('results_tab.details.sim_1_iteration')}
+					</button>
+					<button className="detailed-results-death-iteration-button btn btn-primary" ref={deathButtonRef} disabled={true}>
+						{i18n.t('results_tab.details.sim_1_death')}
+					</button>
+				</div>
+				{this.rootDiv}
+			</>,
+		);
+
+		this.simUI.sim.settingsChangeEmitter.on(() => this.updateSettings());
 
 		// Allow styling the sticky toolbar
 		const toolbar = document.querySelector<HTMLElement>('.dr-toolbar')!;
@@ -256,7 +273,6 @@ export abstract class DetailedResults extends Component {
 
 		const timeline = new Timeline({
 			parent: this.rootElem.querySelector('.timeline')!,
-			cssScheme: cssScheme,
 			resultsEmitter: this.resultsEmitter,
 			secondaryResource: (simUI as IndividualSimUI<any>)?.player?.secondaryResource,
 		});
@@ -268,13 +284,12 @@ export abstract class DetailedResults extends Component {
 
 		new LogRunner({
 			parent: this.rootElem.querySelector('.log')!,
-			cssScheme: cssScheme,
 			resultsEmitter: this.resultsEmitter,
 		});
 
-		this.rootElem.classList.add('hide-threat-metrics', 'hide-threat-metrics');
+		this.rootElem.classList.add('hide-threat-metrics');
 
-		this.resultsFilter.changeEmitter.on(() => this.updateResults());
+		this.resultsFilter.changeEmitter.on(async () => await this.updateResults(this.latestRun));
 
 		this.resultsEmitter.on((_, resultData) => {
 			if (resultData?.filter.player || resultData?.filter.player === 0) {
@@ -285,171 +300,10 @@ export abstract class DetailedResults extends Component {
 				this.rootDiv.classList.remove('single-player');
 			}
 		});
-	}
-
-	abstract postMessage(update: DetailedResultsUpdate): Promise<void>;
-
-	protected async setSimRunData(simRunData: SimRunData) {
-		this.latestRun = simRunData;
-		const latestSimResult = this.latestRun?.run?.result;
-		const playerMetrics = latestSimResult?.raidMetrics?.parties.map(party => party.players).flat();
-
-		if (isDevMode() && playerMetrics) {
-			console.log('Found player metrics:');
-			console.log(playerMetrics);
-		}
-
-		if (playerMetrics?.length) {
-			const deathSeeds = playerMetrics[0].deathSeeds;
-
-			if (isDevMode() && deathSeeds.length > 0) {
-				console.log('Found death seeds:');
-				console.log(deathSeeds);
-			}
-
-			if (deathSeeds.length > 1 || this.latestDeathSeeds.length == 0) {
-				this.latestDeathSeeds = deathSeeds;
-			}
-		}
-
-		await this.postMessage(
-			DetailedResultsUpdate.create({
-				data: {
-					oneofKind: 'runData',
-					runData: simRunData,
-				},
-			}),
-		);
-	}
-
-	protected async updateSettings() {
-		if (!this.simUI) return;
-
-		if (this.recentlyEditedSeed) {
-			this.simUI.sim.setFixedRngSeed(TypedEvent.nextEventID(), 0);
-			this.recentlyEditedSeed = false;
-		}
-
-		await this.postMessage(
-			DetailedResultsUpdate.create({
-				data: {
-					oneofKind: 'settings',
-					settings: this.simUI.sim.toProto(),
-				},
-			}),
-		);
-	}
-
-	private updateResults() {
-		const eventID = TypedEvent.nextEventID();
-		if (this.currentSimResult == null) {
-			this.rootDiv.classList.add('dr-no-results');
-			this.resultsEmitter.emit(eventID, null);
-		} else {
-			this.rootDiv.classList.remove('dr-no-results');
-			this.resultsEmitter.emit(eventID, {
-				eventID: eventID,
-				result: this.currentSimResult,
-				filter: this.resultsFilter.getFilter(),
-			});
-		}
-	}
-
-	protected async handleMessage(data: DetailedResultsUpdate) {
-		switch (data.data.oneofKind) {
-			case 'runData':
-				const runData = data.data.runData;
-				this.currentSimResult = await SimResult.fromProto(runData.run || SimRun.create());
-				this.updateResults();
-				break;
-			case 'settings':
-				const settings = data.data.settings;
-				if (settings.showDamageMetrics) {
-					this.rootElem.classList.remove('hide-damage-metrics');
-				} else {
-					this.rootElem.classList.add('hide-damage-metrics');
-					const damageTabEl = document.getElementById('damageTab')!;
-					const healingTabEl = document.getElementById('healingTab')!;
-					if (damageTabEl.classList.contains('active')) {
-						damageTabEl.classList.remove('active', 'show');
-						healingTabEl.classList.add('active', 'show');
-
-						const toolbar = document.getElementsByClassName('dr-toolbar')[0] as HTMLElement;
-						toolbar.querySelector('.damage-metrics')?.children[0].classList.remove('active');
-						toolbar.querySelector('.healing-metrics')?.children[0].classList.add('active');
-					}
-				}
-				this.rootElem.classList[settings.showThreatMetrics ? 'remove' : 'add']('hide-threat-metrics');
-				this.rootElem.classList[settings.showHealingMetrics ? 'remove' : 'add']('hide-healing-metrics');
-				this.rootElem.classList[settings.showExperimental ? 'remove' : 'add']('hide-experimental');
-				break;
-		}
-	}
-}
-
-export class WindowedDetailedResults extends DetailedResults {
-	constructor(parent: HTMLElement) {
-		super(parent, null, new URLSearchParams(window.location.search).get('cssScheme') ?? '');
-
-		window.addEventListener('message', async event => await this.handleMessage(DetailedResultsUpdate.fromJson(event.data)));
-
-		this.rootElem.insertAdjacentHTML('beforeend', `<div class="sim-bg"></div>`);
-	}
-
-	async postMessage(update: DetailedResultsUpdate): Promise<void> {
-		await this.handleMessage(update);
-	}
-}
-
-export class EmbeddedDetailedResults extends DetailedResults {
-	private tabWindow: Window | null = null;
-
-	constructor(parent: HTMLElement, simUI: SimUI, simResultsManager: RaidSimResultsManager) {
-		super(parent, simUI, simUI.config.cssScheme);
-
-		const newTabButtonRef = ref<HTMLButtonElement>();
-		const simButtonRef = ref<HTMLButtonElement>();
-		const deathButtonRef = ref<HTMLButtonElement>();
-
-		this.rootElem.prepend(
-			<div className="detailed-results-controls-div">
-				<button className="detailed-results-new-tab-button btn btn-primary" ref={newTabButtonRef} disabled={simUI.disabled}>
-					{i18n.t('results_tab.details.view_in_separate_tab')}
-				</button>
-				<button className="detailed-results-1-iteration-button btn btn-primary" ref={simButtonRef} disabled={simUI.disabled}>
-					{i18n.t('results_tab.details.sim_1_iteration')}
-				</button>
-				<button className="detailed-results-death-iteration-button btn btn-primary" ref={deathButtonRef} disabled={true}>
-					{i18n.t('results_tab.details.sim_1_death')}
-				</button>
-			</div>,
-		);
-
-		const url = new URL(`${window.location.protocol}//${window.location.host}/${REPO_NAME}/results/detailed/index.html`);
-		url.searchParams.append('cssClass', simUI.config.cssClass);
-
-		if (simUI.isIndividualSim()) {
-			url.searchParams.append('isIndividualSim', '');
-			this.rootElem.classList.add('individual-sim');
-		}
-
-		const newTabButton = newTabButtonRef.value!;
-		newTabButton?.addEventListener('click', () => {
-			if (this.tabWindow == null || this.tabWindow.closed) {
-				this.tabWindow = window.open(url.href, 'Detailed Results');
-				this.tabWindow!.addEventListener('load', async () => {
-					if (this.latestRun) {
-						await Promise.all([this.updateSettings(), this.setSimRunData(this.latestRun)]);
-					}
-				});
-			} else {
-				this.tabWindow.focus();
-			}
-		});
 
 		const simButton = simButtonRef.value!;
 		simButton?.addEventListener('click', () => {
-			(window.opener || window.parent)!.postMessage('runOnce', '*');
+			this.simUI?.runSimOnce();
 		});
 
 		const deathButton = deathButtonRef.value!;
@@ -464,23 +318,82 @@ export class EmbeddedDetailedResults extends DetailedResults {
 				}
 			}
 
-			(window.opener || window.parent)!.postMessage('runOnce', '*');
+			this.simUI?.runSimOnce();
 		});
 
 		simResultsManager.currentChangeEmitter.on(async () => {
 			const runData = simResultsManager.getRunData();
 			if (runData) {
-				await Promise.all([this.updateSettings(), this.setSimRunData(runData)]);
+				this.updateSettings();
+				await this.updateResults(runData);
 			}
 
 			deathButton.disabled = this.latestDeathSeeds.length < 2;
 		});
 	}
 
-	async postMessage(update: DetailedResultsUpdate) {
-		if (this.tabWindow) {
-			this.tabWindow.postMessage(DetailedResultsUpdate.toJson(update), '*');
+	private updateSettings() {
+		const settings = this.simUI?.sim.toProto();
+		if (!settings) return;
+
+		if (settings.showDamageMetrics) {
+			this.rootElem.classList.remove('hide-damage-metrics');
+		} else {
+			this.rootElem.classList.add('hide-damage-metrics');
+			const damageTabEl = document.getElementById('damageTab')!;
+			const healingTabEl = document.getElementById('healingTab')!;
+			if (damageTabEl.classList.contains('active')) {
+				damageTabEl.classList.remove('active', 'show');
+				healingTabEl.classList.add('active', 'show');
+
+				const toolbar = document.getElementsByClassName('dr-toolbar')[0] as HTMLElement;
+				toolbar.querySelector('.damage-metrics')?.children[0].classList.remove('active');
+				toolbar.querySelector('.healing-metrics')?.children[0].classList.add('active');
+			}
 		}
-		await this.handleMessage(update);
+		this.rootElem.classList[settings.showThreatMetrics ? 'remove' : 'add']('hide-threat-metrics');
+		this.rootElem.classList[settings.showHealingMetrics ? 'remove' : 'add']('hide-healing-metrics');
+		this.rootElem.classList[settings.showExperimental ? 'remove' : 'add']('hide-experimental');
+	}
+
+	private async updateResults(simRunData: SimRunData | null) {
+		if (simRunData?.run?.request?.requestId !== this.latestRun?.run?.request?.requestId) {
+			this.latestRun = simRunData;
+			this.currentSimResult = await SimResult.fromProto(simRunData?.run || SimRun.create());
+		}
+
+		const latestSimResult = this.latestRun?.run?.result;
+		const playerMetrics = latestSimResult?.raidMetrics?.parties.map(party => party.players).flat();
+
+		if (isDevMode() && playerMetrics) {
+			console.log('Found player metrics:');
+			console.log(playerMetrics);
+		}
+
+		if (playerMetrics?.length) {
+			const deathSeeds = playerMetrics[0].deathSeeds;
+
+			if (isDevMode() && !!deathSeeds.length) {
+				console.log('Found death seeds:');
+				console.log(deathSeeds);
+			}
+
+			if (deathSeeds.length > 1 || this.latestDeathSeeds.length == 0) {
+				this.latestDeathSeeds = deathSeeds;
+			}
+		}
+
+		const eventID = TypedEvent.nextEventID();
+		if (this.currentSimResult == null) {
+			this.rootDiv.classList.add('dr-no-results');
+			this.resultsEmitter.emit(eventID, null);
+		} else {
+			this.rootDiv.classList.remove('dr-no-results');
+			this.resultsEmitter.emit(eventID, {
+				eventID: eventID,
+				result: this.currentSimResult,
+				filter: this.resultsFilter.getFilter(),
+			});
+		}
 	}
 }

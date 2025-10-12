@@ -67,6 +67,15 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-ArmoroftheHauntedForest"
+ value: {
+  dps: 114882.99052
+  tps: 588470.40177
+  dtps: 12885.29589
+  hps: 11547.23373
+ }
+}
+dps_results: {
  key: "TestGuardian-AllItems-ArrowflightMedallion-93258"
  value: {
   dps: 117469.11993
@@ -78,10 +87,10 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-AssuranceofConsequence-105472"
  value: {
-  dps: 115961.44609
-  tps: 597133.46339
-  dtps: 11818.87583
-  hps: 10464.91213
+  dps: 114993.9069
+  tps: 591136.66154
+  dtps: 13065.25468
+  hps: 10996.86605
  }
 }
 dps_results: {
@@ -2274,10 +2283,10 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-RuneofRe-Origination-96918"
  value: {
-  dps: 124241.73963
-  tps: 637488.25158
-  dtps: 13986.06269
-  hps: 11317.21537
+  dps: 124043.62534
+  tps: 637583.66731
+  dtps: 13915.39895
+  hps: 11205.64425
  }
 }
 dps_results: {

@@ -209,9 +209,9 @@ dps_results: {
 dps_results: {
  key: "TestFrostTwoHand-AllItems-EvilEyeofGalakras-105491"
  value: {
-  dps: 178300.06635
-  tps: 163179.68136
-  hps: 2709.91933
+  dps: 172711.76638
+  tps: 158007.42295
+  hps: 2704.88859
  }
 }
 dps_results: {

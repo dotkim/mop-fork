@@ -158,7 +158,7 @@ export class FrostDeathKnightSimUI extends IndividualSimUI<Spec.SpecFrostDeathKn
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecFrostDeathKnight>) {
 		super(parentElem, player, SPEC_CONFIG);
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this, {
+			this.reforger = new ReforgeOptimizer(this, {
 				updateSoftCaps: (softCaps: StatCap[]) => {
 					const mainHand = player.getEquippedItem(ItemSlot.ItemSlotMainHand);
 					if (mainHand?.item?.handType === HandType.HandTypeTwoHand) {

@@ -61,8 +61,8 @@ dps_results: {
 dps_results: {
  key: "TestMarksmanship-AllItems-AssuranceofConsequence-105472"
  value: {
-  dps: 173982.76925
-  tps: 138440.69114
+  dps: 171596.28136
+  tps: 138309.94694
  }
 }
 dps_results: {
@@ -1748,8 +1748,8 @@ dps_results: {
 dps_results: {
  key: "TestMarksmanship-AllItems-RuneofRe-Origination-96918"
  value: {
-  dps: 173867.45205
-  tps: 142466.9328
+  dps: 173223.64994
+  tps: 141877.07704
  }
 }
 dps_results: {

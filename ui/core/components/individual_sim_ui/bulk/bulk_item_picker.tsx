@@ -20,7 +20,7 @@ export default class BulkItemPicker extends Component {
 	readonly bulkSlot: BulkSimItemSlot;
 	// If less than 0, the item is currently equipped and not stored in the batch sim's item array
 	readonly index: number;
-	protected item: EquippedItem;
+	item: EquippedItem;
 
 	// Can be used to remove any events in addEventListener
 	// https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#add_an_abortable_listener
@@ -65,7 +65,7 @@ export default class BulkItemPicker extends Component {
 	private setupHandlers() {
 		const slot = getEligibleItemSlots(this.item.item)[0];
 		const hasEligibleEnchants = !!this.simUI.sim.db.getEnchants(slot).length;
-		const hasEligibleReforges = !!this.item?.item ? this.simUI.player.getAvailableReforgings(this.item) : [];
+		const hasEligibleReforges = this.item?.item ? this.simUI.player.getAvailableReforgings(this.item) : [];
 
 		const openItemSelector = (event: Event) => {
 			event.preventDefault();
@@ -125,14 +125,10 @@ export default class BulkItemPicker extends Component {
 	}
 
 	private addActions() {
-		const copyBtnRef = ref<HTMLButtonElement>();
 		const removeBtnRef = ref<HTMLButtonElement>();
 
 		this.itemElem.rootElem.appendChild(
 			<div className="item-picker-actions-container">
-				<button className="btn btn-link item-picker-actions-btn" ref={copyBtnRef}>
-					<i className="fas fa-copy" />
-				</button>
 				{this.isEditable() && (
 					<button className="btn btn-link link-danger item-picker-actions-btn" ref={removeBtnRef}>
 						<i className="fas fa-times" />
@@ -141,13 +137,7 @@ export default class BulkItemPicker extends Component {
 			</div>,
 		);
 
-		const copyBtn = copyBtnRef.value!;
-		tippy(copyBtn, { content: 'Make an editable copy of this item.' });
-		const copyItem = () => this.bulkUI.addItemToSlot(this.item.asSpec(), this.bulkSlot);
-		copyBtn.addEventListener('click', copyItem);
-		this.addOnDisposeCallback(() => copyBtn.removeEventListener('click', copyItem));
-
-		if (!!removeBtnRef.value) {
+		if (removeBtnRef.value) {
 			const removeBtn = removeBtnRef.value;
 			tippy(removeBtn, { content: 'Remove this item from the batch.' });
 			const removeItem = () => this.bulkUI.removeItemByIndex(this.index);

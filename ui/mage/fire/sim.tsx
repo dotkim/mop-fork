@@ -305,7 +305,7 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 		];
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this, {
+			this.reforger = new ReforgeOptimizer(this, {
 				statSelectionPresets: statSelectionPresets,
 				enableBreakpointLimits: true,
 				// updateSoftCaps: softCaps => {

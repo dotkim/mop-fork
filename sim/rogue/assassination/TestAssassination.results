@@ -72,8 +72,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-AssuranceofConsequence-105472"
  value: {
-  dps: 110519.75827
-  tps: 77701.88754
+  dps: 106314.31698
+  tps: 74716.02422
  }
 }
 dps_results: {
@@ -401,8 +401,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-RuneofRe-Origination-96918"
  value: {
-  dps: 109129.82677
-  tps: 76843.2481
+  dps: 109872.30625
+  tps: 77370.40854
  }
 }
 dps_results: {

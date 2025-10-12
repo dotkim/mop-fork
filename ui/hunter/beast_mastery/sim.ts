@@ -159,7 +159,7 @@ export class BeastMasteryHunterSimUI extends IndividualSimUI<Spec.SpecBeastMaste
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this, {
+			this.reforger = new ReforgeOptimizer(this, {
 				getEPDefaults: (_: Player<Spec.SpecBeastMasteryHunter>) => {
 					return Presets.P1_EP_PRESET.epWeights;
 				},
@@ -174,7 +174,6 @@ export class BeastMasteryHunterSimUI extends IndividualSimUI<Spec.SpecBeastMaste
 							softCapToModify.postCapEPs = softCap.breakpoints.map((_, index) => Math.max(0, baseEP - reduction * (index + 1)));
 						}
 					});
-					console.log(softCaps);
 					return softCaps;
 				},
 			});

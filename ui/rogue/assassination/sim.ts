@@ -159,7 +159,7 @@ export class AssassinationRogueSimUI extends IndividualSimUI<Spec.SpecAssassinat
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this, {});
+			this.reforger = new ReforgeOptimizer(this, {});
 		});
 
 		// Poison selection

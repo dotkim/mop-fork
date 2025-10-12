@@ -152,7 +152,7 @@ export class ArmsWarriorSimUI extends IndividualSimUI<Spec.SpecArmsWarrior> {
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this, {
+			this.reforger = new ReforgeOptimizer(this, {
 				getEPDefaults: player => {
 					if (this.sim.getUseCustomEPValues()) {
 						return player.getEpWeights();

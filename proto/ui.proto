@@ -47,7 +47,7 @@ message UINPC {
 // Contains all information about an Item needed by the UI.
 // Generally this will include everything needed by the sim, plus some
 // additional data for displaying / filtering.
-// Next tag: 30.
+// Next tag: 32.
 message UIItem {
 	int32 id = 1;
 	string name = 2;
@@ -75,6 +75,8 @@ message UIItem {
 	int32 phase = 16;
 	ItemQuality quality = 17;
 	bool unique = 18;
+	// How many of that item can be equipped at once.
+	int32 limit_category = 32;
 	string name_description = 19;
 
 	// Classes that are allowed to use the item. Empty indicates no special class restrictions.

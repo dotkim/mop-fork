@@ -219,7 +219,7 @@ export class BrewmasterMonkSimUI extends IndividualSimUI<Spec.SpecBrewmasterMonk
 		});
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this, {
+			this.reforger = new ReforgeOptimizer(this, {
 				getEPDefaults: (player: Player<Spec.SpecBrewmasterMonk>) => {
 					return getActiveEPWeight(player, this.sim);
 				},

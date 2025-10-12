@@ -139,7 +139,7 @@ export class ElementalShamanSimUI extends IndividualSimUI<Spec.SpecElementalSham
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecElementalShaman>) {
 		super(parentElem, player, SPEC_CONFIG);
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this, {
+			this.reforger = new ReforgeOptimizer(this, {
 				getEPDefaults: (player: Player<Spec.SpecFuryWarrior>) => {
 					const playerWeights = player.getEpWeights();
 					const defaultWeights = Presets.EP_PRESET_DEFAULT.epWeights;

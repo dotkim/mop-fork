@@ -161,7 +161,7 @@ export class ArcaneMageSimUI extends IndividualSimUI<Spec.SpecArcaneMage> {
 		];
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this, {
+			this.reforger = new ReforgeOptimizer(this, {
 				statSelectionPresets: statSelectionPresets,
 				enableBreakpointLimits: true,
 				getEPDefaults: player => {

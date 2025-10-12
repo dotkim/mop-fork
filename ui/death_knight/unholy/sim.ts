@@ -142,7 +142,7 @@ export class UnholyDeathKnightSimUI extends IndividualSimUI<Spec.SpecUnholyDeath
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecUnholyDeathKnight>) {
 		super(parentElem, player, SPEC_CONFIG);
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this, {
+			this.reforger = new ReforgeOptimizer(this, {
 				getEPDefaults(_: Player<Spec.SpecUnholyDeathKnight>) {
 					return Presets.P1_P2_UNHOLY_EP_PRESET.epWeights;
 				},

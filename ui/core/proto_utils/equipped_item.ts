@@ -225,7 +225,7 @@ export class EquippedItem {
 			if (this._gems[i] && other.gems[i] && !Gem.equals(this._gems[i]!, other.gems[i]!)) return false;
 		}
 
-		if (this._upgrade !== other.upgrade) return false;
+		if (this._upgrade !== other._upgrade) return false;
 
 		if (this._challengeMode !== other._challengeMode) return false;
 

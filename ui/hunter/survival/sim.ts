@@ -144,7 +144,7 @@ export class SurvivalHunterSimUI extends IndividualSimUI<Spec.SpecSurvivalHunter
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this, {
+			this.reforger = new ReforgeOptimizer(this, {
 				getEPDefaults: (_: Player<Spec.SpecSurvivalHunter>) => {
 					return Presets.P1_EP_PRESET.epWeights;
 				},

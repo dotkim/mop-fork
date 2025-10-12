@@ -273,7 +273,7 @@ export class GuardianDruidSimUI extends IndividualSimUI<Spec.SpecGuardianDruid> 
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this);
+			this.reforger = new ReforgeOptimizer(this);
 		});
 	}
 }

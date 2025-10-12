@@ -190,7 +190,7 @@ export class BalanceDruidSimUI extends IndividualSimUI<Spec.SpecBalanceDruid> {
 				}
 			}
 
-			new ReforgeOptimizer(this, {
+			this.reforger = new ReforgeOptimizer(this, {
 				statSelectionPresets: [statSelectionHastePreset],
 				updateSoftCaps: softCaps => {
 					const gear = player.getGear();

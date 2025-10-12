@@ -44,8 +44,7 @@ type AfflictionWarlock struct {
 	Agony              *core.Spell
 	UnstableAffliction *core.Spell
 
-	SoulBurnAura     *core.Aura
-	HauntDebuffAuras core.AuraArray
+	SoulBurnAura *core.Aura
 
 	LastCorruptionTarget *core.Unit // Tracks the last target we've applied corruption to
 	LastInhaleTarget     *core.Unit
@@ -111,6 +110,10 @@ func (affliction *AfflictionWarlock) Reset(sim *core.Simulation) {
 func (affliction *AfflictionWarlock) OnEncounterStart(sim *core.Simulation) {
 	defaultShards := MaxSoulShards
 	if affliction.SoulBurnAura.IsActive() {
+		defaultShards -= 1
+	}
+	//Haunt in-flight
+	if affliction.SpellInFlightByID(HauntSpellID) {
 		defaultShards -= 1
 	}
 

@@ -611,7 +611,7 @@ func init() {
 
 			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name: label,
-				DPM: character.NewRPPMProcManager(itemID, false, false, core.ProcMaskMeleeOrMeleeProc|core.ProcMaskRangedOrRangedProc, core.RPPMConfig{
+				DPM: character.NewRPPMProcManager(itemID, false, false, core.ProcMaskDirect|core.ProcMaskProc, core.RPPMConfig{
 					PPM: 1.10000002384,
 				}.WithApproximateIlvlMod(1.0, 528)),
 				ICD:      duration,
@@ -623,9 +623,11 @@ func init() {
 
 					hasMasteryRaidBuff := masteryRaidBuffs.GetActiveAura().IsActive()
 					currentStats := character.GetStats()
+					currentStatsWithoutDeps := character.GetStatsWithoutDeps()
 
 					if hasMasteryRaidBuff {
 						currentStats[stats.MasteryRating] -= core.MasteryRaidBuffStrength
+						currentStatsWithoutDeps[stats.MasteryRating] -= core.MasteryRaidBuffStrength
 					}
 
 					highestStat := currentStats.GetHighestStatType(buffedStatTypes)
@@ -634,8 +636,8 @@ func init() {
 
 					for _, statType := range buffedStatTypes {
 						if statType != highestStat {
-							buffStrength += currentStats[statType] * 2
-							buffStats[statType] = -currentStats[statType]
+							buffStrength += currentStatsWithoutDeps[statType] * 2
+							buffStats[statType] = -currentStatsWithoutDeps[statType]
 						}
 					}
 

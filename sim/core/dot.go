@@ -272,7 +272,9 @@ func (dot *Dot) DurationExtendSnapshot(sim *Simulation, extendBy time.Duration) 
 // Forces an instant tick. Does not reset the tick timer or aura duration,
 // the tick is simply an extra tick.
 func (dot *Dot) TickOnce(sim *Simulation) {
-	dot.onTick(sim, dot.Unit, dot)
+	if dot.onTick != nil {
+		dot.onTick(sim, dot.Unit, dot)
+	}
 }
 
 func (dot *Dot) periodicTick(sim *Simulation) {

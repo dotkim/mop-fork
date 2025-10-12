@@ -12,7 +12,6 @@ import { EventID, TypedEvent } from '../../../typed_event';
 import { ContentBlock } from '../../content_block';
 import { createNameDescriptionLabel } from '../../gear_picker/utils';
 import { NumberPicker } from '../../pickers/number_picker';
-import Toast from '../../toast';
 import { BulkTab } from '../bulk_tab';
 import { bulkSimSlotNames, itemSlotToBulkSimItemSlot } from './utils';
 
@@ -179,8 +178,8 @@ export default class BulkItemSearch extends ContentBlock {
 								<span className="item-picker-ilvl">{ilvl}</span>
 								<div className="bulk-item-search-item-icon" ref={iconRef} />
 							</div>
-							<div className="d-flex flex-column ps-2">
-								<div className="d-flex">
+							<div className="d-flex flex-column gap-1 ps-2">
+								<div className="d-flex flex-wrap flex-column flex-xxl-row column-gap-1">
 									<span ref={itemNameRef}>{item.name}</span>
 									{item.nameDescription && createNameDescriptionLabel(item.nameDescription)}
 									{item.factionRestriction === UIItem_FactionRestriction.HORDE_ONLY && <span className="faction-horde">(H)</span>}
@@ -205,16 +204,6 @@ export default class BulkItemSearch extends ContentBlock {
 					event => {
 						event.preventDefault();
 						this.bulkUI.addItem(ItemSpec.create({ id: item.id }));
-
-						new Toast({
-							delay: 1000,
-							variant: 'success',
-							body: (
-								<>
-									<strong>{item.name}</strong> {i18n.t('bulk_tab.search.item_added', { itemName: item.name })}
-								</>
-							),
-						});
 					},
 					{ signal: this.signal },
 				);

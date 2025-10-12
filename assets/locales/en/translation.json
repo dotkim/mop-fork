@@ -770,34 +770,19 @@
 			"max_ilvl": "Max ILvl",
 			"no_results": "No results found.",
 			"showing_results": "Showing {{max}} of {{total}} total results.",
-			"item_added": "{{itemName}} was added to the batch."
+			"item_added": "{{itemName}} was added to the batch.",
+			"item_removed": "{{itemName}} was removed from the batch.",
+			"item_unique": "{{itemName}} is unique and already added."
 		},
 		"settings": {
 			"combinations_count": "{{count}} Combinations",
 			"combination_singular": "1 Combination",
 			"iterations": "Iterations",
-			"fast_mode": {
-				"label": "Fast Mode",
-				"tooltip": "Fast mode reduces accuracy but will run faster."
-			},
-			"combinations": {
-				"label": "Combinations",
-				"tooltip": "When checked bulk simulator will create all possible combinations of the items. When disabled trinkets and rings will still run all combinations because they each have two slots to fill."
-			},
-			"auto_enchant": {
-				"label": "Auto Enchant",
-				"tooltip": "When checked bulk simulator apply the current enchant for a slot to each replacement item it can."
-			},
-			"auto_gem": {
-				"label": "Auto Gem",
-				"tooltip": "When checked bulk simulator will fill any un-filled gem sockets with default gems."
-			},
-			"sim_talents": {
-				"label": "Sim Talents",
-				"tooltip": "When checked bulk simulator will sim chosen talent setups. Warning, it might cause the bulk sim to run for a lot longer"
-			},
 			"default_gems": "Default Gems",
-			"talents_to_sim": "Talents to Sim"
+			"inherit_upgrades": {
+				"label": "Inherit Upgrades",
+				"tooltip": "When enabled, items will inherit upgrades from the equipped item. Otherwise, items will be simmed without any upgrades."
+			}
 		},
 		"progress": {
 			"total_combinations": "{{count}} total combinations.",
@@ -1360,8 +1345,8 @@
 					"tooltip": "The amount of time specified by the <b>Input Dleay</b> setting."
 				},
 				"spell_in_flight": {
-					"label":"Spell in Flight",
-					"tooltip":"<b>True</b> if this spell is currently in flight, otherwise <b>False</b>."
+					"label": "Spell in Flight",
+					"tooltip": "<b>True</b> if this spell is currently in flight, otherwise <b>False</b>."
 				},
 				"aura_known": {
 					"label": "Aura Known",

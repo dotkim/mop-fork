@@ -58,6 +58,7 @@ func ScanRawItemData(rows *sql.Rows) (dbc.Item, error) {
 		&raw.ItemSubClass,
 		&raw.NameDescription,
 		&raw.UpgradeID,
+		&raw.LimitCategory,
 	)
 	if err != nil {
 		panic(err)
@@ -129,7 +130,8 @@ func LoadAndWriteRawItems(dbHelper *DBHelper, filter string, inputsDir string) (
 			 i.ClassID,
 			 i.SubClassID,
 			 COALESCE(ind.Description_lang, ''),
-			 COALESCE(riu.ItemUpgradeID, 0)
+			 COALESCE(riu.ItemUpgradeID, 0),
+			s.LimitCategory
 		FROM Item i
 		JOIN ItemSparse s ON i.ID = s.ID
 		JOIN ItemClass ic ON i.ClassID = ic.ClassID

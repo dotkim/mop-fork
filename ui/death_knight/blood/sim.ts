@@ -184,7 +184,7 @@ export class BloodDeathKnightSimUI extends IndividualSimUI<Spec.SpecBloodDeathKn
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecBloodDeathKnight>) {
 		super(parentElem, player, SPEC_CONFIG);
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this, {
+			this.reforger = new ReforgeOptimizer(this, {
 				getEPDefaults: (_: Player<Spec.SpecFuryWarrior>) => {
 					return Presets.P1_BLOOD_EP_PRESET.epWeights;
 				},

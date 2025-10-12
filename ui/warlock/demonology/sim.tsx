@@ -171,7 +171,7 @@ export class DemonologyWarlockSimUI extends IndividualSimUI<Spec.SpecDemonologyW
 		];
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this, {
+			this.reforger = new ReforgeOptimizer(this, {
 				statSelectionPresets,
 				enableBreakpointLimits: true,
 				updateSoftCaps: softCaps => {

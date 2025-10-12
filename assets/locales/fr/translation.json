@@ -769,35 +769,20 @@
 			"min_ilvl": "ILvl min",
 			"max_ilvl": "ILvl max",
 			"no_results": "Aucun résultat trouvé.",
-			"showing_results": "Affichage de {max} sur {total} résultats totaux.",
-			"item_added": "{itemName} a été ajouté au lot."
+			"showing_results": "Affichage de {{max}} sur {{total}} résultats totaux.",
+			"item_added": "{{itemName}} a été ajouté au lot.",
+			"item_removed": "{{itemName}} a été retiré du lot.",
+			"item_unique": "{{itemName}} est unique et a déjà été ajouté."
 		},
 		"settings": {
-			"combinations_count": "{count} Combinaisons",
+			"combinations_count": "{{count}} Combinaisons",
 			"combination_singular": "1 Combinaison",
 			"iterations": "Itérations",
-			"fast_mode": {
-				"label": "Mode rapide",
-				"tooltip": "Le mode rapide réduit la précision mais s'exécute plus rapidement."
-			},
-			"combinations": {
-				"label": "Combinaisons",
-				"tooltip": "Lorsqu'il est coché, le simulateur par lot créera toutes les combinaisons possibles des objets. Lorsqu'il est désactivé, les trinkets et anneaux exécuteront toujours toutes les combinaisons car chacun a deux emplacements à remplir."
-			},
-			"auto_enchant": {
-				"label": "Enchantement automatique",
-				"tooltip": "Lorsqu'il est coché, le simulateur par lot appliquera l'enchantement actuel d'un emplacement à chaque objet de remplacement qu'il peut."
-			},
-			"auto_gem": {
-				"label": "Gemme automatique",
-				"tooltip": "Lorsqu'il est coché, le simulateur par lot remplira tous les châsses de gemmes non remplis avec des gemmes par défaut."
-			},
-			"sim_talents": {
-				"label": "Simuler les talents",
-				"tooltip": "Lorsqu'il est coché, le simulateur par lot simulera les configurations de talents choisies. Attention, cela pourrait faire durer la simulation par lot beaucoup plus longtemps"
-			},
 			"default_gems": "Gemmes par défaut",
-			"talents_to_sim": "Talents à simuler"
+			"inherit_upgrades": {
+				"label": "Hériter des améliorations",
+				"tooltip": "Lorsque cette option est activée, les objets hériteront des améliorations de l'objet équipé. Sinon, les objets seront simulés sans aucune amélioration."
+			}
 		},
 		"progress": {
 			"total_combinations": "{{count}} combinaisons totales.",
@@ -1063,7 +1048,7 @@
 				},
 				"warlock_next_exhale_target": {
 					"label": "Choisir la prochaine cible d'Expiration",
-        			"tooltip": "Choisi la prochaine cible valide d'Expiration. Si la cible actuelle n'est pas la cible de l'échange d'âme ou si l'échange d'âme n'a pas été lancé, la cible ne changera pas."
+					"tooltip": "Choisi la prochaine cible valide d'Expiration. Si la cible actuelle n'est pas la cible de l'échange d'âme ou si l'échange d'âme n'a pas été lancé, la cible ne changera pas."
 				}
 			},
 			"values": {
@@ -1360,8 +1345,8 @@
 					"tooltip": "La quantité de temps spécifiée par le paramètre <b>Temps de réaction</b>."
 				},
 				"spell_in_flight": {
-					"label":"Sort en vol",
-					"tooltip":"<b>Vrai</b> si ce sort est actuellement en cours, sinon <b>Faux</b>."
+					"label": "Sort en vol",
+					"tooltip": "<b>Vrai</b> si ce sort est actuellement en cours, sinon <b>Faux</b>."
 				},
 				"aura_known": {
 					"label": "Aura connue",

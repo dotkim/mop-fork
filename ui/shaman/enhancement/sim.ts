@@ -188,7 +188,7 @@ export class EnhancementShamanSimUI extends IndividualSimUI<Spec.SpecEnhancement
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this);
+			this.reforger = new ReforgeOptimizer(this);
 		});
 	}
 }

@@ -103,11 +103,14 @@ abstract class BaseGear {
 	}
 
 	private removeUniqueItems(gear: Partial<InternalGear>, newItem: EquippedItem) {
-		if (newItem.item.unique) {
+		if (newItem.item.unique || newItem.item.limitCategory) {
 			this.getItemSlots()
 				.map(slot => Number(slot) as ItemSlot)
 				.forEach(slot => {
-					if (gear[slot]?.item.id == newItem.item.id) {
+					if (
+						(newItem.item.limitCategory && gear[slot]?.item.limitCategory == newItem.item.limitCategory) ||
+						(newItem.item.unique && gear[slot]?.item.id == newItem.item.id)
+					) {
 						gear[slot] = null;
 					}
 				});

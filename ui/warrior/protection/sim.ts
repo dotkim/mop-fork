@@ -178,6 +178,6 @@ export class ProtectionWarriorSimUI extends IndividualSimUI<Spec.SpecProtectionW
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecProtectionWarrior>) {
 		super(parentElem, player, SPEC_CONFIG);
 
-		new ReforgeOptimizer(this);
+		this.reforger = new ReforgeOptimizer(this);
 	}
 }

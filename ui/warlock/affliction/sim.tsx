@@ -209,7 +209,7 @@ export class AfflictionWarlockSimUI extends IndividualSimUI<Spec.SpecAfflictionW
 		];
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this, {
+			this.reforger = new ReforgeOptimizer(this, {
 				statSelectionPresets,
 				getEPDefaults: player => {
 					if (this.sim.getUseCustomEPValues()) {

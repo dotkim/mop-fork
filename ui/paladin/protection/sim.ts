@@ -210,7 +210,7 @@ export class ProtectionPaladinSimUI extends IndividualSimUI<Spec.SpecProtectionP
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this, {
+			this.reforger = new ReforgeOptimizer(this, {
 				getEPDefaults,
 				updateSoftCaps: softCaps => {
 					softCaps[0].postCapEPs[0] = player.getEpWeights().getStat(Stat.StatExpertiseRating) * 0.9;

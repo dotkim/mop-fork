@@ -177,7 +177,7 @@ export class FuryWarriorSimUI extends IndividualSimUI<Spec.SpecFuryWarrior> {
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this, {
+			this.reforger = new ReforgeOptimizer(this, {
 				getEPDefaults: (player: Player<Spec.SpecFuryWarrior>) => {
 					const hasP1Setup = player
 						.getGear()

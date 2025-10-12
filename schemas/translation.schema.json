@@ -1550,22 +1550,26 @@
             "tooltip"
           ]
         },
-		"upgrade_summary": {
-			"type": "object",
-			"properties": {
-				"title": {
-					"type": "string"
-				},
-				"upgrade_all_items": {
-					"type": "string"
-				},
-				"reset_upgrades": {
-					"type": "string"
-				}
-			},
-			"additionalProperties": false,
-			"required": ["title", "upgrade_all_items", "reset_upgrades"]
-		}
+        "upgrade_summary": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "upgrade_all_items": {
+              "type": "string"
+            },
+            "reset_upgrades": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "title",
+            "upgrade_all_items",
+            "reset_upgrades"
+          ]
+        }
       },
       "additionalProperties": false,
       "required": [
@@ -1576,7 +1580,8 @@
         "reforge_success",
         "gear_sets",
         "gear_picker",
-        "preset_configurations"
+        "preset_configurations",
+        "upgrade_summary"
       ]
     },
     "settings_tab": {
@@ -3194,6 +3199,12 @@
             },
             "item_added": {
               "type": "string"
+            },
+            "item_removed": {
+              "type": "string"
+            },
+            "item_unique": {
+              "type": "string"
             }
           },
           "additionalProperties": false,
@@ -3205,7 +3216,9 @@
             "max_ilvl",
             "no_results",
             "showing_results",
-            "item_added"
+            "item_added",
+            "item_removed",
+            "item_unique"
           ]
         },
         "settings": {
@@ -3220,91 +3233,24 @@
             "iterations": {
               "type": "string"
             },
-            "fast_mode": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "tooltip": {
-                  "type": "string"
-                }
-              },
-              "additionalProperties": false,
-              "required": [
-                "label",
-                "tooltip"
-              ]
-            },
-            "combinations": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "tooltip": {
-                  "type": "string"
-                }
-              },
-              "additionalProperties": false,
-              "required": [
-                "label",
-                "tooltip"
-              ]
-            },
-            "auto_enchant": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "tooltip": {
-                  "type": "string"
-                }
-              },
-              "additionalProperties": false,
-              "required": [
-                "label",
-                "tooltip"
-              ]
-            },
-            "auto_gem": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "tooltip": {
-                  "type": "string"
-                }
-              },
-              "additionalProperties": false,
-              "required": [
-                "label",
-                "tooltip"
-              ]
-            },
-            "sim_talents": {
-              "type": "object",
-              "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "tooltip": {
-                  "type": "string"
-                }
-              },
-              "additionalProperties": false,
-              "required": [
-                "label",
-                "tooltip"
-              ]
-            },
             "default_gems": {
               "type": "string"
             },
-            "talents_to_sim": {
-              "type": "string"
+            "inherit_upgrades": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "tooltip": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "label",
+                "tooltip"
+              ]
             }
           },
           "additionalProperties": false,
@@ -3312,13 +3258,8 @@
             "combinations_count",
             "combination_singular",
             "iterations",
-            "fast_mode",
-            "combinations",
-            "auto_enchant",
-            "auto_gem",
-            "sim_talents",
             "default_gems",
-            "talents_to_sim"
+            "inherit_upgrades"
           ]
         },
         "progress": {
@@ -4395,7 +4336,7 @@
                     "tooltip"
                   ]
                 },
-				"warlock_next_exhale_target": {
+                "warlock_next_exhale_target": {
                   "type": "object",
                   "properties": {
                     "label": {
@@ -4439,7 +4380,8 @@
                 "move",
                 "custom_rotation",
                 "optimal_rotation_action",
-                "guardian_hotw_dps_rotation"
+                "guardian_hotw_dps_rotation",
+                "warlock_next_exhale_target"
               ]
             },
             "values": {
@@ -6307,12 +6249,12 @@
                 "is_channeling",
                 "channeled_ticks",
                 "number_of_charges",
-                "spell_in_flight",
                 "time_to_next_charge",
                 "gcd_hasted_duration",
                 "full_cooldown",
                 "channel_clip_delay",
                 "input_delay",
+                "spell_in_flight",
                 "aura_known",
                 "aura_active",
                 "aura_active_with_reaction_time",
@@ -6333,6 +6275,7 @@
                 "dot_remaining_time",
                 "dot_lowest_remaining_time",
                 "dot_tick_frequency",
+                "dot_time_to_next_tick",
                 "dot_percent_increase",
                 "sequence_is_complete",
                 "sequence_is_ready",

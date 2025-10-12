@@ -15,10 +15,10 @@ import Toast from './components/toast';
 import { REPO_NEW_ISSUE_URL } from './constants/other';
 import { LaunchStatus, SimStatus } from './launched_sims.js';
 import { PlayerSpec } from './player_spec.js';
-import { ErrorOutcomeType } from './proto/api';
+import { ErrorOutcome, ErrorOutcomeType } from './proto/api';
 import { ActionId } from './proto_utils/action_id.js';
 import { SimResult } from './proto_utils/sim_result';
-import { Sim, SimError } from './sim.js';
+import { RunSimOptions, Sim, SimError } from './sim.js';
 import { RequestTypes } from './sim_signal_manager.js';
 import { EventID, TypedEvent } from './typed_event.js';
 import { WorkerProgressCallback } from './worker_pool';
@@ -68,7 +68,7 @@ export abstract class SimUI extends Component {
 		super(parentElem, 'sim-ui');
 		this.sim = sim;
 		this.config = config;
-		this.disabled = !isDevMode() && config.simStatus.status === LaunchStatus.Unlaunched
+		this.disabled = !isDevMode() && config.simStatus.status === LaunchStatus.Unlaunched;
 		this.isWithinRaidSim = this.rootElem.closest('.within-raid-sim') != null;
 
 		const container = (
@@ -191,14 +191,6 @@ export abstract class SimUI extends Component {
 
 		this.simTabContentsContainer = this.rootElem.querySelector('.sim-main.tab-content') as HTMLElement;
 
-		if (!this.isWithinRaidSim) {
-			window.addEventListener('message', async event => {
-				if (event.data == 'runOnce') {
-					this.runSimOnce();
-				}
-			});
-		}
-
 		if (this.disabled) {
 			resultsViewerElem.appendChild(
 				<div className="sim-ui-unlaunched-container d-flex flex-column align-items-center text-center mt-auto mb-auto ms-auto me-auto">
@@ -207,7 +199,11 @@ export abstract class SimUI extends Component {
 					<p>
 						{i18n.t('sim.unlaunched.contribute_message')}
 						<br />
-						{i18n.t('sim.unlaunched.discord_message')} <a href="https://discord.gg/p3DgvmnDCS" target="_blank">Discord</a>!
+						{i18n.t('sim.unlaunched.discord_message')}{' '}
+						<a href="https://discord.gg/p3DgvmnDCS" target="_blank">
+							Discord
+						</a>
+						!
 					</p>
 					{this.config.spec?.isHealingSpec && (
 						<p>
@@ -216,8 +212,8 @@ export abstract class SimUI extends Component {
 							{i18n.t('sim.unlaunched.qe_live_message')} <a href="https://questionablyepic.com/live/">QE Live</a>!
 						</p>
 					)}
-				</div>
-			)
+				</div>,
+			);
 		}
 	}
 
@@ -227,16 +223,12 @@ export abstract class SimUI extends Component {
 
 	addAction(label: string, cssClass: string, onClick: (event: MouseEvent) => void): HTMLButtonElement {
 		const button = this.simActionsContainer.appendChild(
-			<button
-				className={clsx('sim-sidebar-action-button btn btn-primary w-100', cssClass)}
-				onclick={onClick}
-				disabled={this.disabled}
-			>
+			<button className={clsx('sim-sidebar-action-button btn btn-primary w-100', cssClass)} onclick={onClick} disabled={this.disabled}>
 				{label}
 				<span className="sim-sidebar-action-button-loading-icon">
 					<i className="fas fa-spinner fa-spin"></i>
 				</span>
-			</button>
+			</button>,
 		) as HTMLButtonElement;
 
 		return button;
@@ -321,27 +313,29 @@ export abstract class SimUI extends Component {
 		return this.rootElem.classList.contains('individual-sim-ui');
 	}
 
-	async runSim(onProgress: WorkerProgressCallback) {
+	async runSim(onProgress: WorkerProgressCallback, options: RunSimOptions = {}) {
 		this.resultsViewer.setPending();
 		try {
 			await this.sim.signalManager.abortType(RequestTypes.All);
-			const result = await this.sim.runRaidSim(TypedEvent.nextEventID(), onProgress);
+			const result = await this.sim.runRaidSim(TypedEvent.nextEventID(), onProgress, options);
 			if (!(result instanceof SimResult) && result.type == ErrorOutcomeType.ErrorOutcomeAborted) {
 				new Toast({
 					variant: 'info',
 					body: i18n.t('sim.notifications.raid_sim_cancelled'),
 				});
+				this.resultsViewer.hideAll();
 			}
+			return result;
 		} catch (e) {
 			this.resultsViewer.hideAll();
 			this.handleCrash(e);
 		}
 	}
 
-	async runSimOnce() {
+	async runSimOnce(options: RunSimOptions = {}) {
 		this.resultsViewer.setPending();
 		try {
-			await this.sim.runRaidSimWithLogs(TypedEvent.nextEventID());
+			return await this.sim.runRaidSimWithLogs(TypedEvent.nextEventID(), options);
 		} catch (e) {
 			this.resultsViewer.hideAll();
 			this.handleCrash(e);
@@ -438,11 +432,9 @@ class CrashModal extends BaseModal {
 		super(parent, 'crash', { title: i18n.t('sim.crash_modal.title') });
 		this.body.appendChild(
 			<div className="sim-crash-report">
-				<h3 className="sim-crash-report-header">
-					{i18n.t('sim.crash_modal.header')}
-				</h3>
+				<h3 className="sim-crash-report-header">{i18n.t('sim.crash_modal.header')}</h3>
 				<textarea className="sim-crash-report-text form-control">{link}</textarea>
-			</div>
+			</div>,
 		);
 	}
 }

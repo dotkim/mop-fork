@@ -193,7 +193,7 @@ export class WindwalkerMonkSimUI extends IndividualSimUI<Spec.SpecWindwalkerMonk
 		});
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this, {
+			this.reforger = new ReforgeOptimizer(this, {
 				defaultRelativeStatCap: Stat.StatMasteryRating,
 				getEPDefaults: (player: Player<Spec.SpecWindwalkerMonk>) => {
 					return getActiveEPWeight(player, this.sim);

@@ -78,7 +78,6 @@ const ELE_T16_SET_BONUS_NOTICE_DATA = new Map<number, string>([
 ]);
 
 export const SET_BONUS_NOTICES = new Map<number, SetBonusNoticeData>([
-	[1156, null],                          // Guardian T15
 	[1170, ELE_T15_SET_BONUS_NOTICE_DATA], // Elemental T15
 	[1182, ELE_T16_SET_BONUS_NOTICE_DATA], // Elemental T16
 	[1196, null],                          // Guardian T16
