@@ -25,6 +25,7 @@ import { EnumPicker } from './pickers/enum_picker';
 import { NumberPicker, NumberPickerConfig } from './pickers/number_picker';
 import { renderSavedEPWeights } from './saved_data_managers/ep_weights';
 import Toast from './toast';
+import { trackEvent, trackPageView } from '../../tracking/utils';
 
 type YalpsCoefficients = Map<string, number>;
 type YalpsVariables = Map<string, YalpsCoefficients>;
@@ -262,6 +263,11 @@ export class ReforgeOptimizer {
 			label: i18n.t('sidebar.buttons.suggest_reforges.title'),
 			cssClass: 'suggest-reforges-action-button flex-grow-1',
 			onClick: async ({ currentTarget }) => {
+				trackEvent({
+					action: 'settings',
+					category: 'reforging',
+					label: 'suggest',
+				});
 				const button = currentTarget as HTMLButtonElement;
 				if (button) {
 					button.classList.add('loading');
@@ -562,6 +568,8 @@ export class ReforgeOptimizer {
 			theme: 'reforge-optimiser-popover',
 			placement: 'right-start',
 			onShow: instance => {
+				trackPageView('Reforge Settings', 'reforge-settings');
+
 				const useCustomEPValuesInput = new BooleanPicker(null, this.player, {
 					extraCssClasses: ['mb-2'],
 					id: 'reforge-optimizer-enable-custom-ep-weights',
@@ -570,6 +578,12 @@ export class ReforgeOptimizer {
 					changedEvent: () => this.sim.useCustomEPValuesChangeEmitter,
 					getValue: () => this.sim.getUseCustomEPValues(),
 					setValue: (eventID, _player, newValue) => {
+						trackEvent({
+							action: 'settings',
+							category: 'reforging',
+							label: 'use_custom_ep',
+							value: newValue,
+						});
 						this.sim.setUseCustomEPValues(eventID, newValue);
 					},
 				});
@@ -583,6 +597,12 @@ export class ReforgeOptimizer {
 						changedEvent: () => this.sim.useSoftCapBreakpointsChangeEmitter,
 						getValue: () => this.sim.getUseSoftCapBreakpoints(),
 						setValue: (eventID, _player, newValue) => {
+							trackEvent({
+								action: 'settings',
+								category: 'reforging',
+								label: 'softcap_breakpoints',
+								value: newValue,
+							});
 							this.sim.setUseSoftCapBreakpoints(eventID, newValue);
 						},
 					});
@@ -639,6 +659,12 @@ export class ReforgeOptimizer {
 					changedEvent: () => this.includeGemsChangeEmitter,
 					getValue: () => this.includeGems,
 					setValue: (eventID, _player, newValue) => {
+						trackEvent({
+							action: 'settings',
+							category: 'reforging',
+							label: 'include_gems',
+							value: newValue,
+						});
 						TypedEvent.freezeAllAndDo(() => {
 							this.setIncludeGems(eventID, newValue);
 							this.setIncludeEOTBPGemSocket(eventID, this.player.sim.getPhase() >= 2);
@@ -670,6 +696,12 @@ export class ReforgeOptimizer {
 					changedEvent: () => this.freezeItemSlotsChangeEmitter,
 					getValue: () => this.freezeItemSlots,
 					setValue: (eventID, _player, newValue) => {
+						trackEvent({
+							action: 'settings',
+							category: 'reforging',
+							label: 'freeze_item_slots',
+							value: newValue,
+						});
 						this.setFreezeItemSlots(eventID, newValue);
 					},
 				});

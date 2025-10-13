@@ -38,7 +38,9 @@ import {
 } from './bulk/utils';
 import { BulkGearJsonImporter } from './importers';
 import { BooleanPicker } from '../pickers/boolean_picker';
+import { trackEvent } from '../../../tracking/utils';
 import { EnumPicker } from '../pickers/enum_picker';
+import { t } from 'i18next';
 
 const WEB_DEFAULT_ITERATIONS = 1000;
 const WEB_ITERATIONS_LIMIT = 50_000;
@@ -727,6 +729,13 @@ export class BulkTab extends SimTab {
 		this.isRunning = false;
 		this.bulkSimButton.addEventListener('click', async () => {
 			if (this.isRunning) return;
+			trackEvent({
+				action: 'sim',
+				category: 'simulate',
+				label: 'batch',
+				value: this.combinations,
+			});
+
 			this.isRunning = true;
 			this.bulkSimButton.disabled = true;
 			this.isPending = true;
@@ -939,9 +948,9 @@ export class BulkTab extends SimTab {
 				label: 'Freeze ring slot',
 				labelTooltip: 'Freeze one equipped ring to reduce combination counts',
 				values: [
-					{ name: 'None', value: -1 },
-					{ name: 'Ring 1', value: ItemSlot.ItemSlotFinger1},
-					{ name: 'Ring 2', value: ItemSlot.ItemSlotFinger2},
+					{ name: i18n.t('common.none'), value: -1 },
+					{ name: i18n.t('gear_tab.slots.finger_1'), value: ItemSlot.ItemSlotFinger1},
+					{ name: i18n.t('gear_tab.slots.finger_2'), value: ItemSlot.ItemSlotFinger2},
 				],
 				changedEvent: _modObj => TypedEvent.onAny([this.settingsChangedEmitter, this.itemsChangedEmitter]),
 				getValue: _modObj => {
@@ -983,9 +992,9 @@ export class BulkTab extends SimTab {
 				label: 'Freeze trinket slot',
 				labelTooltip: 'Freeze one equipped trinket to reduce combination counts',
 				values: [
-					{ name: 'None', value: -1 },
-					{ name: 'Trinket 1', value: ItemSlot.ItemSlotTrinket1},
-					{ name: 'Trinket 2', value: ItemSlot.ItemSlotTrinket2},
+					{ name: i18n.t('common.none'), value: -1 },
+					{ name: i18n.t('gear_tab.slots.trinket_1'), value: ItemSlot.ItemSlotTrinket1},
+					{ name: i18n.t('gear_tab.slots.trinket_2'), value: ItemSlot.ItemSlotTrinket2},
 				],
 				changedEvent: _modObj => TypedEvent.onAny([this.settingsChangedEmitter, this.itemsChangedEmitter]),
 				getValue: _modObj => {
