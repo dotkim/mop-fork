@@ -187,8 +187,8 @@ dps_results: {
 dps_results: {
  key: "TestFury-AllItems-EvilEyeofGalakras-105491"
  value: {
-  dps: 166695.41628
-  tps: 114511.84566
+  dps: 160733.49898
+  tps: 106619.23524
  }
 }
 dps_results: {

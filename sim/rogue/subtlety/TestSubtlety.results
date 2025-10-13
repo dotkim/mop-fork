@@ -40,8 +40,8 @@ dps_results: {
 dps_results: {
  key: "TestSubtlety-AllItems-AssuranceofConsequence-105472"
  value: {
-  dps: 113498.01905
-  tps: 79950.49255
+  dps: 112483.24443
+  tps: 79230.00257
  }
 }
 dps_results: {

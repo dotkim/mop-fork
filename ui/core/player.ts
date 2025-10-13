@@ -761,21 +761,12 @@ export class Player<SpecType extends Spec> {
 		this.gearChangeEmitter.emit(eventID);
 	}
 
-	/*
-	setBulkEquipmentSpec(eventID: EventID, newBulkEquipmentSpec: BulkEquipmentSpec) {
-		if (BulkEquipmentSpec.equals(this.bulkEquipmentSpec, newBulkEquipmentSpec))
-			return;
-
-		TypedEvent.freezeAllAndDo(() => {
-			this.bulkEquipmentSpec = newBulkEquipmentSpec;
-			this.bulkGearChangeEmitter.emit(eventID);
-		});
+	async setGearAsync(eventID: EventID, newGear: Gear, forceUpdate?: boolean) {
+		if (newGear.equals(this.gear) && !forceUpdate) return;
+		const statsUpdatePromise = new Promise<void>(resolve => this.currentStatsEmitter.once(() => resolve()));
+		this.setGear(eventID, newGear);
+		await statsUpdatePromise;
 	}
-
-	getBulkEquipmentSpec(): BulkEquipmentSpec {
-		return BulkEquipmentSpec.clone(this.bulkEquipmentSpec);
-	}
-	*/
 
 	getBonusStats(): Stats {
 		return this.bonusStats;

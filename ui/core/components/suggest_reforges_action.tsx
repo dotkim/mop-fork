@@ -142,6 +142,17 @@ export class RelativeStatCap {
 				coefficients.set(coefficientKey, currentValue - amount);
 			}
 		}
+
+		if ((stat != Stat.StatMasteryRating) && this.forcedHighestStat.equalsStat(Stat.StatMasteryRating) && (this.player.getSpec() == Spec.SpecFeralDruid)) {
+			const coefficientKey = 'HasteMinusCrit';
+			const currentValue = coefficients.get(coefficientKey) || 0;
+
+			if (stat == Stat.StatHasteRating) {
+				coefficients.set(coefficientKey, currentValue + amount);
+			} else {
+				coefficients.set(coefficientKey, currentValue - amount);
+			}
+		}
 	}
 
 	updateConstraints(constraints: YalpsConstraints, gear: Gear, baseStats: Stats) {
@@ -172,6 +183,11 @@ export class RelativeStatCap {
 			}
 
 			constraints.set(this.constraintKeys[idx], greaterEq(minReforgeContribution));
+		}
+
+		if (this.forcedHighestStat.equalsStat(Stat.StatMasteryRating) && (this.player.getSpec() == Spec.SpecFeralDruid)) {
+			const minReforgeContribution = baseStats.getStat(Stat.StatCritRating) - baseStats.getStat(Stat.StatHasteRating) + 1;
+			constraints.set('HasteMinusCrit', greaterEq(minReforgeContribution));
 		}
 	}
 
@@ -1155,8 +1171,7 @@ export class ReforgeOptimizer {
 	}
 
 	async updateGear(gear: Gear): Promise<Stats> {
-		this.player.setGear(TypedEvent.nextEventID(), gear);
-		await this.sim.updateCharacterStats(TypedEvent.nextEventID());
+		await this.player.setGearAsync(TypedEvent.nextEventID(), gear);
 		let baseStats = Stats.fromProto(this.player.getCurrentStats().finalStats);
 		baseStats = baseStats.addStat(Stat.StatMasteryRating, this.player.getBaseMastery() * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
 		if (this.updateGearStatsModifier) baseStats = this.updateGearStatsModifier(baseStats);

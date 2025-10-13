@@ -861,10 +861,10 @@ dps_results: {
 dps_results: {
  key: "TestProtection-AllItems-EvilEyeofGalakras-105491"
  value: {
-  dps: 118412.11726
-  tps: 774268.04467
-  dtps: 12041.5365
-  hps: 20175.06454
+  dps: 118048.29669
+  tps: 773227.71165
+  dtps: 13319.26411
+  hps: 20143.19159
  }
 }
 dps_results: {
