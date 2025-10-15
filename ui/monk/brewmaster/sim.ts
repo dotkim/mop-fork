@@ -23,19 +23,20 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 	// All stats for which EP should be calculated.
 	epStats: [
 		Stat.StatAgility,
-		Stat.StatAttackPower,
 		Stat.StatStamina,
-		Stat.StatHitRating,
-		Stat.StatExpertiseRating,
+		Stat.StatArmor,
+		Stat.StatAttackPower,
 		Stat.StatCritRating,
-		Stat.StatHasteRating,
 		Stat.StatDodgeRating,
 		Stat.StatParryRating,
+		Stat.StatHitRating,
+		Stat.StatExpertiseRating,
+		Stat.StatHasteRating,
 		Stat.StatMasteryRating,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to calculate EP.
-	epReferenceStat: Stat.StatAttackPower,
+	epReferenceStat: Stat.StatAgility,
 	consumableStats: [
 		Stat.StatAgility,
 		Stat.StatArmor,
@@ -73,7 +74,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 		],
 	),
 
-	defaultBuild: Presets.PRESET_BUILD_DEFAULT,
+	defaultBuild: Presets.PRESET_BUILD_SHA,
 
 	defaults: {
 		// Default equipped gear.
@@ -83,17 +84,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 		// Stat caps for reforge optimizer
 		statCaps: (() => {
 			const hitCap = new Stats().withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 7.5);
-			return hitCap;
-		})(),
-		softCapBreakpoints: (() => {
-			const expertiseCap = StatCap.fromStat(Stat.StatExpertiseRating, {
-				breakpoints: [7.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION, 15 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION],
-				capType: StatCapType.TypeSoftCap,
-				// These are set by the active EP weight in the updateSoftCaps callback
-				postCapEPs: [6.04, 0],
-			});
-
-			return [expertiseCap];
+			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 15 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+			return hitCap.add(expCap);
 		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
@@ -152,18 +144,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.DefaultTalents, Presets.DungeonTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_PRESET, Presets.ROTATION_OFFENSIVE_PRESET, Presets.ROTATION_GARAJAL_PRESET],
+		rotations: [Presets.ROTATION_PRESET, Presets.ROTATION_OFFENSIVE_PRESET, Presets.ROTATION_GARAJAL_PRESET, Presets.ROTATION_SHA_PRESET],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			Presets.P1_PREBIS_GEAR_PRESET,
 			Presets.P1_BIS_DW_GEAR_PRESET,
-			Presets.P1_BIS_2H_GEAR_PRESET,
-			Presets.P1_BIS_TIERLESS_DW_GEAR_PRESET,
-			Presets.P1_BIS_TIERLESS_2H_GEAR_PRESET,
 			Presets.P2_BIS_DW_GEAR_PRESET,
-			Presets.P2_BIS_2H_GEAR_PRESET,
 		],
-		builds: [Presets.PRESET_BUILD_DEFAULT, Presets.PRESET_BUILD_DEFENSIVE, Presets.PRESET_BUILD_OFFENSIVE],
+		builds: [Presets.PRESET_BUILD_GARAJAL, Presets.PRESET_BUILD_SHA],
 	},
 
 	autoRotation: (_: Player<Spec.SpecBrewmasterMonk>): APLRotation => {
