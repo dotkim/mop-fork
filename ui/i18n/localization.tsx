@@ -4,6 +4,7 @@ import { ArmorType, Class, MobType, PseudoStat, Race, Profession, SpellSchool, S
 import { ResourceType } from '../core/proto/spell';
 import { RaidFilterOption, SourceFilterOption } from '../core/proto/ui';
 import { LaunchStatus } from '../core/launched_sims';
+import { BulkSimItemSlot } from '../core/components/individual_sim_ui/bulk/utils';
 import i18n from './config';
 import {
 	getClassI18nKey,
@@ -27,6 +28,7 @@ import {
 	getStatusI18nKey,
 	getSlotNameI18nKey,
 	protoStatNameI18nKeys,
+	getBulkSlotI18nKey,
 } from './entity_mapping';
 import { getLang, setLang, supportedLanguages } from './locale_service';
 
@@ -443,6 +445,11 @@ export const translateResultMetricTooltip = (metricName: string): string => {
 export const translateSlotName = (slot: ItemSlot): string => {
 	const key = getSlotNameI18nKey(slot);
 	return i18n.t(`gear_tab.slots.${key}`);
+};
+
+export const translateBulkSlotName = (slot: BulkSimItemSlot): string => {
+	const key = getBulkSlotI18nKey(slot);
+	return i18n.t(`bulk_tab.slots.${key}`);
 };
 
 /**

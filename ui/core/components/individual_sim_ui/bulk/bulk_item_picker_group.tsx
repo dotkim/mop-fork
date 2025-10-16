@@ -5,7 +5,9 @@ import { ContentBlock } from '../../content_block';
 import Toast from '../../toast';
 import { BulkTab } from '../bulk_tab';
 import BulkItemPicker from './bulk_item_picker';
-import { BulkSimItemSlot, bulkSimSlotNames } from './utils';
+import { translateBulkSlotName } from '../../../../i18n/localization';
+import { getBulkSlotI18nKey } from '../../../../i18n/entity_mapping';
+import { BulkSimItemSlot } from './utils';
 
 export default class BulkItemPickerGroup extends ContentBlock {
 	readonly simUI: IndividualSimUI<any>;
@@ -15,9 +17,10 @@ export default class BulkItemPickerGroup extends ContentBlock {
 	readonly pickers: Map<number, BulkItemPicker> = new Map();
 
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<any>, bulkUI: BulkTab, bulkSlot: BulkSimItemSlot) {
-		const slotName = bulkSimSlotNames.get(bulkSlot)!;
+		const slotName = translateBulkSlotName(bulkSlot);
 		super(parent, 'bulk-item-picker-group-root', { header: { title: slotName } });
-		this.rootElem.classList.add(`gear-group-${slotName.split(' ').join('-')}`);
+		const slotKey = getBulkSlotI18nKey(bulkSlot);
+		this.rootElem.classList.add(`gear-group-${slotKey.replace(/_/g, '-')}`);
 		this.simUI = simUI;
 		this.bulkUI = bulkUI;
 		this.bulkSlot = bulkSlot;
@@ -69,7 +72,7 @@ export default class BulkItemPickerGroup extends ContentBlock {
 		if (!picker) {
 			new Toast({
 				variant: 'error',
-				body: 'Failed to update item, please report this issue.',
+				body: i18n.t('bulk_tab.picker.failed_update'),
 			});
 			return;
 		}
@@ -83,7 +86,7 @@ export default class BulkItemPickerGroup extends ContentBlock {
 			if (!silent)
 				new Toast({
 					variant: 'error',
-					body: 'Failed to remove item, please report this issue.',
+					body: i18n.t('bulk_tab.picker.failed_remove'),
 				});
 			return;
 		}
@@ -102,6 +105,6 @@ export default class BulkItemPickerGroup extends ContentBlock {
 	}
 
 	private addEmptyElement() {
-		this.bodyElement.appendChild(<span>No items selected.</span>);
+		this.bodyElement.appendChild(<span>{i18n.t('bulk_tab.picker.no_items')}</span>);
 	}
 }

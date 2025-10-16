@@ -3133,6 +3133,32 @@
         "download_local": {
           "type": "string"
         },
+		"slots": {
+			"type": "object",
+			"properties": {
+				"head": { "type": "string" },
+				"neck": { "type": "string" },
+				"shoulder": { "type": "string" },
+				"back": { "type": "string" },
+				"chest": { "type": "string" },
+				"wrist": { "type": "string" },
+				"hands": { "type": "string" },
+				"waist": { "type": "string" },
+				"legs": { "type": "string" },
+				"feet": { "type": "string" },
+				"rings": { "type": "string" },
+				"trinkets": { "type": "string" },
+				"main_hand": { "type": "string" },
+				"off_hand": { "type": "string" },
+				"weapons": { "type": "string" }
+			},
+			"additionalProperties": false,
+			"required": [
+				"head", "neck", "shoulder", "back", "chest", "wrist",
+				"hands", "waist", "legs", "feet", "rings", "trinkets",
+				"main_hand", "off_hand", "weapons"
+			]
+		},
         "tabs": {
           "type": "object",
           "properties": {
@@ -3251,6 +3277,38 @@
                 "label",
                 "tooltip"
               ]
+            },
+            "freeze_ring": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "tooltip": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "label",
+                "tooltip"
+              ]
+            },
+            "freeze_trinket": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "tooltip": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "label",
+                "tooltip"
+              ]
             }
           },
           "additionalProperties": false,
@@ -3259,7 +3317,9 @@
             "combination_singular",
             "iterations",
             "default_gems",
-            "inherit_upgrades"
+            "inherit_upgrades",
+            "freeze_ring",
+            "freeze_trinket"
           ]
         },
         "progress": {
@@ -3318,16 +3378,64 @@
             "iterations_limit"
           ]
         },
-        "results": {
+        "picker": {
           "type": "object",
           "properties": {
-            "run_simulation": {
+            "no_items": {
+              "type": "string"
+            },
+            "remove_tooltip": {
+              "type": "string"
+            },
+            "failed_update": {
+              "type": "string"
+            },
+            "failed_remove": {
               "type": "string"
             }
           },
           "additionalProperties": false,
           "required": [
-            "run_simulation"
+            "no_items",
+            "remove_tooltip",
+            "failed_update",
+            "failed_remove"
+          ]
+        },
+        "results": {
+          "type": "object",
+          "properties": {
+            "run_simulation": {
+              "type": "string"
+            },
+            "equip_button": {
+              "type": "string"
+            },
+            "gear_equipped": {
+              "type": "string"
+            },
+            "current_gear": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "run_simulation",
+            "equip_button",
+            "gear_equipped",
+            "current_gear"
+          ]
+        },
+        "gem_selector": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "title"
           ]
         }
       },
@@ -3336,6 +3444,7 @@
         "title",
         "description",
         "download_local",
+        "slots",
         "tabs",
         "actions",
         "search",
@@ -3343,7 +3452,9 @@
         "progress",
         "notifications",
         "warning",
-        "results"
+        "picker",
+        "results",
+        "gem_selector"
       ]
     },
     "rotation_tab": {

@@ -752,6 +752,23 @@
 		"title": "Lot (<span class=\"text-success\">Nouveau</span>)",
 		"description": "<span className=\"bold\">Simulation par lot</span> est une nouvelle fonctionnalité similaire à la simulation <span className=\"bold\">Top Gear</span> sur <a href=\"https://raidbots.com\" target=\"_blank\">Raidbots.com</a> qui vous permet de sélectionner plusieurs objets et de les simuler pour trouver les meilleures combinaisons.<br />C'est une fonctionnalité <span className=\"text-brand\">Alpha</span>, donc si vous avez des commentaires ou trouvez un bug, veuillez le signaler !",
 		"download_local": "Téléchargez le simulateur en local pour des résultats plus rapides.",
+		"slots": {
+			"head": "Tête",
+			"neck": "Cou",
+			"shoulder": "Épaules",
+			"back": "Dos",
+			"chest": "Torse",
+			"wrist": "Poignets",
+			"hands": "Mains",
+			"waist": "Taille",
+			"legs": "Jambes",
+			"feet": "Pieds",
+			"rings": "Anneaux",
+			"trinkets": "Bijoux",
+			"main_hand": "Main principale",
+			"off_hand": "Main secondaire",
+			"weapons": "Armes"
+		},
 		"tabs": {
 			"setup": "Configuration",
 			"results": "Résultats"
@@ -782,6 +799,14 @@
 			"inherit_upgrades": {
 				"label": "Hériter des améliorations",
 				"tooltip": "Lorsque cette option est activée, les objets hériteront des améliorations de l'objet équipé. Sinon, les objets seront simulés sans aucune amélioration."
+			},
+			"freeze_ring": {
+				"label": "Geler un emplacement d'anneau",
+				"tooltip": "Geler un anneau équipé pour réduire le nombre de combinaisons"
+			},
+			"freeze_trinket": {
+				"label": "Geler un emplacement de bijou",
+				"tooltip": "Geler un bijou équipé pour réduire le nombre de combinaisons"
 			}
 		},
 		"progress": {
@@ -798,8 +823,20 @@
 		"warning": {
 			"iterations_limit": "Simuler plus de {{limit}} itérations dans le simulateur web prendra beaucoup de temps ou ne fonctionnera peut-être pas du tout. Pour les simulations par lot plus importantes, nous recommandons d'utiliser le mode rapide ou de télécharger l'exécutable et de l'exécuter sur votre machine."
 		},
+		"picker": {
+			"no_items": "Aucun objet sélectionné.",
+			"remove_tooltip": "Retirer cet objet du lot.",
+			"failed_update": "Échec de la mise à jour de l'objet, veuillez signaler ce problème.",
+			"failed_remove": "Échec de la suppression de l'objet, veuillez signaler ce problème."
+		},
 		"results": {
-			"run_simulation": "Exécutez une simulation pour voir les résultats"
+			"run_simulation": "Exécutez une simulation pour voir les résultats",
+			"equip_button": "Équiper",
+			"gear_equipped": "Équipement du lot équipé !",
+			"current_gear": "Équipement actuel"
+		},
+		"gem_selector": {
+			"title": "Choisir la gemme par défaut"
 		}
 	},
 	"rotation_tab": {
@@ -2318,8 +2355,8 @@
 				"total": "Total :",
 				"glancing": "Éraflement :",
 				"suppression": "Suppression :",
-				"to_hit_cap": "Jusqu’au cap de toucher :",
-				"to_exp_cap": "Jusqu’au cap d'expertise :",
+				"to_hit_cap": "Jusqu'au cap de toucher :",
+				"to_exp_cap": "Jusqu'au cap d'expertise :",
 				"spec_offsets": "Compensations de spé :",
 				"final_crit_cap": "Cap de critique final :",
 				"can_raise_by": "Peut être augmenter de :"
@@ -2327,8 +2364,8 @@
 			"attack_table": {
 				"glancing": "Éraflement :",
 				"suppression": "Suppression :",
-				"to_hit_cap": "Jusqu’au cap de toucher :",
-				"to_exp_cap": "Jusqu’au cap d'expertise :",
+				"to_hit_cap": "Jusqu'au cap de toucher :",
+				"to_exp_cap": "Jusqu'au cap d'expertise :",
 				"spec_offsets": "Compensations de spé :",
 				"final_crit_cap": "Cap de critique final :",
 				"can_raise_by": "Peut être augmenter de :"

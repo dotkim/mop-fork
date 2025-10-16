@@ -2,6 +2,7 @@ import { LaunchStatus } from '../core/launched_sims';
 import { ArmorType, Class, MobType, PseudoStat, Race, Profession, Spec, Stat, SpellSchool, WeaponType, RangedWeaponType, ItemSlot } from '../core/proto/common';
 import { ResourceType } from '../core/proto/spell';
 import { RaidFilterOption, SourceFilterOption } from '../core/proto/ui';
+import { BulkSimItemSlot } from '../core/components/individual_sim_ui/bulk/utils';
 
 export const statI18nKeys: Record<Stat, string> = {
 	[Stat.StatStrength]: 'strength',
@@ -359,6 +360,24 @@ export const slotNamesI18nKeys: Record<ItemSlot, string> = {
 	[ItemSlot.ItemSlotOffHand]: 'off_hand',
 };
 
+export const bulkSlotNamesI18nKeys: Record<BulkSimItemSlot, string> = {
+	[BulkSimItemSlot.ItemSlotHead]: 'head',
+	[BulkSimItemSlot.ItemSlotNeck]: 'neck',
+	[BulkSimItemSlot.ItemSlotShoulder]: 'shoulder',
+	[BulkSimItemSlot.ItemSlotBack]: 'back',
+	[BulkSimItemSlot.ItemSlotChest]: 'chest',
+	[BulkSimItemSlot.ItemSlotWrist]: 'wrist',
+	[BulkSimItemSlot.ItemSlotHands]: 'hands',
+	[BulkSimItemSlot.ItemSlotWaist]: 'waist',
+	[BulkSimItemSlot.ItemSlotLegs]: 'legs',
+	[BulkSimItemSlot.ItemSlotFeet]: 'feet',
+	[BulkSimItemSlot.ItemSlotFinger]: 'rings',
+	[BulkSimItemSlot.ItemSlotTrinket]: 'trinkets',
+	[BulkSimItemSlot.ItemSlotMainHand]: 'main_hand',
+	[BulkSimItemSlot.ItemSlotOffHand]: 'off_hand',
+	[BulkSimItemSlot.ItemSlotHandWeapon]: 'weapons',
+};
+
 export const getClassI18nKey = (classID: Class): string => classI18nKeys[classID] || Class[classID].toLowerCase();
 
 export const getSpecI18nKey = (specID: Spec): string => specI18nKeys[specID] || Spec[specID].toLowerCase();
@@ -376,6 +395,8 @@ export const getProfessionI18nKey = (profession: Profession): string => professi
 export const getSourceFilterI18nKey = (source: SourceFilterOption): string => sourceFilterI18nKeys[source] || SourceFilterOption[source].toLowerCase();
 
 export const getRaidFilterI18nKey = (raid: RaidFilterOption): string => raidFilterI18nKeys[raid] || RaidFilterOption[raid].toLowerCase();
+
+export const getBulkSlotI18nKey = (slot: BulkSimItemSlot): string => bulkSlotNamesI18nKeys[slot] || '';
 
 export const getArmorTypeI18nKey = (armorType: ArmorType): string => armorTypeI18nKeys[armorType] || ArmorType[armorType].toLowerCase();
 
