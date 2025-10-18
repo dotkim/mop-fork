@@ -259,24 +259,6 @@
 	},
 	"gear_tab": {
 		"title": "Équipement",
-		"slots": {
-			"head": "Tête",
-			"neck": "Cou",
-			"shoulder": "Épaule",
-			"back": "Dos",
-			"chest": "Torse",
-			"wrist": "Poignets",
-			"hands": "Mains",
-			"waist": "Taille",
-			"legs": "Jambes",
-			"feet": "Pieds",
-			"finger_1": "Doigt 1",
-			"finger_2": "Doigt 2",
-			"trinket_1": "Bijou 1",
-			"trinket_2": "Bijou 2",
-			"main_hand": "Main droite",
-			"off_hand": "Main gauche"
-		},
 		"gem_summary": {
 			"title": "Résumé des gemmes",
 			"reset_gems": "Réinitialiser les gemmes"
@@ -752,23 +734,6 @@
 		"title": "Lot (<span class=\"text-success\">Nouveau</span>)",
 		"description": "<span className=\"bold\">Simulation par lot</span> est une nouvelle fonctionnalité similaire à la simulation <span className=\"bold\">Top Gear</span> sur <a href=\"https://raidbots.com\" target=\"_blank\">Raidbots.com</a> qui vous permet de sélectionner plusieurs objets et de les simuler pour trouver les meilleures combinaisons.<br />C'est une fonctionnalité <span className=\"text-brand\">Alpha</span>, donc si vous avez des commentaires ou trouvez un bug, veuillez le signaler !",
 		"download_local": "Téléchargez le simulateur en local pour des résultats plus rapides.",
-		"slots": {
-			"head": "Tête",
-			"neck": "Cou",
-			"shoulder": "Épaules",
-			"back": "Dos",
-			"chest": "Torse",
-			"wrist": "Poignets",
-			"hands": "Mains",
-			"waist": "Taille",
-			"legs": "Jambes",
-			"feet": "Pieds",
-			"rings": "Anneaux",
-			"trinkets": "Bijoux",
-			"main_hand": "Main principale",
-			"off_hand": "Main secondaire",
-			"weapons": "Armes"
-		},
 		"tabs": {
 			"setup": "Configuration",
 			"results": "Résultats"

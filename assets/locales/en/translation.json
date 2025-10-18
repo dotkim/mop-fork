@@ -259,24 +259,6 @@
 	},
 	"gear_tab": {
 		"title": "Gear",
-		"slots": {
-			"head": "Head",
-			"neck": "Neck",
-			"shoulder": "Shoulder",
-			"back": "Back",
-			"chest": "Chest",
-			"wrist": "Wrist",
-			"hands": "Hands",
-			"waist": "Waist",
-			"legs": "Legs",
-			"feet": "Feet",
-			"finger_1": "Ring 1",
-			"finger_2": "Ring 2",
-			"trinket_1": "Trinket 1",
-			"trinket_2": "Trinket 2",
-			"main_hand": "Main Hand",
-			"off_hand": "Off Hand"
-		},
 		"gem_summary": {
 			"title": "Gem Summary",
 			"reset_gems": "Reset gems"
@@ -752,23 +734,6 @@
 		"title": "Batch (<span class=\"text-success\">New</span>)",
 		"description": "<span className=\"bold\">Batch Simming</span> is a new feature akin to the <span className=\"bold\">Top Gear</span> sim on <a href=\"https://raidbots.com\" target=\"_blank\">Raidbots.com</a> that allows you to select multiple items and sim them find the best combinations.<br />This is an <span className=\"text-brand\">Alpha</span> feature, so if you have feedback or find a bug, please report it!",
 		"download_local": "Download the local sim for faster results.",
-		"slots": {
-			"head": "Head",
-			"neck": "Neck",
-			"shoulder": "Shoulders",
-			"back": "Back",
-			"chest": "Chest",
-			"wrist": "Wrist",
-			"hands": "Hands",
-			"waist": "Waist",
-			"legs": "Legs",
-			"feet": "Feet",
-			"rings": "Rings",
-			"trinkets": "Trinkets",
-			"main_hand": "Main Hand",
-			"off_hand": "Off Hand",
-			"weapons": "Weapons"
-		},
 		"tabs": {
 			"setup": "Setup",
 			"results": "Results"

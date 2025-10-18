@@ -444,12 +444,12 @@ export const translateResultMetricTooltip = (metricName: string): string => {
 
 export const translateSlotName = (slot: ItemSlot): string => {
 	const key = getSlotNameI18nKey(slot);
-	return i18n.t(`gear_tab.slots.${key}`);
+	return i18n.t(`slots.${key}`, { ns: 'character' });
 };
 
 export const translateBulkSlotName = (slot: BulkSimItemSlot): string => {
 	const key = getBulkSlotI18nKey(slot);
-	return i18n.t(`bulk_tab.slots.${key}`);
+	return i18n.t(`slots.${key}`, { ns: 'character' });
 };
 
 /**
