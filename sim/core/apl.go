@@ -39,6 +39,7 @@ type APLRotation struct {
 	curValidations          []*proto.APLValidation
 	prepullValidations      [][]*proto.APLValidation
 	priorityListValidations [][]*proto.APLValidation
+	groupListValidations    [][][]*proto.APLValidation
 	uuidValidations         map[*proto.UUID][]*proto.APLValidation
 
 	// Maps indices in filtered sim lists to indices in configs.
@@ -109,6 +110,7 @@ func (unit *Unit) newAPLRotation(config *proto.APLRotation) *APLRotation {
 		unit:                    unit,
 		prepullValidations:      make([][]*proto.APLValidation, len(config.PrepullActions)),
 		priorityListValidations: make([][]*proto.APLValidation, len(config.PriorityList)),
+		groupListValidations:    make([][][]*proto.APLValidation, len(config.Groups)),
 		uuidValidations:         make(map[*proto.UUID][]*proto.APLValidation),
 	}
 
@@ -163,7 +165,7 @@ func (unit *Unit) newAPLRotation(config *proto.APLRotation) *APLRotation {
 	}
 
 	// Parse groups
-	for _, groupConfig := range config.Groups {
+	for groupIdx, groupConfig := range config.Groups {
 		group := &APLGroup{
 			name:      groupConfig.Name,
 			variables: make(map[string]*proto.APLValue),
@@ -173,16 +175,22 @@ func (unit *Unit) newAPLRotation(config *proto.APLRotation) *APLRotation {
 			group.variables[varConfig.Name] = varConfig.Value
 		}
 
+		if rotation.groupListValidations[groupIdx] == nil {
+			rotation.groupListValidations[groupIdx] = make([][]*proto.APLValidation, len(groupConfig.Actions))
+		}
+
 		// Parse actions in the group
-		for _, aplItem := range groupConfig.Actions {
-			if !aplItem.Hide {
-				// Don't pass group.variables here - placeholders should remain as placeholders
-				// until the group is actually referenced with specific variable values
-				action := rotation.newAPLActionWithGroupVars(aplItem.Action, nil)
-				if action != nil {
-					group.actions = append(group.actions, action)
+		for i, aplItem := range groupConfig.Actions {
+			rotation.doAndRecordWarnings(&rotation.groupListValidations[groupIdx][i], false, func() {
+				if !aplItem.Hide {
+					// Don't pass group.variables here - placeholders should remain as placeholders
+					// until the group is actually referenced with specific variable values
+					action := rotation.newAPLActionWithGroupVars(aplItem.Action, nil)
+					if action != nil {
+						group.actions = append(group.actions, action)
+					}
 				}
-			}
+			})
 		}
 
 		rotation.groups = append(rotation.groups, group)
@@ -194,6 +202,18 @@ func (unit *Unit) newAPLRotation(config *proto.APLRotation) *APLRotation {
 			action.Finalize(rotation)
 		})
 	}
+
+	for groupIdx, group := range rotation.groups {
+		if rotation.groupListValidations[groupIdx] == nil {
+			rotation.groupListValidations[groupIdx] = make([][]*proto.APLValidation, len(group.actions))
+		}
+		for actionIdx, action := range group.actions {
+			rotation.doAndRecordWarnings(&rotation.groupListValidations[groupIdx][actionIdx], false, func() {
+				action.Finalize(rotation)
+			})
+		}
+	}
+
 	for i, action := range rotation.priorityList {
 		rotation.doAndRecordWarnings(&rotation.priorityListValidations[rotation.priorityListIdxMap[i]], false, func() {
 			action.Finalize(rotation)
@@ -262,6 +282,20 @@ func (rot *APLRotation) getStats() *proto.APLStats {
 			action.impl.PostFinalize(rot)
 		})
 	}
+
+	// Parse groups
+	for groupIdx, group := range rot.groups {
+		if rot.groupListValidations[groupIdx] == nil {
+			rot.groupListValidations[groupIdx] = make([][]*proto.APLValidation, len(group.actions))
+		}
+		// Parse actions in the group
+		for actionIdx, action := range group.actions {
+			rot.doAndRecordWarnings(&rot.groupListValidations[groupIdx][actionIdx], false, func() {
+				action.impl.PostFinalize(rot)
+			})
+		}
+	}
+
 	for i, action := range rot.priorityList {
 		rot.doAndRecordWarnings(&rot.priorityListValidations[rot.priorityListIdxMap[i]], false, func() {
 			action.impl.PostFinalize(rot)
@@ -284,6 +318,11 @@ func (rot *APLRotation) getStats() *proto.APLStats {
 		}),
 		PriorityList: MapSlice(rot.priorityListValidations, func(validations []*proto.APLValidation) *proto.APLActionStats {
 			return &proto.APLActionStats{Validations: validations}
+		}),
+		Groups: MapSlice(rot.groupListValidations, func(validations [][]*proto.APLValidation) *proto.APLGroupStats {
+			return &proto.APLGroupStats{Actions: MapSlice(validations, func(validations []*proto.APLValidation) *proto.APLActionStats {
+				return &proto.APLActionStats{Validations: validations}
+			})}
 		}),
 		UuidValidations: uuidValidationsArr,
 	}
