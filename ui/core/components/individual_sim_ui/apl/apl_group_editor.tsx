@@ -8,6 +8,7 @@ import { Input, InputConfig } from '../../input';
 import { ListItemPickerConfig, ListPicker } from '../../pickers/list_picker';
 import { AdaptiveStringPicker } from '../../pickers/string_picker';
 import { APLActionPicker } from '../apl_actions';
+import { APLHidePicker } from './hide_picker';
 
 export interface APLGroupEditorConfig extends InputConfig<Player<any>, APLGroup> {
 	index: number;
@@ -112,11 +113,25 @@ export interface APLGroupActionPickerConfig extends ListItemPickerConfig<Player<
 }
 // Simple list item picker for group actions that matches Priority List structure
 class APLGroupActionPicker extends Input<Player<any>, APLListItem> {
+	private readonly player: Player<any>;
+	private readonly hidePicker: Input<Player<any>, boolean>;
 	private readonly actionPicker: APLActionPicker;
 
+	private getItem(): APLListItem {
+		return (
+			this.getSourceValue() ||
+			APLListItem.create({
+				action: {},
+			})
+		);
+	}
+
 	constructor(parent: HTMLElement, player: Player<any>, config: APLGroupActionPickerConfig) {
+		config.enableWhen = () => !this.getItem().hide;
 		// Use the same root class as Priority List items for consistent styling
 		super(parent, 'apl-list-item-picker-root', player, config);
+		this.player = player;
+
 		this.rootElem.classList.add('apl-list-item-picker-root');
 
 		// Add validation support just like Priority List picker
@@ -132,13 +147,22 @@ class APLGroupActionPicker extends Input<Player<any>, APLListItem> {
 			return validations;
 		});
 
+		this.hidePicker = new APLHidePicker(itemHeaderElem, player, {
+			changedEvent: () => this.player.rotationChangeEmitter,
+			getValue: () => this.getItem().hide,
+			setValue: (eventID: EventID, player: Player<any>, newValue: boolean) => {
+				this.getItem().hide = newValue;
+				this.player.rotationChangeEmitter.emit(eventID);
+			},
+		});
+
 		this.actionPicker = new APLActionPicker(this.rootElem, this.modObject, {
 			changedEvent: () => this.modObject.rotationChangeEmitter,
-			getValue: () => this.getSourceValue()?.action || APLAction.create(),
+			getValue: () => this.getItem().action!,
 			setValue: (eventID: EventID, player: Player<any>, newValue: any) => {
 				const item = this.getSourceValue();
 				if (item) {
-					item.action = newValue;
+					this.getItem().action = newValue;
 					player.rotationChangeEmitter.emit(eventID);
 				}
 			},
