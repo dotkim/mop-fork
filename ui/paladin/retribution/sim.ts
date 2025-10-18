@@ -19,14 +19,16 @@ const getStatCaps = () => {
 };
 
 const getEPDefaults = (_: Player<Spec.SpecRetributionPaladin>) => {
-	return Presets.P1_EP_PRESET.epWeights;
+	return Presets.P1_P2_EP_PRESET.epWeights;
 };
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	cssClass: 'retribution-paladin-sim-ui',
 	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Paladin),
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: [],
+	knownIssues: [
+		'If reforging times out, click the gear icon next to the reforge button, check "Use custom EP weights" and then check Max for the hit cap to undershoot',
+	],
 
 	overwriteDisplayStats: (player: Player<Spec.SpecRetributionPaladin>) => {
 		const playerStats = player.getCurrentStats();
@@ -92,9 +94,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P1_GEAR_PRESET.gear,
+		gear: Presets.P2_GEAR_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P1_EP_PRESET.epWeights,
+		epWeights: Presets.P1_P2_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: getStatCaps(),
 		// Default consumes settings.
@@ -142,13 +144,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET, Presets.PRERAID_EP_PRESET],
+		epWeights: [Presets.P1_P2_EP_PRESET, Presets.PRERAID_EP_PRESET],
 		rotations: [Presets.APL_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.DefaultTalents],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.P1_GEAR_PRESET, Presets.PRERAID_GEAR_PRESET],
-		builds: [Presets.P1_BUILD_PRESET, Presets.PRERAID_BUILD_PRESET],
+		gear: [Presets.P2_GEAR_PRESET, Presets.PRERAID_GEAR_PRESET],
+		builds: [Presets.P2_BUILD_PRESET, Presets.PRERAID_BUILD_PRESET],
 	},
 
 	autoRotation: (_: Player<Spec.SpecRetributionPaladin>): APLRotation => {
@@ -169,10 +171,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P1_GEAR_PRESET.gear,
+					1: Presets.P2_GEAR_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1_GEAR_PRESET.gear,
+					1: Presets.P2_GEAR_PRESET.gear,
 				},
 			},
 		},
