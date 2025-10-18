@@ -6650,6 +6650,21 @@
                     },
                     "min_icd_tooltip": {
                       "type": "string"
+                    },
+                    "include_reaction_time": {
+                      "type": "string"
+                    },
+                    "include_reaction_time_tooltip": {
+                      "type": "string"
+                    },
+                    "use_base_value": {
+                      "type": "string"
+                    },
+                    "use_base_value_tooltip": {
+                      "type": "string"
+                    },
+                    "variable_assignment_tooltip": {
+                      "type": "string"
                     }
                   },
                   "additionalProperties": false,
@@ -6658,7 +6673,12 @@
                     "strategy",
                     "buff_type",
                     "min_icd",
-                    "min_icd_tooltip"
+                    "min_icd_tooltip",
+                    "include_reaction_time",
+                    "include_reaction_time_tooltip",
+                    "use_base_value",
+                    "use_base_value_tooltip",
+                    "variable_assignment_tooltip"
                   ]
                 },
                 "eclipse_types": {
@@ -6812,6 +6832,18 @@
                 "placeholder_tooltip": {
                   "type": "string"
                 },
+                "select_variable": {
+                  "type": "string"
+                },
+                "select_group": {
+                  "type": "string"
+                },
+                "no_variables_defined": {
+                  "type": "string"
+                },
+                "no_groups_defined": {
+                  "type": "string"
+                },
                 "buttons": {
                   "type": "object",
                   "properties": {
@@ -6844,6 +6876,10 @@
                 "hotw_strategies",
                 "unit_labels",
                 "placeholder_tooltip",
+                "select_variable",
+                "select_group",
+                "no_variables_defined",
+                "no_groups_defined",
                 "buttons"
               ]
             }

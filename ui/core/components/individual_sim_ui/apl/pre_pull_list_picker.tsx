@@ -72,8 +72,8 @@ class APLPrepullActionPicker extends Input<Player<any>, APLPrepullAction> {
 
 		this.doAtPicker = new AdaptiveStringPicker(this.rootElem, this.player, {
 			id: randomUUID(),
-			label: 'Do At',
-			labelTooltip: "Time before pull to do the action. Should be negative, and formatted like, '-1s' or '-2500ms'.",
+			label: i18n.t('rotation_tab.apl.prepull_actions.do_at.label'),
+			labelTooltip: i18n.t('rotation_tab.apl.prepull_actions.do_at.tooltip'),
 			extraCssClasses: ['apl-prepull-actions-doat'],
 			changedEvent: () => this.player.rotationChangeEmitter,
 			getValue: () => (this.getItem().doAtValue?.value as APLValueImplStruct<'const'> | undefined)?.const.val || '',

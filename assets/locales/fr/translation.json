@@ -1590,7 +1590,12 @@
 					"strategy": "Stratégie",
 					"buff_type": "Type de Buff",
 					"min_icd": "ICD Min",
-					"min_icd_tooltip": "Si non-zéro, filtre tous les procs qui n'ont pas d'ICD ou dont l'ICD est inférieur à la valeur spécifiée (en secondes). Cela peut être utile pour certaines vérifications de snapshot, car les procs avec des ICD faibles sont souvent trop faibles pour snapshot."
+					"min_icd_tooltip": "Si non-zéro, filtre tous les procs qui n'ont pas d'ICD ou dont l'ICD est inférieur à la valeur spécifiée (en secondes). Cela peut être utile pour certaines vérifications de snapshot, car les procs avec des ICD faibles sont souvent trop faibles pour snapshot.",
+					"include_reaction_time": "Inclure le temps de réaction",
+					"include_reaction_time_tooltip": "Si coché, utilisera le temps de réaction configuré.",
+					"use_base_value": "Utiliser la valeur de base",
+					"use_base_value_tooltip": "Si coché, comparera le DoT actuel à la valeur de base (au début de la rencontre) du DoT.",
+					"variable_assignment_tooltip": "Valeur à assigner à la variable '{{variableName}}'"
 				},
 				"eclipse_types": {
 					"lunar": "Lunaire",
@@ -1630,6 +1635,10 @@
 					"pet": "Familier"
 				},
 				"placeholder_tooltip": "La Potion de pré-pull si CurrentTime < 0, ou la Potion en combat si le combat a commencé.",
+				"select_variable": "Sélectionner une variable",
+				"select_group": "Sélectionner un groupe",
+				"no_variables_defined": "Aucune variable définie",
+				"no_groups_defined": "Aucun groupe défini",
 				"buttons": {
 					"enable_action": "Activer l'action",
 					"disable_action": "Désactiver l'action",
