@@ -223,6 +223,20 @@
 			"additional_information": "Additional Information:",
 			"action_has_warnings": "This action has warnings, and might not behave as expected.",
 			"action_has_errors": "This action has errors, and will not behave as expected."
+		},
+		"preset": {
+			"ep_weights": "EP Weights",
+			"gear": "Gear",
+			"talents": "Talents",
+			"rotation": "Rotation",
+			"encounter": "Encounter",
+			"settings": "Settings",
+			"description": "This preset affects the following settings:",
+			"stat_weights": "Stat Weights",
+			"class_spec_options": "Class/Spec Options",
+			"consumables": "Consumables",
+			"other_settings": "Other Settings",
+			"buffs": "Buffs"
 		}
 	},
 	"sim": {

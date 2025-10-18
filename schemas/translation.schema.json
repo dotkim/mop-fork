@@ -898,6 +898,62 @@
             "action_has_warnings",
             "action_has_errors"
           ]
+        },
+        "preset": {
+          "type": "object",
+          "properties": {
+            "ep_weights": {
+              "type": "string"
+            },
+            "gear": {
+              "type": "string"
+            },
+            "talents": {
+              "type": "string"
+            },
+            "rotation": {
+              "type": "string"
+            },
+            "encounter": {
+              "type": "string"
+            },
+            "settings": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "stat_weights": {
+              "type": "string"
+            },
+            "class_spec_options": {
+              "type": "string"
+            },
+            "consumables": {
+              "type": "string"
+            },
+            "other_settings": {
+              "type": "string"
+            },
+            "buffs": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "ep_weights",
+            "gear",
+            "talents",
+            "rotation",
+            "encounter",
+            "settings",
+            "description",
+            "stat_weights",
+            "class_spec_options",
+            "consumables",
+            "other_settings",
+            "buffs"
+          ]
         }
       },
       "additionalProperties": false,
@@ -922,7 +978,8 @@
         "mastery_spell_names",
         "currency",
         "copy_button",
-        "list_picker"
+        "list_picker",
+        "preset"
       ]
     },
     "sim": {

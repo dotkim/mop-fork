@@ -5,6 +5,7 @@ import { ResourceType } from '../core/proto/spell';
 import { RaidFilterOption, SourceFilterOption } from '../core/proto/ui';
 import { LaunchStatus } from '../core/launched_sims';
 import { BulkSimItemSlot } from '../core/components/individual_sim_ui/bulk/utils';
+import { PresetConfigurationCategory } from '../core/components/individual_sim_ui/preset_configuration_picker';
 import i18n from './config';
 import {
 	getClassI18nKey,
@@ -29,6 +30,7 @@ import {
 	getSlotNameI18nKey,
 	protoStatNameI18nKeys,
 	getBulkSlotI18nKey,
+	getPresetConfigurationCategoryI18nKey,
 } from './entity_mapping';
 import { getLang, setLang, supportedLanguages } from './locale_service';
 
@@ -450,6 +452,19 @@ export const translateSlotName = (slot: ItemSlot): string => {
 export const translateBulkSlotName = (slot: BulkSimItemSlot): string => {
 	const key = getBulkSlotI18nKey(slot);
 	return i18n.t(`slots.${key}`, { ns: 'character' });
+};
+
+export const translatePresetConfigurationCategory = (category: PresetConfigurationCategory): string => {
+	try {
+		const key = getPresetConfigurationCategoryI18nKey(category);
+		const translated = i18n.t(`common.preset.${key}`);
+		if (translated === `common.preset.${key}`) {
+			return category;
+		}
+		return translated;
+	} catch {
+		return category;
+	}
 };
 
 /**

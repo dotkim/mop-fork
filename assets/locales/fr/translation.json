@@ -223,6 +223,20 @@
 			"additional_information": "Informations supplémentaires :",
 			"action_has_warnings": "Cette action a des avertissements et pourrait ne pas se comporter comme prévu.",
 			"action_has_errors": "Cette action a des erreurs et ne se comportera pas comme prévu."
+		},
+		"preset": {
+			"ep_weights": "Poids EP",
+			"gear": "Équipement",
+			"talents": "Talents",
+			"rotation": "Rotation",
+			"encounter": "Rencontre",
+			"settings": "Paramètres",
+			"description": "Ce préréglage affecte les paramètres suivants :",
+			"stat_weights": "Poids des Stats",
+			"class_spec_options": "Options Classe/Spé",
+			"consumables": "Consommables",
+			"other_settings": "Autres Paramètres",
+			"buffs": "Buffs"
 		}
 	},
 	"sim": {

@@ -3,6 +3,7 @@ import { ArmorType, Class, MobType, PseudoStat, Race, Profession, Spec, Stat, Sp
 import { ResourceType } from '../core/proto/spell';
 import { RaidFilterOption, SourceFilterOption } from '../core/proto/ui';
 import { BulkSimItemSlot } from '../core/components/individual_sim_ui/bulk/utils';
+import { PresetConfigurationCategory } from '../core/components/individual_sim_ui/preset_configuration_picker';
 
 export const statI18nKeys: Record<Stat, string> = {
 	[Stat.StatStrength]: 'strength',
@@ -378,6 +379,15 @@ export const bulkSlotNamesI18nKeys: Record<BulkSimItemSlot, string> = {
 	[BulkSimItemSlot.ItemSlotHandWeapon]: 'weapons',
 };
 
+export const presetConfigurationCategoryI18nKeys: Record<PresetConfigurationCategory, string> = {
+	[PresetConfigurationCategory.EPWeights]: 'ep_weights',
+	[PresetConfigurationCategory.Gear]: 'gear',
+	[PresetConfigurationCategory.Talents]: 'talents',
+	[PresetConfigurationCategory.Rotation]: 'rotation',
+	[PresetConfigurationCategory.Encounter]: 'encounter',
+	[PresetConfigurationCategory.Settings]: 'settings',
+};
+
 export const getClassI18nKey = (classID: Class): string => classI18nKeys[classID] || Class[classID].toLowerCase();
 
 export const getSpecI18nKey = (specID: Spec): string => specI18nKeys[specID] || Spec[specID].toLowerCase();
@@ -408,3 +418,6 @@ export const getRangedWeaponTypeI18nKey = (rangedWeaponType: RangedWeaponType): 
 export const getMasterySpellNameI18nKey = (spec: Spec): string => masterySpellNamesI18nKeys[spec] || Spec[spec].toLowerCase();
 
 export const getSlotNameI18nKey = (slot: ItemSlot): string => slotNamesI18nKeys[slot] || ItemSlot[slot].toLowerCase();
+
+export const getPresetConfigurationCategoryI18nKey = (category: PresetConfigurationCategory): string =>
+	presetConfigurationCategoryI18nKeys[category] || category.toLowerCase();
