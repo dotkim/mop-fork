@@ -45,6 +45,7 @@ type APLRotation struct {
 	// Maps indices in filtered sim lists to indices in configs.
 	prepullIdxMap      []int
 	priorityListIdxMap []int
+	groupListIdxMap    [][]int
 }
 
 type APLGroup struct {
@@ -177,6 +178,7 @@ func (unit *Unit) newAPLRotation(config *proto.APLRotation) *APLRotation {
 
 		if rotation.groupListValidations[groupIdx] == nil {
 			rotation.groupListValidations[groupIdx] = make([][]*proto.APLValidation, len(groupConfig.Actions))
+			rotation.groupListIdxMap = append(rotation.groupListIdxMap, []int{})
 		}
 
 		// Parse actions in the group
@@ -188,6 +190,7 @@ func (unit *Unit) newAPLRotation(config *proto.APLRotation) *APLRotation {
 					action := rotation.newAPLActionWithGroupVars(aplItem.Action, nil)
 					if action != nil {
 						group.actions = append(group.actions, action)
+						rotation.groupListIdxMap[groupIdx] = append(rotation.groupListIdxMap[groupIdx], i)
 					}
 				}
 			})
@@ -204,11 +207,8 @@ func (unit *Unit) newAPLRotation(config *proto.APLRotation) *APLRotation {
 	}
 
 	for groupIdx, group := range rotation.groups {
-		if rotation.groupListValidations[groupIdx] == nil {
-			rotation.groupListValidations[groupIdx] = make([][]*proto.APLValidation, len(group.actions))
-		}
 		for actionIdx, action := range group.actions {
-			rotation.doAndRecordWarnings(&rotation.groupListValidations[groupIdx][actionIdx], false, func() {
+			rotation.doAndRecordWarnings(&rotation.groupListValidations[groupIdx][rotation.groupListIdxMap[groupIdx][actionIdx]], false, func() {
 				action.Finalize(rotation)
 			})
 		}
@@ -285,12 +285,9 @@ func (rot *APLRotation) getStats() *proto.APLStats {
 
 	// Parse groups
 	for groupIdx, group := range rot.groups {
-		if rot.groupListValidations[groupIdx] == nil {
-			rot.groupListValidations[groupIdx] = make([][]*proto.APLValidation, len(group.actions))
-		}
 		// Parse actions in the group
 		for actionIdx, action := range group.actions {
-			rot.doAndRecordWarnings(&rot.groupListValidations[groupIdx][actionIdx], false, func() {
+			rot.doAndRecordWarnings(&rot.groupListValidations[groupIdx][rot.groupListIdxMap[groupIdx][actionIdx]], false, func() {
 				action.impl.PostFinalize(rot)
 			})
 		}
