@@ -1268,6 +1268,10 @@
 					"label": "Rune Slot Cooldown",
 					"tooltip": "Amount of time until a rune of certain slot is ready to use.<br><b>NOTE:</b> Returns 0 if rune is ready"
 				},
+				"full_rune_cooldown": {
+					"label": "Full Rune Cooldown",
+					"tooltip": "Amount of time a rune would take to recharge if you used it now."
+				},
 				"gcd_is_ready": {
 					"label": "GCD Is Ready",
 					"tooltip": "<b>True</b> if the GCD is not on cooldown, otherwise <b>False</b>."

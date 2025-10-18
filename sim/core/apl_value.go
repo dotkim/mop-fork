@@ -164,6 +164,8 @@ func (rot *APLRotation) newAPLValueWithContext(config *proto.APLValue, groupVari
 		value = rot.newValueNextRuneCooldown(config.GetNextRuneCooldown(), config.Uuid)
 	case *proto.APLValue_RuneSlotCooldown:
 		value = rot.newValueRuneSlotCooldown(config.GetRuneSlotCooldown(), config.Uuid)
+	case *proto.APLValue_FullRuneCooldown:
+		value = rot.newValueFullRuneCooldown(config.GetFullRuneCooldown(), config.Uuid)
 
 	// Unit
 	case *proto.APLValue_UnitIsMoving:
