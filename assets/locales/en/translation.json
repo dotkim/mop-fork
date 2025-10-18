@@ -2115,21 +2115,6 @@
 			"simulate": "Simulate",
 			"stat_weights": {
 				"title": "Stat Weights",
-				"ep_weights": {
-					"use_custom": "Use custom EP Weights",
-					"description": {
-						"enable_modification": "This will enable modification of the default EP weights and setting custom stat caps.",
-						"modify_in_editor": "Ep weights can be modified in the Stat Weights editor.",
-						"hard_cap_info": "If you want to hard cap a stat make sure to put the EP for that stat higher."
-					},
-					"buttons": {
-						"edit_weights": "Edit weights"
-					},
-					"options": {
-						"include_gems": "Include gems",
-						"freeze_item_slots": "Freeze item slots"
-					}
-				},
 				"modal": {
 					"title": "Calculate Stat Weights",
 					"ep": "EP",
@@ -2239,7 +2224,18 @@
 				"no_limit_set": "No limit set",
 				"breakpoints_implemented": "The following breakpoints have been implemented for this spec:",
 				"post_cap_ep": "Post cap EP",
-				"reforge_optimization_failed": "Reforge optimization failed. Please try again, or report the issue if it persists."
+				"reforge_optimization_failed": "Reforge optimization failed. Please try again, or report the issue if it persists.",
+				"use_custom": "Use custom EP Weights",
+				"enable_modification": "This will enable modification of the default EP weights and setting custom stat caps.",
+				"modify_in_editor": "Ep weights can be modified in the Stat Weights editor.",
+				"hard_cap_info": "If you want to hard cap a stat make sure to put the EP for that stat higher.",
+				"edit_weights": "Edit weights",
+				"include_gems": "Include gems",
+				"freeze_item_slots": "Freeze item slots",
+				"include_eotbp_socket": "Include EotBP Socket",
+				"include_eotbp_socket_tooltip": "Allows the optimiser to also include the \"Eye of the Black Prince\" socket in the optimization.",
+				"limit_execution_time": "Limit execution time",
+				"limit_execution_time_tooltip": "If checked, the solver will error out if the total computation time exceeds 30 seconds. If unchecked, then total computation time will be capped at 1 hour instead."
 			}
 		},
 		"header": {

@@ -2115,21 +2115,6 @@
 			"simulate": "Simuler",
 			"stat_weights": {
 				"title": "Poids des Statistiques",
-				"ep_weights": {
-					"use_custom": "Utiliser des poids PE personnalisés",
-					"description": {
-						"enable_modification": "Ceci permettra la modification des poids PE par défaut et la définition de caps de statistiques personnalisés.",
-						"modify_in_editor": "Les poids PE peuvent être modifiés dans l'éditeur de Poids des Statistiques.",
-						"hard_cap_info": "Si vous voulez caper une statistique, assurez-vous de définir le PE de cette statistique plus haut."
-					},
-					"buttons": {
-						"edit_weights": "Modifier les poids"
-					},
-					"options": {
-						"include_gems": "Inclure les gemmes",
-						"freeze_item_slots": "Verrouiller certains emplacements"
-					}
-				},
 				"modal": {
 					"title": "Calculer les Poids des Statistiques",
 					"ep": "PE",
@@ -2239,7 +2224,18 @@
 				"no_limit_set": "Aucune limite définie",
 				"breakpoints_implemented": "Les breakpoints suivants ont été implémentés pour cette spé :",
 				"post_cap_ep": "PE post-cap",
-				"reforge_optimization_failed": "L'optimisation de la retouche a échoué. Veuillez réessayer ou signaler le problème s'il persiste."
+				"reforge_optimization_failed": "L'optimisation de la retouche a échoué. Veuillez réessayer ou signaler le problème s'il persiste.",
+				"use_custom": "Utiliser des poids PE personnalisés",
+				"enable_modification": "Ceci permettra la modification des poids PE par défaut et la définition de caps de statistiques personnalisés.",
+				"modify_in_editor": "Les poids PE peuvent être modifiés dans l'éditeur de Poids des Statistiques.",
+				"hard_cap_info": "Si vous voulez caper une statistique, assurez-vous de définir le PE de cette statistique plus haut.",
+				"edit_weights": "Modifier les poids",
+				"include_gems": "Inclure les gemmes",
+				"freeze_item_slots": "Verrouiller certains emplacements",
+				"include_eotbp_socket": "Inclure le socket EotBP",
+				"include_eotbp_socket_tooltip": "Permet à l'optimiseur d'inclure également le socket \"Œil du Prince Noir\" dans l'optimisation.",
+				"limit_execution_time": "Limiter le temps d'exécution",
+				"limit_execution_time_tooltip": "Si coché, le solveur se terminera en erreur si le temps de calcul total dépasse 30 secondes. Si décoché, le temps de calcul total sera plafonné à 1 heure."
 			}
 		},
 		"header": {

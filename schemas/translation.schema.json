@@ -8862,69 +8862,6 @@
                 "title": {
                   "type": "string"
                 },
-                "ep_weights": {
-                  "type": "object",
-                  "properties": {
-                    "use_custom": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "object",
-                      "properties": {
-                        "enable_modification": {
-                          "type": "string"
-                        },
-                        "modify_in_editor": {
-                          "type": "string"
-                        },
-                        "hard_cap_info": {
-                          "type": "string"
-                        }
-                      },
-                      "additionalProperties": false,
-                      "required": [
-                        "enable_modification",
-                        "modify_in_editor",
-                        "hard_cap_info"
-                      ]
-                    },
-                    "buttons": {
-                      "type": "object",
-                      "properties": {
-                        "edit_weights": {
-                          "type": "string"
-                        }
-                      },
-                      "additionalProperties": false,
-                      "required": [
-                        "edit_weights"
-                      ]
-                    },
-                    "options": {
-                      "type": "object",
-                      "properties": {
-                        "include_gems": {
-                          "type": "string"
-                        },
-                        "freeze_item_slots": {
-                          "type": "string"
-                        }
-                      },
-                      "additionalProperties": false,
-                      "required": [
-                        "include_gems",
-                        "freeze_item_slots"
-                      ]
-                    }
-                  },
-                  "additionalProperties": false,
-                  "required": [
-                    "use_custom",
-                    "description",
-                    "buttons",
-                    "options"
-                  ]
-                },
                 "modal": {
                   "type": "object",
                   "properties": {
@@ -9305,7 +9242,6 @@
               "additionalProperties": false,
               "required": [
                 "title",
-                "ep_weights",
                 "modal",
                 "saved_ep_weights"
               ]
@@ -9366,6 +9302,39 @@
                 },
                 "reforge_optimization_failed": {
                   "type": "string"
+                },
+                "use_custom": {
+                  "type": "string"
+                },
+                "enable_modification": {
+                  "type": "string"
+                },
+                "modify_in_editor": {
+                  "type": "string"
+                },
+                "hard_cap_info": {
+                  "type": "string"
+                },
+                "edit_weights": {
+                  "type": "string"
+                },
+                "include_gems": {
+                  "type": "string"
+                },
+                "freeze_item_slots": {
+                  "type": "string"
+                },
+                "include_eotbp_socket": {
+                  "type": "string"
+                },
+                "include_eotbp_socket_tooltip": {
+                  "type": "string"
+                },
+                "limit_execution_time": {
+                  "type": "string"
+                },
+                "limit_execution_time_tooltip": {
+                  "type": "string"
                 }
               },
               "additionalProperties": false,
@@ -9387,7 +9356,18 @@
                 "no_limit_set",
                 "breakpoints_implemented",
                 "post_cap_ep",
-                "reforge_optimization_failed"
+                "reforge_optimization_failed",
+                "use_custom",
+                "enable_modification",
+                "modify_in_editor",
+                "hard_cap_info",
+                "edit_weights",
+                "include_gems",
+                "freeze_item_slots",
+                "include_eotbp_socket",
+                "include_eotbp_socket_tooltip",
+                "limit_execution_time",
+                "limit_execution_time_tooltip"
               ]
             }
           },
