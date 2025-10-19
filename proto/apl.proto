@@ -99,7 +99,7 @@ message APLAction {
 }
 
 
-// NextIndex: 119
+// NextIndex: 120
 message APLValue {
 	UUID uuid = 85;
 
@@ -162,6 +162,7 @@ message APLValue {
         APLValueRuneCooldown rune_cooldown = 32;
         APLValueNextRuneCooldown next_rune_cooldown = 33;
         APLValueRuneSlotCooldown rune_slot_cooldown = 53;
+		APLValueFullRuneCooldown full_rune_cooldown = 119;
 
         // GCD values
         APLValueGCDIsReady gcd_is_ready = 17;
@@ -579,6 +580,9 @@ message APLValueNextRuneCooldown{
 }
 message APLValueRuneSlotCooldown{
     APLValueRuneSlot rune_slot = 1;
+}
+message APLValueFullRuneCooldown{
+	bool use_base_value = 1;
 }
 
 enum APLValueEclipsePhase {
