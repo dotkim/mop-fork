@@ -166,6 +166,20 @@ func InferPhase(item *proto.UIItem) int32 {
 	return 0
 }
 
+func InferThroneOfThunderSource(item *proto.UIItem) []*proto.UIItemSource {
+	sources := make([]*proto.UIItemSource, 0, len(item.Sources)+1)
+
+	sources = append(sources, &proto.UIItemSource{
+		Source: &proto.UIItemSource_Drop{Drop: &proto.DropSource{
+			ZoneId:    6622,
+			OtherName: "Shared Boss Loot",
+		}},
+	})
+
+	sources = append(sources, item.Sources...)
+	return sources
+}
+
 func InferCelestialItemSource(item *proto.UIItem) []*proto.UIItemSource {
 	if item.Phase <= 2 {
 		sources := make([]*proto.UIItemSource, 0, len(item.Sources)+1)
