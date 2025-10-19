@@ -255,7 +255,6 @@ func (value *APLValueFullRuneCooldown) Type() proto.APLValueType {
 }
 func (value *APLValueFullRuneCooldown) GetDuration(sim *Simulation) time.Duration {
 	if value.useBaseValue {
-		//initialHaste := value.unit.PseudoStats.AttackSpeedMultiplier * value.unit.PseudoStats.MeleeSpeedMultiplier
 		initialHaste := (1 + (value.unit.GetInitialStat(stats.HasteRating) / (HasteRatingPerHastePercent * 100)))
 		return DurationFromSeconds(value.unit.runeCD.Seconds() / initialHaste)
 	} else {
