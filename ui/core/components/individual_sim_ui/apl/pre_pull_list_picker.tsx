@@ -1,18 +1,18 @@
-import i18n from "../../../../i18n/config";
-import { IndividualSimUI } from "../../../individual_sim_ui";
-import { Player } from "../../../player";
-import { APLAction, APLPrepullAction, APLValue } from "../../../proto/apl";
-import { EventID } from "../../../typed_event";
-import { randomUUID } from "../../../utils";
-import { Component } from "../../component";
-import { Input } from "../../input";
-import { ListItemPickerConfig, ListPicker } from "../../pickers/list_picker";
-import { AdaptiveStringPicker } from "../../pickers/string_picker";
-import { APLActionPicker } from "../apl_actions";
-import { APLValueImplStruct } from "../apl_values";
-import { APLHidePicker } from "./hide_picker";
+import i18n from '../../../../i18n/config';
+import { IndividualSimUI } from '../../../individual_sim_ui';
+import { Player } from '../../../player';
+import { APLAction, APLPrepullAction, APLValue } from '../../../proto/apl';
+import { EventID } from '../../../typed_event';
+import { randomUUID } from '../../../utils';
+import { Component } from '../../component';
+import { Input } from '../../input';
+import { ListItemPickerConfig, ListPicker } from '../../pickers/list_picker';
+import { AdaptiveStringPicker } from '../../pickers/string_picker';
+import { APLActionPicker } from '../apl_actions';
+import { APLValueImplStruct } from '../apl_values';
+import { APLHidePicker } from './hide_picker';
 
-export class APLPrePullListPicker extends Component{
+export class APLPrePullListPicker extends Component {
 	constructor(container: HTMLElement, simUI: IndividualSimUI<any>) {
 		super(container, 'apl-pre-pull-list-picker-root');
 

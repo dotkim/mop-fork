@@ -2017,9 +2017,9 @@ dps_results: {
 dps_results: {
  key: "TestWindwalker-AllItems-RuneofRe-Origination-96918"
  value: {
-  dps: 159934.67325
-  tps: 148810.75485
-  hps: 8327.32354
+  dps: 159255.87393
+  tps: 148182.66502
+  hps: 8283.28388
  }
 }
 dps_results: {

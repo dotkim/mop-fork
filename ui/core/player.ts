@@ -892,7 +892,7 @@ export class Player<SpecType extends Spec> {
 		return this.simpleRotationGenerator != null;
 	}
 
-	getResolvedAplRotation(): APLRotation {
+	getResolvedAplRotation(forSimming?: boolean): APLRotation {
 		const type = this.getRotationType();
 		if (type == APLRotationType.TypeAuto && this.autoRotationGenerator) {
 			// Clone to avoid modifying preset rotations, which are often returned directly.
@@ -906,6 +906,8 @@ export class Player<SpecType extends Spec> {
 			rot.simple = this.aplRotation.simple;
 			rot.type = APLRotationType.TypeSimple;
 			return rot;
+		} else if (forSimming) {
+			return this.aplRotation;
 		} else {
 			return omitDeep(this.aplRotation, ['uuid']);
 		}
@@ -1490,10 +1492,7 @@ export class Player<SpecType extends Spec> {
 		const exportCategory = (cat: SimSettingCategories) => !exportCategories || exportCategories.length == 0 || exportCategories.includes(cat);
 
 		const gear = this.getGear();
-		const aplRotation = forSimming
-			? this.getResolvedAplRotation()
-			: // When exporting we want to omit the uuid field to prevent bloat
-				omitDeep(this.aplRotation, ['uuid']);
+		const aplRotation = forSimming ? this.getResolvedAplRotation(forSimming) : omitDeep(this.aplRotation, ['uuid']);
 
 		let player = PlayerProto.create({
 			class: this.getClass(),

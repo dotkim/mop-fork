@@ -1,10 +1,6 @@
-import { ref } from 'tsx-vanilla';
-
 import { Player } from '../../player';
 import { APLGroup } from '../../proto/apl';
-import { EventID, TypedEvent } from '../../typed_event';
-import { randomUUID } from '../../utils';
-import { Component } from '../component';
+import { EventID } from '../../typed_event';
 import { Input, InputConfig } from '../input';
 import { ListItemPickerConfig, ListPicker } from '../pickers/list_picker';
 import { APLGroupEditor } from './apl/apl_group_editor';
@@ -58,7 +54,7 @@ export class APLGroupManager extends Input<Player<any>, Array<APLGroup>> {
 				listPicker: ListPicker<Player<any>, APLGroup>,
 				index: number,
 				config: ListItemPickerConfig<Player<any>, APLGroup>,
-			) => new APLGroupEditor(parent, this.modObject, config),
+			) => new APLGroupEditor(parent, this.modObject, { ...config, index }),
 			inlineMenuBar: true,
 		});
 
