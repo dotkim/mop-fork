@@ -266,7 +266,7 @@ export class ReforgeOptimizer {
 				trackEvent({
 					action: 'settings',
 					category: 'reforging',
-					label: 'suggest',
+					label: 'suggest_start',
 				});
 				const button = currentTarget as HTMLButtonElement;
 				if (button) {
@@ -289,13 +289,19 @@ export class ReforgeOptimizer {
 						simUI.player.setChallengeModeEnabled(TypedEvent.nextEventID(), true);
 					}
 					performance.mark('reforge-optimization-end');
-					if (isDevMode())
-						console.log(
-							'Reforge optimization took:',
-							`${performance
-								.measure('reforge-optimization-measure', 'reforge-optimization-start', 'reforge-optimization-end')
-								.duration.toFixed(2)}ms`,
-						);
+					const completionTimeInMs = performance.measure(
+						'reforge-optimization-measure',
+						'reforge-optimization-start',
+						'reforge-optimization-end',
+					).duration;
+					if (isDevMode()) console.log('Reforge optimization took:', `${completionTimeInMs.toFixed(2)}ms`);
+
+					trackEvent({
+						action: 'settings',
+						category: 'reforging',
+						label: 'suggest_duration',
+						value: Math.ceil(completionTimeInMs / 1000),
+					});
 					if (button) {
 						button.classList.remove('loading');
 						button.disabled = false;
@@ -1920,6 +1926,11 @@ export class ReforgeOptimizer {
 				});
 		}
 
+		trackEvent({
+			action: 'settings',
+			category: 'reforging',
+			label: 'suggest_success',
+		});
 		new Toast({
 			variant: 'success',
 			body: hasReforgeChanges ? changedReforgeMessage : <>{i18n.t('gear_tab.reforge_success.no_changes')}</>,
@@ -1931,6 +1942,12 @@ export class ReforgeOptimizer {
 		if (isDevMode()) console.log(error);
 
 		if (this.previousGear) this.updateGear(this.previousGear);
+		trackEvent({
+			action: 'settings',
+			category: 'reforging',
+			label: 'suggest_error',
+			value: error,
+		});
 		new Toast({
 			variant: 'error',
 			body: (
