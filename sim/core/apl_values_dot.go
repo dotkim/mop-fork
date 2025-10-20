@@ -188,8 +188,9 @@ func (rot *APLRotation) newValueDotTickFrequency(config *proto.APLValueDotTickFr
 func (value *APLValueDotTickFrequency) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeDuration
 }
-func (value *APLValueDotTickFrequency) GetDuration(_ *Simulation) time.Duration {
-	return value.dot.Get().tickPeriod
+func (value *APLValueDotTickFrequency) GetDuration(sim *Simulation) time.Duration {
+	dot := value.dot.Get()
+	return TernaryDuration(dot.IsActive(), dot.tickPeriod, dot.CalcTickPeriod())
 }
 func (value *APLValueDotTickFrequency) String() string {
 	return fmt.Sprintf("Dot Tick Frequency(%s)", value.dot.Get().Spell.ActionID)
