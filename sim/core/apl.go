@@ -49,9 +49,10 @@ type APLRotation struct {
 }
 
 type APLGroup struct {
-	name      string
-	actions   []*APLAction
-	variables map[string]*proto.APLValue
+	name         string
+	actions      []*APLAction
+	variables    map[string]*proto.APLValue
+	referencedBy *APLActionGroupReference
 }
 
 type APLValueVariable struct {
@@ -166,7 +167,8 @@ func (unit *Unit) newAPLRotation(config *proto.APLRotation) *APLRotation {
 	}
 
 	// Parse groups
-	for groupIdx, groupConfig := range config.Groups {
+	for groupIdx := 0; groupIdx < len(config.Groups); groupIdx++ {
+		groupConfig := config.Groups[groupIdx]
 		group := &APLGroup{
 			name:      groupConfig.Name,
 			variables: make(map[string]*proto.APLValue),
@@ -197,6 +199,23 @@ func (unit *Unit) newAPLRotation(config *proto.APLRotation) *APLRotation {
 		}
 
 		rotation.groups = append(rotation.groups, group)
+
+		// Duplicate the group if it is referenced more than once.
+		foundReference := false
+
+		for _, action := range rotation.allAPLActions() {
+			if groupReferenceAction, ok := action.impl.(*APLActionGroupReference); ok {
+				if (groupReferenceAction.groupName == group.name) && !groupReferenceAction.matched {
+					if foundReference {
+						config.Groups = append(config.Groups, groupConfig)
+						rotation.groupListValidations = append(rotation.groupListValidations, nil)
+					}
+
+					foundReference = true
+					groupReferenceAction.matched = true
+				}
+			}
+		}
 	}
 
 	// Finalize
