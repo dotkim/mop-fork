@@ -108,11 +108,12 @@ func (unit *Unit) newAPLRotation(config *proto.APLRotation) *APLRotation {
 		return nil
 	}
 
+	groupsConfig := config.Groups
 	rotation := &APLRotation{
 		unit:                    unit,
 		prepullValidations:      make([][]*proto.APLValidation, len(config.PrepullActions)),
 		priorityListValidations: make([][]*proto.APLValidation, len(config.PriorityList)),
-		groupListValidations:    make([][][]*proto.APLValidation, len(config.Groups)),
+		groupListValidations:    make([][][]*proto.APLValidation, len(groupsConfig)),
 		uuidValidations:         make(map[*proto.UUID][]*proto.APLValidation),
 	}
 
@@ -167,8 +168,8 @@ func (unit *Unit) newAPLRotation(config *proto.APLRotation) *APLRotation {
 	}
 
 	// Parse groups
-	for groupIdx := 0; groupIdx < len(config.Groups); groupIdx++ {
-		groupConfig := config.Groups[groupIdx]
+	for groupIdx := 0; groupIdx < len(groupsConfig); groupIdx++ {
+		groupConfig := groupsConfig[groupIdx]
 		group := &APLGroup{
 			name:      groupConfig.Name,
 			variables: make(map[string]*proto.APLValue),
@@ -207,7 +208,7 @@ func (unit *Unit) newAPLRotation(config *proto.APLRotation) *APLRotation {
 			if groupReferenceAction, ok := action.impl.(*APLActionGroupReference); ok {
 				if (groupReferenceAction.groupName == group.name) && !groupReferenceAction.matched {
 					if foundReference {
-						config.Groups = append(config.Groups, groupConfig)
+						groupsConfig = append(groupsConfig, groupConfig)
 						rotation.groupListValidations = append(rotation.groupListValidations, nil)
 					}
 
@@ -221,9 +222,9 @@ func (unit *Unit) newAPLRotation(config *proto.APLRotation) *APLRotation {
 		// Duplicate any other groups referenced by this group's actions.
 		for _, action := range group.actions {
 			if groupReferenceAction, ok := action.impl.(*APLActionGroupReference); ok {
-				for _, groupConfig := range config.Groups {
+				for _, groupConfig := range groupsConfig {
 					if (groupReferenceAction.groupName == groupConfig.Name) && !groupReferenceAction.matched {
-						config.Groups = append(config.Groups, groupConfig)
+						groupsConfig = append(groupsConfig, groupConfig)
 						rotation.groupListValidations = append(rotation.groupListValidations, nil)
 						groupReferenceAction.matched = true
 					}
