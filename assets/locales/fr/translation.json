@@ -816,6 +816,11 @@
 		},
 		"gem_selector": {
 			"title": "Choisir la gemme par défaut"
+		},
+		"import_modal": {
+			"title": "Importation d'objets de sac",
+			"description_line1": "Importez des objets de sac à partir d'un fichier JSON, qui peut être créé par l'AddOn en jeu WowSimsExporter.",
+			"description_line2": "Pour importer, téléchargez le fichier ou collez le texte ci-dessous, puis cliquez sur 'Importer'."
 		}
 	},
 	"rotation_tab": {

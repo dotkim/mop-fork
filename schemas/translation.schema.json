@@ -3395,6 +3395,26 @@
           "required": [
             "title"
           ]
+        },
+        "import_modal": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description_line1": {
+              "type": "string"
+            },
+            "description_line2": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "title",
+            "description_line1",
+            "description_line2"
+          ]
         }
       },
       "additionalProperties": false,
@@ -3411,7 +3431,8 @@
         "warning",
         "picker",
         "results",
-        "gem_selector"
+        "gem_selector",
+        "import_modal"
       ]
     },
     "rotation_tab": {

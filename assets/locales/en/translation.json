@@ -816,6 +816,11 @@
 		},
 		"gem_selector": {
 			"title": "Choose Default Gem"
+		},
+		"import_modal": {
+			"title": "Bag Item Import",
+			"description_line1": "Import bag items from a JSON file, which can be created by the WowSimsExporter in-game AddOn.",
+			"description_line2": "To import, upload the file or paste the text below, then click, 'Import'."
 		}
 	},
 	"rotation_tab": {
