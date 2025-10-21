@@ -23,12 +23,12 @@ export const StandardEPWeights = PresetUtils.makePresetEpWeights(
 	'Standard',
 	Stats.fromMap({
 		[Stat.StatIntellect]: 1,
-		[Stat.StatSpirit]: 1.27,
-		[Stat.StatSpellPower]: 1,
-		[Stat.StatHitRating]: 1.27,
-		[Stat.StatCritRating]: 0.71,
-		[Stat.StatHasteRating]: 0.73,
-		[Stat.StatMasteryRating]: 0.53,
+		[Stat.StatSpirit]: 0.88,
+		[Stat.StatSpellPower]: 0.80,
+		[Stat.StatHitRating]: 0.88,
+		[Stat.StatCritRating]: 0.57,
+		[Stat.StatHasteRating]: 0.64,
+		[Stat.StatMasteryRating]: 0.46,
 	}),
 );
 
