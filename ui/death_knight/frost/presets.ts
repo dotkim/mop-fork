@@ -9,13 +9,16 @@ import ObliterateAPL from '../../death_knight/frost/apls/obliterate.apl.json';
 import P22hObliterateBuild from '../../death_knight/frost/builds/p2.2h-obliterate.build.json';
 import P2MasterfrostBuild from '../../death_knight/frost/builds/p2.masterfrost.build.json';
 import PrebisMasterfrostBuild from '../../death_knight/frost/builds/prebis.masterfrost.build.json';
+import Prebis2hObliterateBuild from '../../death_knight/frost/builds/prebis.2h-obliterate.build.json';
 import P22HObliterateGear from '../../death_knight/frost/gear_sets/p2.2h-obliterate.gear.json';
 import P2MasterfrostGear from '../../death_knight/frost/gear_sets/p2.masterfrost.gear.json';
-import PrebisGear from '../../death_knight/frost/gear_sets/prebis.gear.json';
+import PrebisMasterfrostGear from '../../death_knight/frost/gear_sets/prebis.masterfrost.gear.json';
+import Prebis2HObliterateGear from '../../death_knight/frost/gear_sets/prebis.2h-obliterate.gear.json';
 
 export const P2_2H_OBLITERATE_GEAR_PRESET = PresetUtils.makePresetGear('P2 - 2h Obliterate', P22HObliterateGear);
 export const P2_MASTERFROST_GEAR_PRESET = PresetUtils.makePresetGear('P2 - Masterfrost', P2MasterfrostGear);
-export const PREBIS_MASTERFROST_GEAR_PRESET = PresetUtils.makePresetGear('Prebis Masterfrost', PrebisGear);
+export const PREBIS_MASTERFROST_GEAR_PRESET = PresetUtils.makePresetGear('Prebis - Masterfrost', PrebisMasterfrostGear);
+export const PREBIS_2H_OBLITERATE_GEAR_PRESET = PresetUtils.makePresetGear('Prebis - 2h Obliterate', Prebis2HObliterateGear);
 
 export const OBLITERATE_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Obliterate', ObliterateAPL);
 export const MASTERFROST_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Masterfrost', MasterFrostAPL);
@@ -99,7 +102,16 @@ export const PRESET_BUILD_MASTERFROST = PresetUtils.makePresetBuildFromJSON('P2 
 	epWeights: P1_P2_MASTERFROST_EP_PRESET,
 	rotationType: APLRotation_Type.TypeAuto,
 });
-export const PRESET_BUILD_PREBIS = PresetUtils.makePresetBuildFromJSON('Prebis Masterfrost', Spec.SpecFrostDeathKnight, PrebisMasterfrostBuild, {
+export const PRESET_BUILD_PREBIS_MASTERFROST = PresetUtils.makePresetBuildFromJSON('Prebis - Masterfrost', Spec.SpecFrostDeathKnight, PrebisMasterfrostBuild, {
 	epWeights: P1_P2_MASTERFROST_EP_PRESET,
 	rotationType: APLRotation_Type.TypeAuto,
 });
+export const PRESET_BUILD_PREBIS_2H_OBLITERATE = PresetUtils.makePresetBuildFromJSON(
+	'Prebis - 2h Obliterate',
+	Spec.SpecFrostDeathKnight,
+	Prebis2hObliterateBuild,
+	{
+		epWeights: P1_P2_2H_OBLITERATE_EP_PRESET,
+		rotationType: APLRotation_Type.TypeAuto,
+	},
+);

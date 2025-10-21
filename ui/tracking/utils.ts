@@ -18,7 +18,7 @@ export const trackEvent = ({ action, category, label, value, additionalData }: T
 	gtag('event', action, {
 		event_category: category,
 		event_label: label,
-		event_value: String(value),
+		event_value: typeof value !== 'undefined' ? String(value) : undefined,
 		...additionalData,
 	});
 };

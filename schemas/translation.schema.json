@@ -5316,6 +5316,22 @@
                     "tooltip"
                   ]
                 },
+				"full_rune_cooldown": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "type": "string"
+                    },
+                    "tooltip": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "label",
+                    "tooltip"
+                  ]
+                },
                 "gcd_is_ready": {
                   "type": "object",
                   "properties": {
@@ -6303,6 +6319,7 @@
                 "rune_cooldown",
                 "next_rune_cooldown",
                 "rune_slot_cooldown",
+				"full_rune_cooldown",
                 "gcd_is_ready",
                 "gcd_time_to_ready",
                 "time_to_next_auto",

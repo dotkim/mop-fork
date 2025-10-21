@@ -1284,6 +1284,10 @@
 					"label": "Temps de recharge d'emplacement de rune",
 					"tooltip": "Quantité de temps jusqu'à ce qu'une rune d'un certains emplacement soit prête à être utiliser.<br><b>NOTE:</b> Retourne 0 si la rune est prête"
 				},
+				"full_rune_cooldown": {
+					"label": "Temps de recharge complet des runes",
+					"tooltip": "Temps qu'il faudrait à une rune pour se recharger si vous l'utilisiez maintenant."
+				},
 				"gcd_is_ready": {
 					"label": "GCD est prêt",
 					"tooltip": "<b>Vrai</b> si le GCD n'est pas en temps de recharge, sinon <b>Faux</b>."

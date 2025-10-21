@@ -1246,6 +1246,12 @@ export function useDotBaseValueCheckbox(): APLPickerBuilderFieldConfig<any, any>
 	});
 }
 
+export function useRuneRegenBaseValueCheckbox(): APLPickerBuilderFieldConfig<any, any> {
+	return booleanFieldConfig('useBaseValue', 'Use base value', {
+		labelTooltip: 'If checked, will return your base (unmodified by procs/lust etc) rune regen rate',
+	});
+}
+
 export function itemSwapSetFieldConfig(field: string): APLPickerBuilderFieldConfig<any, any> {
 	return {
 		field: field,

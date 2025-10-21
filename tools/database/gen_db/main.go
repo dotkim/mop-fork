@@ -294,6 +294,21 @@ func main() {
 
 	craftedSpellIds := []int32{}
 	for _, item := range db.Items {
+		// Manual override for some ToT weapons that drop from shared loot
+		// and are missing sources in Atlas
+		if slices.Contains([]int32{95866, 95859, 95860, 95861, 95862, 95867, 95876, 95875, 95877, 97129}, item.Id) {
+			item.Sources = database.InferThroneOfThunderSource(item)
+		}
+
+		if item.NameDescription == "Celestial" {
+			item.Sources = database.InferCelestialItemSource(item)
+		}
+
+		// Infer the drop difficulty for the item
+		if item.NameDescription == "Flexible" {
+			item.Sources = database.InferFlexibleRaidItemSource(item)
+		}
+
 		// 1. Add Belt Buckle gem socket to Waist.
 		// 2. Add Eye Of The Black Prince gem socket to Sha-touched items.
 		if item.Type == proto.ItemType_ItemTypeWaist || slices.Contains(item.GemSockets, proto.GemColor_GemColorShaTouched) {
@@ -308,15 +323,6 @@ func main() {
 			if drop := source.GetDrop(); drop != nil && (item.Type == proto.ItemType_ItemTypeWeapon || item.Type == proto.ItemType_ItemTypeRanged) && (item.WeaponType != proto.WeaponType_WeaponTypeOffHand && item.WeaponType != proto.WeaponType_WeaponTypeShield) && drop.ZoneId == 6622 {
 				item.GemSockets = append(item.GemSockets, proto.GemColor_GemColorPrismatic)
 			}
-		}
-
-		if item.NameDescription == "Celestial" {
-			item.Sources = database.InferCelestialItemSource(item)
-		}
-
-		// Infer the drop difficulty for the item
-		if item.NameDescription == "Flexible" {
-			item.Sources = database.InferFlexibleRaidItemSource(item)
 		}
 
 		if item.Phase < 2 {
