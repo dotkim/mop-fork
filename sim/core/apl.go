@@ -200,10 +200,10 @@ func (unit *Unit) newAPLRotation(config *proto.APLRotation) *APLRotation {
 
 		rotation.groups = append(rotation.groups, group)
 
-		// Duplicate the group if it is referenced more than once.
+		// Duplicate the group if it is referenced more than once in the priority list.
 		foundReference := false
 
-		for _, action := range rotation.allAPLActions() {
+		for _, action := range rotation.priorityList {
 			if groupReferenceAction, ok := action.impl.(*APLActionGroupReference); ok {
 				if (groupReferenceAction.groupName == group.name) && !groupReferenceAction.matched {
 					if foundReference {
@@ -213,6 +213,20 @@ func (unit *Unit) newAPLRotation(config *proto.APLRotation) *APLRotation {
 
 					foundReference = true
 					groupReferenceAction.matched = true
+					group.referencedBy = groupReferenceAction
+				}
+			}
+		}
+
+		// Duplicate any other groups referenced by this group's actions.
+		for _, action := range group.actions {
+			if groupReferenceAction, ok := action.impl.(*APLActionGroupReference); ok {
+				for _, groupConfig := range config.Groups {
+					if (groupReferenceAction.groupName == groupConfig.Name) && !groupReferenceAction.matched {
+						config.Groups = append(config.Groups, groupConfig)
+						rotation.groupListValidations = append(rotation.groupListValidations, nil)
+						groupReferenceAction.matched = true
+					}
 				}
 			}
 		}

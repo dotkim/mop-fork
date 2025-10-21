@@ -74,7 +74,7 @@ func (action *APLActionGroupReference) Finalize(rot *APLRotation) {
 
 	// Find the referenced group
 	for _, group := range rot.groups {
-		if (group.name == action.groupName) && (group.referencedBy == nil) {
+		if (group.name == action.groupName) && ((group.referencedBy == nil) || (group.referencedBy == action)) {
 			action.group = group
 			group.referencedBy = action
 			break
