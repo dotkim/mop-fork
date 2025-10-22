@@ -708,6 +708,10 @@ func init() {
 			character.AddMajorCooldown(core.MajorCooldown{
 				Spell: spell,
 				Type:  core.CooldownTypeSurvival,
+				BuffAura: &core.StatBuffAura{
+					Aura:            damageAbsorptionAura.Aura,
+					BuffedStatTypes: []stats.Stat{stats.Health},
+				},
 				ShouldActivate: func(_ *core.Simulation, character *core.Character) bool {
 					return character.CurrentHealthPercent() < 0.4
 				},
