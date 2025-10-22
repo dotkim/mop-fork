@@ -57,8 +57,9 @@ export class IndividualAddonImporter<SpecType extends Spec> extends IndividualIm
 			throw new Error('Please use a valid Addon export.');
 		}
 
-		if (((importJson['version'] as string) || '') != await IndividualAddonImporter.WSE_VERSION) {
-			new Toast({ variant: 'warning', body: `Addon is not up to date. Addon version : '${importJson['version']}', Latest version : '${await IndividualAddonImporter.WSE_VERSION}'` });
+		let addonVersion = await IndividualAddonImporter.WSE_VERSION;
+		if (addonVersion && ((importJson['version'] as string) || '') != addonVersion) {
+			new Toast({ variant: 'warning', body: `Addon is not up to date. Addon version : '${importJson['version']}', Latest version : '${addonVersion}'` });
 		}
 
 		// Parse all the settings.
@@ -140,11 +141,17 @@ function glyphToID(glyph: string | JsonObject, db: Database, glyphsConfig: Recor
 	return db.glyphSpellToItemId(glyph.spellID as number);
 }
 
-function getWSEVersion(): Promise<string> {
+function getWSEVersion(): Promise<string|null> {
 	return fetch('https://api.github.com/repos/wowsims/exporter/releases/latest')
 		.then(resp => {
 			return resp.json().then(json => {
-				return json.tag_name as string
+				return json.tag_name as string;
 			})
+			.catch(_ => {
+				return null;
+			})
+		})
+		.catch(_ => {
+			return null;
 		})
 }
