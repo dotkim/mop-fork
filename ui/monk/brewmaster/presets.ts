@@ -60,7 +60,7 @@ export const P2_OFFENSIVE_EP_PRESET = PresetUtils.makePresetEpWeights(
 		{
 			[Stat.StatAgility]: 1,
 			[Stat.StatStamina]: 0.35,
-			[Stat.StatHitRating]: 1.41,
+			[Stat.StatHitRating]: 1.66,
 			[Stat.StatCritRating]: 0.68,
 			[Stat.StatHasteRating]: 0.40,
 			[Stat.StatExpertiseRating]: 1.24,
@@ -72,8 +72,8 @@ export const P2_OFFENSIVE_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatBonusArmor]: 0.17,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 1.54,
-			[PseudoStat.PseudoStatOffHandDps]: 0.76,
+			[PseudoStat.PseudoStatMainHandDps]: 1.96,
+			[PseudoStat.PseudoStatOffHandDps]: 0.97,
 		},
 	),
 );
