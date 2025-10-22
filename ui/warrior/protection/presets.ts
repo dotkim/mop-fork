@@ -16,7 +16,6 @@ import P1BISItemSwapGear from './gear_sets/p1_bis_item_swap.gear.json';
 import P2BISItemSwapGear from './gear_sets/p2_bis_item_swap.gear.json';
 import PreRaidItemSwapGear from './gear_sets/p1_preraid_item_swap.gear.json';
 import PreraidBISGear from './gear_sets/preraid.gear.json';
-import { Encounter } from '../../core/encounter';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -25,8 +24,8 @@ import { Encounter } from '../../core/encounter';
 export const PRERAID_BALANCED_PRESET = PresetUtils.makePresetGear('Pre-raid', PreraidBISGear);
 export const P1_BALANCED_PRESET = PresetUtils.makePresetGear('P1 - BIS', P1BISGear);
 export const P2_BALANCED_PRESET = PresetUtils.makePresetGear('P2 - BIS', P2BISGear);
-export const P3_BALANCED_PRESET = PresetUtils.makePresetGear('P3 - BIS', P3BISGear);
-export const P3_OFFENSIVE_PRESET = PresetUtils.makePresetGear('P3 - BIS (Offensive)', P3BISOffensiveGear);
+export const P3_BALANCED_PRESET = PresetUtils.makePresetGear('P3 - BIS (TBD)', P3BISGear);
+export const P3_OFFENSIVE_PRESET = PresetUtils.makePresetGear('P3 - BIS (TBD - Offensive)', P3BISOffensiveGear);
 
 export const PRERAID_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('Pre-raid - Item Swap', PreRaidItemSwapGear);
 export const P1_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P1 - Item Swap', P1BISItemSwapGear);
@@ -141,48 +140,48 @@ export const OtherDefaults = {
 export const PRESET_BUILD_GARAJAL = PresetUtils.makePresetBuildFromJSON("Pre-Raid - Gara'jal", Spec.SpecProtectionWarrior, GarajalBuild);
 export const PRESET_BUILD_SHA = PresetUtils.makePresetBuildFromJSON('P2 - Sha of Fear', Spec.SpecProtectionWarrior, ShaBuild);
 
-const TEMP_P3_STATIC_ENCOUNTER = PresetUtils.makePresetEncounter('P3 (TBD)', {
-	...Encounter.defaultEncounterProto(),
-	targets: [
-		{
-			...Encounter.defaultTargetProto(),
-			minBaseDamage: 950000,
-		},
-	],
-});
+// const TEMP_P3_STATIC_ENCOUNTER = PresetUtils.makePresetEncounter('P3 (TBD)', {
+// 	...Encounter.defaultEncounterProto(),
+// 	targets: [
+// 		{
+// 			...Encounter.defaultTargetProto(),
+// 			minBaseDamage: 950000,
+// 		},
+// 	],
+// });
 
-export const PRESET_BUILD_P3_BIS_OFFENSIVE = PresetUtils.makePresetBuild('P3 - BIS - Offensive (TBD)', {
-	gear: P3_OFFENSIVE_PRESET,
-	talents: StandardTalents,
-	rotation: ROTATION_GENERIC,
-	settings: {
-		name: 'P3 - BIS',
-		consumables: ConsumesSpec.create({
-			...DefaultConsumables,
-			flaskId: undefined,
-			battleElixirId: 76076, // Mad Hozen Elixir
-			guardianElixirId: 76081, // Elixir of Mirrors
-			foodId: 74646, // Black Pepper Rib and Shrimp
-			prepotId: 76095, // Potion of Mogu Power
-			potId: 76095, // Potion of Mogu Power
-			conjuredId: 5512, // Healthstone
-		}),
-	},
-	encounter: TEMP_P3_STATIC_ENCOUNTER,
-});
+// export const PRESET_BUILD_P3_BIS_OFFENSIVE = PresetUtils.makePresetBuild('P3 - BIS - Offensive (TBD)', {
+// 	gear: P3_OFFENSIVE_PRESET,
+// 	talents: StandardTalents,
+// 	rotation: ROTATION_GENERIC,
+// 	settings: {
+// 		name: 'P3 - BIS',
+// 		consumables: ConsumesSpec.create({
+// 			...DefaultConsumables,
+// 			flaskId: undefined,
+// 			battleElixirId: 76076, // Mad Hozen Elixir
+// 			guardianElixirId: 76081, // Elixir of Mirrors
+// 			foodId: 74646, // Black Pepper Rib and Shrimp
+// 			prepotId: 76095, // Potion of Mogu Power
+// 			potId: 76095, // Potion of Mogu Power
+// 			conjuredId: 5512, // Healthstone
+// 		}),
+// 	},
+// 	encounter: TEMP_P3_STATIC_ENCOUNTER,
+// });
 
-export const PRESET_BUILD_P3_BIS = PresetUtils.makePresetBuild('P3 - BIS (TBD)', {
-	gear: P3_BALANCED_PRESET,
-	talents: StandardTalents,
-	rotation: ROTATION_GENERIC,
-	settings: {
-		name: 'P3 - BIS',
-		consumables: ConsumesSpec.create({
-			...DefaultConsumables,
-			flaskId: undefined,
-			battleElixirId: 76076, // Mad Hozen Elixir
-			guardianElixirId: 76081, // Elixir of Mirrors
-		}),
-	},
-	encounter: TEMP_P3_STATIC_ENCOUNTER,
-});
+// export const PRESET_BUILD_P3_BIS = PresetUtils.makePresetBuild('P3 - BIS (TBD)', {
+// 	gear: P3_BALANCED_PRESET,
+// 	talents: StandardTalents,
+// 	rotation: ROTATION_GENERIC,
+// 	settings: {
+// 		name: 'P3 - BIS',
+// 		consumables: ConsumesSpec.create({
+// 			...DefaultConsumables,
+// 			flaskId: undefined,
+// 			battleElixirId: 76076, // Mad Hozen Elixir
+// 			guardianElixirId: 76081, // Elixir of Mirrors
+// 		}),
+// 	},
+// 	encounter: TEMP_P3_STATIC_ENCOUNTER,
+// });
