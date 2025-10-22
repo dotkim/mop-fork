@@ -12,6 +12,7 @@ import { IndividualImporter } from './individual_importer';
 import i18n from '../../../../i18n/config';
 
 export class IndividualAddonImporter<SpecType extends Spec> extends IndividualImporter<SpecType> {
+	static WSE_VERSION = getWSEVersion();
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
 		super(parent, simUI, { title: i18n.t('import.addon.title'), allowFileUpload: true });
 
@@ -54,6 +55,10 @@ export class IndividualAddonImporter<SpecType extends Spec> extends IndividualIm
 			importJson = JSON.parse(data);
 		} catch {
 			throw new Error('Please use a valid Addon export.');
+		}
+
+		if (((importJson['version'] as string) || '') != await IndividualAddonImporter.WSE_VERSION) {
+			new Toast({ variant: 'warning', body: `Addon is not up to date. Addon version : '${importJson['version']}', Latest version : '${await IndividualAddonImporter.WSE_VERSION}'` });
 		}
 
 		// Parse all the settings.
@@ -133,4 +138,13 @@ function glyphToID(glyph: string | JsonObject, db: Database, glyphsConfig: Recor
 
 	// Cata version exports glyph information in a table that includes the name and the glyph spell ID.
 	return db.glyphSpellToItemId(glyph.spellID as number);
+}
+
+function getWSEVersion(): Promise<string> {
+	return fetch('https://api.github.com/repos/wowsims/exporter/releases/latest')
+		.then(resp => {
+			return resp.json().then(json => {
+				return json.tag_name as string
+			})
+		})
 }
