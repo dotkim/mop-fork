@@ -147,9 +147,6 @@ function getWSEVersion(): Promise<string|null> {
 			return resp.json().then(json => {
 				return json.tag_name as string;
 			})
-			.catch(_ => {
-				return null;
-			})
 		})
 		.catch(_ => {
 			return null;
