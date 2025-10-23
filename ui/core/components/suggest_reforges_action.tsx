@@ -1748,6 +1748,10 @@ export class ReforgeOptimizer {
 			}
 		}
 
+		if (this.includeGems && this.previousGear) {
+			updatedGear = ReforgeOptimizer.minimizeRegems(updatedGear, this.previousGear, this.player.isBlacksmithing());
+		}
+
 		await this.updateGear(updatedGear);
 		return updatedGear;
 	}
@@ -1839,6 +1843,55 @@ export class ReforgeOptimizer {
 		}
 
 		return [anyCapsExceeded, updatedConstraints, updatedWeights];
+	}
+
+	static minimizeRegems(newGear: Gear, originalGear: Gear, isBlacksmithing: boolean): Gear {
+		const finalizedSocketKeys: string[] = [];
+
+		for (const slot of newGear.getItemSlots()) {
+			const newItem = newGear.getEquippedItem(slot);
+			const originalItem = originalGear.getEquippedItem(slot);
+
+			if (!newItem || !originalItem) {
+				continue;
+			}
+
+			const newGems = newItem.curGems(isBlacksmithing);
+			const originalGems = originalItem.curGems(isBlacksmithing);
+
+			for (const [socketIdx, socketColor] of newItem.curSocketColors(isBlacksmithing).entries()) {
+				const socketKey = `${slot}_${socketIdx}`;
+
+				if (finalizedSocketKeys.includes(socketKey)) {
+					continue;
+				}
+
+				finalizedSocketKeys.push(socketKey);
+
+				if (!newGems[socketIdx] || !originalGems[socketIdx] || (newGems[socketIdx]!.id === originalGems[socketIdx]!.id)) {
+					continue;
+				}
+
+				if (!gemMatchesSocket(originalGems[socketIdx]!, socketColor)) {
+					continue;
+				}
+
+				for (const [matchedSlot, matchedSocketIdx] of newGear.findGem(originalGems[socketIdx]!, isBlacksmithing)) {
+					const matchedSocketKey = `${matchedSlot}_${matchedSocketIdx}`;
+
+					if (finalizedSocketKeys.includes(matchedSocketKey)) {
+						continue;
+					}
+
+					finalizedSocketKeys.push(matchedSocketKey);
+					newGear = newGear.withGem(slot, socketIdx, originalGems[socketIdx]);
+					newGear = newGear.withGem(matchedSlot, matchedSocketIdx, newGems[socketIdx]);
+					break;
+				}
+			}
+		}
+
+		return newGear;
 	}
 
 	private get baseMastery() {
