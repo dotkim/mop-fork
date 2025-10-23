@@ -1,0 +1,54 @@
+kind: pipeline
+type: docker
+name: build-cli-upload
+
+steps:
+  - name: setup-go
+    image: golang:1.22
+    commands:
+      - go env -w GOPRIVATE=${GOPRIVATE}
+      - go version
+      - go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.34.2
+      - apt-get update && apt-get install -y --no-install-recommends unzip ca-certificates curl git && rm -rf /var/lib/apt/lists/*
+      - |
+        if ! command -v protoc >/dev/null 2>&1; then
+          # Install a recent protoc
+          PROTOC_VERSION=${PROTOC_VERSION:-24.4}
+          curl -sSL -o /tmp/protoc.zip https://github.com/protocolbuffers/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip
+          unzip -o /tmp/protoc.zip -d /usr/local >/dev/null
+          rm -f /tmp/protoc.zip
+        fi
+
+  - name: gen-protos
+    image: golang:1.22
+    commands:
+      - protoc -I=./proto --go_out=./sim/core ./proto/*.proto
+
+  - name: build-cli
+    image: golang:1.22
+    environment:
+      CGO_ENABLED: 0
+    commands:
+      - go mod download
+      - go build -tags=with_db -o wowsimcli ./cmd/wowsimcli
+
+  - name: upload-to-minio
+    image: minio/mc
+    environment:
+      MINIO_ALIAS: ${MINIO_ALIAS:-minio}
+      MINIO_URL: ${MINIO_URL}
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+      MINIO_BUCKET: ${MINIO_BUCKET:-artifacts}
+      OUT_PATH: ${OUT_PATH:-cli/wowsimcli}
+    commands:
+      - mc alias set "$MINIO_ALIAS" "$MINIO_URL" "$MINIO_ACCESS_KEY" "$MINIO_SECRET_KEY"
+      - mc mb -p "$MINIO_ALIAS/$MINIO_BUCKET" || true
+      - mc cp --attr "version=${CI_COMMIT_SHA}" wowsimcli "$MINIO_ALIAS/$MINIO_BUCKET/$OUT_PATH-${CI_COMMIT_SHA}"
+      - mc cp wowsimcli "$MINIO_ALIAS/$MINIO_BUCKET/$OUT_PATH-latest"
+
+when:
+  event:
+    - push
+    - manual
+    - cron

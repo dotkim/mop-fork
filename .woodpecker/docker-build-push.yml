@@ -1,0 +1,28 @@
+kind: pipeline
+type: docker
+name: docker-build-and-push
+
+# Note: Woodpecker cron schedules are created in the server/UI.
+# Create a cron named "six-hourly-15" with schedule: 15 */6 * * *
+# This pipeline is filtered to run only for that cron event.
+
+steps:
+  - name: docker-build-push
+    image: woodpeckerci/plugin-docker-buildx
+    privileged: true
+    settings:
+      # Local, insecure registry
+      registry: ${REGISTRY:-registry:5000}
+      repo: ${REGISTRY:-registry:5000}/${IMAGE_NAME:-mop}
+      dockerfile: Dockerfile
+      context: .
+      insecure: true
+      # Tag latest and short SHA; avoid bash substring, plugin supports templating
+      tags:
+        - latest
+        - ${CI_COMMIT_SHA}
+    when:
+      event:
+        - cron
+      cron:
+        - six-hourly-15
