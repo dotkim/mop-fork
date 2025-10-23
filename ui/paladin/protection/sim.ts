@@ -12,10 +12,6 @@ import { defaultRaidBuffMajorDamageCooldowns } from '../../core/proto_utils/util
 import * as PaladinInputs from '../inputs.js';
 import * as Presets from './presets.js';
 
-const getEPDefaults = (_: Player<Spec.SpecProtectionPaladin>) => {
-	return Presets.P1_BALANCED_EP_PRESET.epWeights;
-};
-
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 	cssClass: 'protection-paladin-sim-ui',
 	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Paladin),
@@ -211,7 +207,6 @@ export class ProtectionPaladinSimUI extends IndividualSimUI<Spec.SpecProtectionP
 
 		player.sim.waitForInit().then(() => {
 			this.reforger = new ReforgeOptimizer(this, {
-				getEPDefaults,
 				updateSoftCaps: softCaps => {
 					softCaps[0].postCapEPs[0] = player.getEpWeights().getStat(Stat.StatExpertiseRating) * 0.9;
 					return softCaps;

@@ -190,16 +190,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 	],
 });
 
-const getActiveEPWeight = (player: Player<Spec.SpecBrewmasterMonk>, sim: Sim): Stats => {
-	if (sim.getUseCustomEPValues()) {
-		return player.getEpWeights();
-	} else if (player.getEpWeights().equals(Presets.P2_OFFENSIVE_EP_PRESET.epWeights)) {
-		return Presets.P2_OFFENSIVE_EP_PRESET.epWeights;
-	} else {
-		return Presets.P1_BALANCED_EP_PRESET.epWeights;
-	}
-};
-
 export class BrewmasterMonkSimUI extends IndividualSimUI<Spec.SpecBrewmasterMonk> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecBrewmasterMonk>) {
 		super(parentElem, player, SPEC_CONFIG);
@@ -210,11 +200,7 @@ export class BrewmasterMonkSimUI extends IndividualSimUI<Spec.SpecBrewmasterMonk
 		});
 
 		player.sim.waitForInit().then(() => {
-			this.reforger = new ReforgeOptimizer(this, {
-				getEPDefaults: (player: Player<Spec.SpecBrewmasterMonk>) => {
-					return getActiveEPWeight(player, this.sim);
-				},
-			});
+			this.reforger = new ReforgeOptimizer(this);
 		});
 	}
 }

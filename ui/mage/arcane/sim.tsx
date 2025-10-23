@@ -165,10 +165,6 @@ export class ArcaneMageSimUI extends IndividualSimUI<Spec.SpecArcaneMage> {
 				statSelectionPresets: statSelectionPresets,
 				enableBreakpointLimits: true,
 				getEPDefaults: player => {
-					if (this.sim.getUseCustomEPValues()) {
-						return player.getEpWeights();
-					}
-
 					const avgIlvl = player.getGear().getAverageItemLevel(false);
 					if (avgIlvl >= 525) {
 						return Presets.P3_BIS_EP_PRESET.epWeights;

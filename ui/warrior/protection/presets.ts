@@ -14,6 +14,7 @@ import P3BISGear from './gear_sets/p3_bis.gear.json';
 import P3BISOffensiveGear from './gear_sets/p3_bis_offensive.gear.json';
 import P1BISItemSwapGear from './gear_sets/p1_bis_item_swap.gear.json';
 import P2BISItemSwapGear from './gear_sets/p2_bis_item_swap.gear.json';
+import P2BISOffensiveGear from './gear_sets/p2_bis_offensive.gear.json';
 import PreRaidItemSwapGear from './gear_sets/p1_preraid_item_swap.gear.json';
 import PreraidBISGear from './gear_sets/preraid.gear.json';
 
@@ -24,6 +25,7 @@ import PreraidBISGear from './gear_sets/preraid.gear.json';
 export const PRERAID_BALANCED_PRESET = PresetUtils.makePresetGear('Pre-raid', PreraidBISGear);
 export const P1_BALANCED_PRESET = PresetUtils.makePresetGear('P1 - BIS', P1BISGear);
 export const P2_BALANCED_PRESET = PresetUtils.makePresetGear('P2 - BIS', P2BISGear);
+export const P2_OFFENSIVE_PRESET = PresetUtils.makePresetGear('P2 - BIS (Offensive)', P2BISOffensiveGear);
 export const P3_BALANCED_PRESET = PresetUtils.makePresetGear('P3 - BIS (TBD)', P3BISGear);
 export const P3_OFFENSIVE_PRESET = PresetUtils.makePresetGear('P3 - BIS (TBD - Offensive)', P3BISOffensiveGear);
 
@@ -36,22 +38,22 @@ export const ROTATION_GARAJAL = PresetUtils.makePresetAPLRotation("Gara'jal", Ga
 export const ROTATION_SHA = PresetUtils.makePresetAPLRotation('Sha of Fear', ShaApl);
 
 // Preset options for EP weights
-export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
+export const P2_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'P2 - Default',
 	Stats.fromMap(
 		{
 			[Stat.StatStrength]: 1,
 			[Stat.StatStamina]: 1.07,
-			[Stat.StatArmor]: 0.55,
-			[Stat.StatBonusArmor]: 0.55,
-			[Stat.StatAttackPower]: 0.33,
+			[Stat.StatHitRating]: 1.78,
 			[Stat.StatCritRating]: 0.7,
+			[Stat.StatHasteRating]: 0.11,
+			[Stat.StatExpertiseRating]: 1.77,
 			[Stat.StatDodgeRating]: 0.82,
 			[Stat.StatParryRating]: 0.82,
-			[Stat.StatHitRating]: 1.78,
-			[Stat.StatExpertiseRating]: 1.77,
-			[Stat.StatHasteRating]: 0.11,
 			[Stat.StatMasteryRating]: 0.19,
+			[Stat.StatAttackPower]: 0.33,
+			[Stat.StatArmor]: 0.55,
+			[Stat.StatBonusArmor]: 0.55,
 		},
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 0.96,
@@ -59,51 +61,74 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	),
 );
 
-export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'P3 - Balanced',
+export const P2_OFFENSIVE_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'P2 - Offensive',
 	Stats.fromMap(
 		{
 			[Stat.StatStrength]: 1,
-			[Stat.StatStamina]: 0.66,
-			[Stat.StatHitRating]: 3.66,
-			[Stat.StatCritRating]: 1.07,
-			[Stat.StatHasteRating]: 0.04,
-			[Stat.StatExpertiseRating]: 3.57,
-			[Stat.StatDodgeRating]: 1.42,
-			[Stat.StatParryRating]: 1.43,
-			[Stat.StatMasteryRating]: 0.29,
-			[Stat.StatAttackPower]: 0.32,
-			[Stat.StatArmor]: 0.55,
-			[Stat.StatBonusArmor]: 0.55,
+			[Stat.StatStamina]: 0.36,
+			[Stat.StatHitRating]: 1.62,
+			[Stat.StatCritRating]: 0.82,
+			[Stat.StatHasteRating]: 0.18,
+			[Stat.StatExpertiseRating]: 1.61,
+			[Stat.StatDodgeRating]: 0.6,
+			[Stat.StatParryRating]: 0.63,
+			[Stat.StatMasteryRating]: 0.07,
+			[Stat.StatAttackPower]: 0.4,
+			[Stat.StatArmor]: 0.18,
+			[Stat.StatBonusArmor]: 0.18,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 0.57,
+			[PseudoStat.PseudoStatMainHandDps]: 1.37,
 		},
 	),
 );
 
-export const P3_OFFENSIVE_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'P3 - Offensive',
-	Stats.fromMap(
-		{
-			[Stat.StatStrength]: 1,
-			[Stat.StatStamina]: 0.37,
-			[Stat.StatHitRating]: 3.56,
-			[Stat.StatCritRating]: 1.41,
-			[Stat.StatHasteRating]: 0.11,
-			[Stat.StatExpertiseRating]: 3.46,
-			[Stat.StatDodgeRating]: 1.38,
-			[Stat.StatParryRating]: 1.39,
-			[Stat.StatMasteryRating]: 0.2,
-			[Stat.StatAttackPower]: 0.34,
-			[Stat.StatArmor]: 0.38,
-			[Stat.StatBonusArmor]: 0.38,
-		},
-		{
-			[PseudoStat.PseudoStatMainHandDps]: 0.78,
-		},
-	),
-);
+// export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
+// 	'P3 - Balanced',
+// 	Stats.fromMap(
+// 		{
+// 			[Stat.StatStrength]: 1,
+// 			[Stat.StatStamina]: 0.66,
+// 			[Stat.StatHitRating]: 3.66,
+// 			[Stat.StatCritRating]: 1.07,
+// 			[Stat.StatHasteRating]: 0.04,
+// 			[Stat.StatExpertiseRating]: 3.57,
+// 			[Stat.StatDodgeRating]: 1.42,
+// 			[Stat.StatParryRating]: 1.43,
+// 			[Stat.StatMasteryRating]: 0.29,
+// 			[Stat.StatAttackPower]: 0.32,
+// 			[Stat.StatArmor]: 0.55,
+// 			[Stat.StatBonusArmor]: 0.55,
+// 		},
+// 		{
+// 			[PseudoStat.PseudoStatMainHandDps]: 0.57,
+// 		},
+// 	),
+// );
+
+// export const P3_OFFENSIVE_EP_PRESET = PresetUtils.makePresetEpWeights(
+// 	'P3 - Offensive',
+// 	Stats.fromMap(
+// 		{
+// 			[Stat.StatStrength]: 1,
+// 			[Stat.StatStamina]: 0.37,
+// 			[Stat.StatHitRating]: 3.56,
+// 			[Stat.StatCritRating]: 1.41,
+// 			[Stat.StatHasteRating]: 0.11,
+// 			[Stat.StatExpertiseRating]: 3.46,
+// 			[Stat.StatDodgeRating]: 1.38,
+// 			[Stat.StatParryRating]: 1.39,
+// 			[Stat.StatMasteryRating]: 0.2,
+// 			[Stat.StatAttackPower]: 0.34,
+// 			[Stat.StatArmor]: 0.38,
+// 			[Stat.StatBonusArmor]: 0.38,
+// 		},
+// 		{
+// 			[PseudoStat.PseudoStatMainHandDps]: 0.78,
+// 		},
+// 	),
+// );
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/mop-classic/talent-calc and copy the numbers in the url.
