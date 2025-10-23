@@ -172,17 +172,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWindwalkerMonk, {
 const hasTwoHandMainHand = (player: Player<Spec.SpecWindwalkerMonk>): boolean =>
 	player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item?.handType === HandType.HandTypeTwoHand;
 
-const getActiveEPWeight = (player: Player<Spec.SpecWindwalkerMonk>, sim: Sim): Stats => {
-	if (sim.getUseCustomEPValues()) {
-		return player.getEpWeights();
-	} else {
-		if (RelativeStatCap.hasRoRo(player)) {
-			return Presets.RORO_BIS_EP_PRESET.epWeights;
-		}
-		return Presets.P1_BIS_EP_PRESET.epWeights;
-	}
-};
-
 export class WindwalkerMonkSimUI extends IndividualSimUI<Spec.SpecWindwalkerMonk> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecWindwalkerMonk>) {
 		super(parentElem, player, SPEC_CONFIG);
@@ -196,7 +185,10 @@ export class WindwalkerMonkSimUI extends IndividualSimUI<Spec.SpecWindwalkerMonk
 			this.reforger = new ReforgeOptimizer(this, {
 				defaultRelativeStatCap: Stat.StatMasteryRating,
 				getEPDefaults: (player: Player<Spec.SpecWindwalkerMonk>) => {
-					return getActiveEPWeight(player, this.sim);
+					if (RelativeStatCap.hasRoRo(player)) {
+						return Presets.RORO_BIS_EP_PRESET.epWeights;
+					}
+					return player.getSpecConfig().defaults.epWeights;
 				},
 				updateSoftCaps: (softCaps: StatCap[]) => {
 					if (hasTwoHandMainHand(player)) {

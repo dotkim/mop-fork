@@ -392,7 +392,15 @@ export class ReforgeOptimizer {
 	}
 
 	get preCapEPs(): Stats {
-		let weights = this.sim.getUseCustomEPValues() ? this.player.getEpWeights() : this.getEPDefaults?.(this.player) || this.defaults.epWeights;
+		let weights = this.player.getEpWeights();
+
+		if (!this.player.sim.getUseCustomEPValues()) {
+			if (this.getEPDefaults) {
+				weights = this.getEPDefaults?.(this.player);
+			} else if (!this.player.getSpecConfig().presets.epWeights.some(epw => epw.epWeights.equals(weights))) {
+				weights = this.defaults.epWeights;
+			}
+		}
 
 		// Replace Spirit EP for hybrid casters with a small value in order to break ties between Spirit and Hit Reforges
 		if (this.isHybridCaster) {
@@ -1867,7 +1875,7 @@ export class ReforgeOptimizer {
 
 				finalizedSocketKeys.push(socketKey);
 
-				if (!newGems[socketIdx] || !originalGems[socketIdx] || (newGems[socketIdx]!.id === originalGems[socketIdx]!.id)) {
+				if (!newGems[socketIdx] || !originalGems[socketIdx] || newGems[socketIdx]!.id === originalGems[socketIdx]!.id) {
 					continue;
 				}
 
