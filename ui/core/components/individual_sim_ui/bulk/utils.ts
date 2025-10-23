@@ -32,24 +32,6 @@ export const getBulkItemSlots = (canDualWield: boolean) => {
 	}
 };
 
-export const bulkSimSlotNames: Map<BulkSimItemSlot, string> = new Map([
-	[BulkSimItemSlot.ItemSlotHead, 'Head'],
-	[BulkSimItemSlot.ItemSlotNeck, 'Neck'],
-	[BulkSimItemSlot.ItemSlotShoulder, 'Shoulders'],
-	[BulkSimItemSlot.ItemSlotBack, 'Back'],
-	[BulkSimItemSlot.ItemSlotChest, 'Chest'],
-	[BulkSimItemSlot.ItemSlotWrist, 'Wrist'],
-	[BulkSimItemSlot.ItemSlotHands, 'Hands'],
-	[BulkSimItemSlot.ItemSlotWaist, 'Waist'],
-	[BulkSimItemSlot.ItemSlotLegs, 'Legs'],
-	[BulkSimItemSlot.ItemSlotFeet, 'Feet'],
-	[BulkSimItemSlot.ItemSlotFinger, 'Rings'],
-	[BulkSimItemSlot.ItemSlotTrinket, 'Trinkets'],
-	[BulkSimItemSlot.ItemSlotMainHand, 'Main Hand'],
-	[BulkSimItemSlot.ItemSlotOffHand, 'Off Hand'],
-	[BulkSimItemSlot.ItemSlotHandWeapon, 'Weapons'],
-]);
-
 export const itemSlotToBulkSimItemSlot: Map<ItemSlot, BulkSimItemSlot> = new Map([
 	[ItemSlot.ItemSlotHead, BulkSimItemSlot.ItemSlotHead],
 	[ItemSlot.ItemSlotNeck, BulkSimItemSlot.ItemSlotNeck],
