@@ -952,8 +952,8 @@ export class BulkTab extends SimTab {
 		if (frozenRingDiv.value)
 			new EnumPicker<BulkTab>(frozenRingDiv.value, this, {
 				id: 'freeze-ring',
-				label: 'Freeze ring slot',
-				labelTooltip: 'Freeze one equipped ring to reduce combination counts',
+				label: i18n.t('bulk_tab.settings.freeze_ring.label'),
+				labelTooltip: i18n.t('bulk_tab.settings.freeze_ring.tooltip'),
 				values: [
 					{ name: i18n.t('common.none'), value: -1 },
 					{ name: i18n.t('gear_tab.slots.finger_1'), value: ItemSlot.ItemSlotFinger1 },
@@ -996,8 +996,8 @@ export class BulkTab extends SimTab {
 		if (frozenTrinketDiv.value)
 			new EnumPicker<BulkTab>(frozenTrinketDiv.value, this, {
 				id: 'freeze-trinket',
-				label: 'Freeze trinket slot',
-				labelTooltip: 'Freeze one equipped trinket to reduce combination counts',
+				label: i18n.t('bulk_tab.settings.freeze_trinket.label'),
+				labelTooltip: i18n.t('bulk_tab.settings.freeze_trinket.tooltip'),
 				values: [
 					{ name: i18n.t('common.none'), value: -1 },
 					{ name: i18n.t('gear_tab.slots.trinket_1'), value: ItemSlot.ItemSlotTrinket1 },

@@ -585,7 +585,7 @@ export class ReforgeOptimizer {
 				const useCustomEPValuesInput = new BooleanPicker(null, this.player, {
 					extraCssClasses: ['mb-2'],
 					id: 'reforge-optimizer-enable-custom-ep-weights',
-					label: i18n.t('sidebar.buttons.stat_weights.ep_weights.use_custom'),
+					label: i18n.t('sidebar.buttons.suggest_reforges.use_custom'),
 					inline: true,
 					changedEvent: () => this.sim.useCustomEPValuesChangeEmitter,
 					getValue: () => this.sim.getUseCustomEPValues(),
@@ -665,7 +665,7 @@ export class ReforgeOptimizer {
 				const includeGemsInput = new BooleanPicker(null, this.player, {
 					extraCssClasses: ['mb-2'],
 					id: 'reforge-optimizer-include-gems',
-					label: i18n.t('sidebar.buttons.stat_weights.ep_weights.options.include_gems'),
+					label: i18n.t('sidebar.buttons.suggest_reforges.include_gems'),
 					labelTooltip: i18n.t('sidebar.buttons.suggest_reforges.optimize_gems_tooltip'),
 					inline: true,
 					changedEvent: () => this.includeGemsChangeEmitter,
@@ -687,8 +687,8 @@ export class ReforgeOptimizer {
 				const includeEOTBPGemSocket = new BooleanPicker(null, this.player, {
 					extraCssClasses: ['mb-2'],
 					id: 'reforge-optimizer-include-eotbp-socket',
-					label: 'Include EotBP Socket',
-					labelTooltip: 'Allows the optimiser to also include the "Eye of the Black Prince" socket in the optimization.',
+					label: i18n.t('sidebar.buttons.suggest_reforges.include_eotbp_socket'),
+					labelTooltip: i18n.t('sidebar.buttons.suggest_reforges.include_eotbp_socket_tooltip'),
 					inline: true,
 					changedEvent: () =>
 						TypedEvent.onAny([this.includeGemsChangeEmitter, this.includeEOTBPGemSocketChangeEmitter, this.player.gearChangeEmitter]),
@@ -702,7 +702,7 @@ export class ReforgeOptimizer {
 				const freezeItemSlotsInput = new BooleanPicker(null, this.player, {
 					extraCssClasses: ['mb-2'],
 					id: 'reforge-optimizer-freeze-item-slots',
-					label: i18n.t('sidebar.buttons.stat_weights.ep_weights.options.freeze_item_slots'),
+					label: i18n.t('sidebar.buttons.suggest_reforges.freeze_item_slots'),
 					labelTooltip: i18n.t('sidebar.buttons.suggest_reforges.freeze_item_slots_tooltip'),
 					inline: true,
 					changedEvent: () => this.freezeItemSlotsChangeEmitter,
@@ -721,9 +721,8 @@ export class ReforgeOptimizer {
 				const includeTimeoutInput = new BooleanPicker(null, this.player, {
 					extraCssClasses: ['mb-2'],
 					id: 'reforge-optimizer-include-timeout',
-					label: 'Limit execution time',
-					labelTooltip:
-						'If checked, the solver will error out if the total computation time exceeds 30 seconds. If unchecked, then total computation time will be capped at 1 hour instead.',
+					label: i18n.t('sidebar.buttons.suggest_reforges.limit_execution_time'),
+					labelTooltip: i18n.t('sidebar.buttons.suggest_reforges.limit_execution_time_tooltip'),
 					inline: true,
 					changedEvent: () => TypedEvent.onAny([this.includeTimeoutChangeEmitter, this.includeGemsChangeEmitter]),
 					getValue: () => this.includeTimeout,
@@ -737,9 +736,9 @@ export class ReforgeOptimizer {
 					<>
 						{useCustomEPValuesInput.rootElem}
 						<div ref={descriptionRef} className={clsx('mb-0', this.sim.getUseCustomEPValues() && 'hide')}>
-							<p>{i18n.t('sidebar.buttons.stat_weights.ep_weights.description.enable_modification')}</p>
-							<p>{i18n.t('sidebar.buttons.stat_weights.ep_weights.description.modify_in_editor')}</p>
-							<p>{i18n.t('sidebar.buttons.stat_weights.ep_weights.description.hard_cap_info')}</p>
+							<p>{i18n.t('sidebar.buttons.suggest_reforges.enable_modification')}</p>
+							<p>{i18n.t('sidebar.buttons.suggest_reforges.modify_in_editor')}</p>
+							<p>{i18n.t('sidebar.buttons.suggest_reforges.hard_cap_info')}</p>
 						</div>
 						{this.buildCapsList({
 							useCustomEPValuesInput: useCustomEPValuesInput,
@@ -1004,7 +1003,7 @@ export class ReforgeOptimizer {
 							this.simUI.epWeightsModal?.open();
 							hideAll();
 						}}>
-						{i18n.t('sidebar.buttons.stat_weights.ep_weights.buttons.edit_weights')}
+						{i18n.t('sidebar.buttons.suggest_reforges.edit_weights')}
 					</button>
 				)}
 			</>
