@@ -14,6 +14,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: sync-upstream
+  cancel-in-progress: true
+
 jobs:
   sync:
     runs-on: ubuntu-latest
@@ -35,9 +39,24 @@ jobs:
           fi
           git remote -v
 
+      - name: Prepare repo (safe dir, clear locks)
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE" || true
+          rm -f .git/index.lock || true
+          # If FETCH_HEAD has bad permissions or is corrupt, remove it; directory perms control unlink
+          rm -f .git/FETCH_HEAD || true
+
       - name: Fetch all remotes
         run: |
-          git fetch --all --prune
+          # Retry fetch to handle transient network/lock issues
+          for i in 1 2 3; do
+            if git fetch --all --prune; then
+              break
+            fi
+            echo "Fetch attempt $i failed; retrying in 3s..."
+            sleep 3
+            rm -f .git/index.lock .git/FETCH_HEAD || true
+          done
 
       - name: Determine branches to sync
         id: branches
@@ -58,15 +77,19 @@ jobs:
           while IFS= read -r BR; do
             echo "== Syncing branch: $BR =="
 
-            # Ensure local branch exists, tracking origin if present
+            # Ensure local branch exists
             if git show-ref --verify --quiet "refs/heads/$BR"; then
               git checkout "$BR"
             elif git ls-remote --exit-code --heads origin "$BR" >/dev/null 2>&1; then
               git checkout -b "$BR" "origin/$BR"
             else
-              # Create orphan branch if neither local nor remote exists
-              git checkout --orphan "$BR"
-              git reset --hard
+              # If upstream has the branch, base it on upstream. Only orphan if nowhere exists.
+              if git ls-remote --exit-code --heads upstream "$BR" >/dev/null 2>&1; then
+                git checkout -b "$BR" "upstream/$BR"
+              else
+                git checkout --orphan "$BR"
+                git reset --hard
+              fi
             fi
 
             # Fetch upstream branch
