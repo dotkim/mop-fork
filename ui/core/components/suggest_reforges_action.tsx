@@ -1871,7 +1871,7 @@ export class ReforgeOptimizer {
 					continue;
 				}
 
-				if (!gemMatchesSocket(originalGems[socketIdx]!, socketColor)) {
+				if (gemMatchesSocket(newGems[socketIdx]!, socketColor) && !gemMatchesSocket(originalGems[socketIdx]!, socketColor)) {
 					continue;
 				}
 
@@ -1879,6 +1879,12 @@ export class ReforgeOptimizer {
 					const matchedSocketKey = `${matchedSlot}_${matchedSocketIdx}`;
 
 					if (finalizedSocketKeys.includes(matchedSocketKey)) {
+						continue;
+					}
+
+					const matchedSocketColor = newGear.getEquippedItem(matchedSlot)!.curSocketColors(isBlacksmithing)[matchedSocketIdx];
+
+					if (gemMatchesSocket(originalGems[socketIdx]!, matchedSocketColor) && !gemMatchesSocket(newGems[socketIdx]!, matchedSocketColor)) {
 						continue;
 					}
 
