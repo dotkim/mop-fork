@@ -1,0 +1,118 @@
+name: Sync upstream
+
+on:
+  schedule:
+    # Every 6 hours (4 times per day)
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      branches:
+        description: 'Comma-separated branches to sync (default: master)'
+        required: false
+        default: 'master'
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure git author
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Add upstream remote if missing
+        run: |
+          if ! git remote get-url upstream >/dev/null 2>&1; then
+            git remote add upstream https://github.com/wowsims/mop.git
+          fi
+          git remote -v
+
+      - name: Fetch all remotes
+        run: |
+          git fetch --all --prune
+
+      - name: Determine branches to sync
+        id: branches
+        run: |
+          if [ -n "${{ github.event.inputs.branches }}" ]; then
+            BRANCHES="${{ github.event.inputs.branches }}"
+          else
+            BRANCHES="master"
+          fi
+          # Normalize commas + spaces to newlines
+          echo "$BRANCHES" | tr ', ' '\n' | sed '/^\s*$/d' > /tmp/branches.txt
+          echo "branches=$(paste -sd, /tmp/branches.txt)" >> "$GITHUB_OUTPUT"
+          echo "Will sync branches:" && cat /tmp/branches.txt
+
+      - name: Sync branches
+        run: |
+          set -euo pipefail
+          while IFS= read -r BR; do
+            echo "== Syncing branch: $BR =="
+
+            # Ensure local branch exists, tracking origin if present
+            if git show-ref --verify --quiet "refs/heads/$BR"; then
+              git checkout "$BR"
+            elif git ls-remote --exit-code --heads origin "$BR" >/dev/null 2>&1; then
+              git checkout -b "$BR" "origin/$BR"
+            else
+              # Create orphan branch if neither local nor remote exists
+              git checkout --orphan "$BR"
+              git reset --hard
+            fi
+
+            # Fetch upstream branch
+            if git ls-remote --exit-code --heads upstream "$BR" >/dev/null 2>&1; then
+              git fetch upstream "$BR":"refs/remotes/upstream/$BR"
+            else
+              echo "Upstream branch '$BR' not found, skipping." >&2
+              continue
+            fi
+
+            # Try fast-forward merge first
+            if git merge --ff-only "upstream/$BR"; then
+              echo "Fast-forwarded $BR to upstream/$BR"
+            else
+              echo "Fast-forward not possible on $BR; rebasing to keep linear history"
+              git rebase "upstream/$BR" || {
+                echo "Rebase failed; aborting and doing a merge commit"
+                git rebase --abort || true
+                git merge --no-edit "upstream/$BR"
+              }
+            fi
+
+            # Strip any upstream GitHub workflows, keep only our sync workflow
+            if [ -d .github/workflows ]; then
+              git ls-files .github/workflows > /tmp/wf_all.txt || true
+              # Remove everything except our workflow file
+              grep -vxF '.github/workflows/sync-upstream.yml' /tmp/wf_all.txt > /tmp/wf_remove.txt || true
+              if [ -s /tmp/wf_remove.txt ]; then
+                echo "Removing upstream workflows:"
+                cat /tmp/wf_remove.txt
+                xargs -d '\n' git rm -f < /tmp/wf_remove.txt
+                git commit -m "chore(ci): strip upstream workflows [skip ci]" || true
+              else
+                echo "No upstream workflows to strip."
+              fi
+            else
+              echo "No .github/workflows directory present."
+            fi
+
+            # Push back to origin
+            git push origin "$BR" --force-with-lease
+
+            # Maintain an upstream mirror branch for reference (optional)
+            git push origin "refs/remotes/upstream/$BR:refs/heads/upstream-$BR" --force
+          done < /tmp/branches.txt
+
+      - name: Summary
+        run: |
+          echo "Upstream sync completed at $(date -u)" >> $GITHUB_STEP_SUMMARY
