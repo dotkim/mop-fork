@@ -192,15 +192,8 @@ export class RelativeStatCap {
 	}
 
 	updateWeights(statWeights: Stats) {
-		const averagedWeight = 0.5 * (statWeights.getUnitStat(this.constrainedStats[0]) + statWeights.getUnitStat(this.constrainedStats[1]));
-		const secondaryGemmingThreshold = 0.5 * statWeights.getStat(Stat.StatAgility) + 0.01;
-		const highestStatWeight = averagedWeight > secondaryGemmingThreshold ? secondaryGemmingThreshold : 0;
-
-		for (const stat of RelativeStatCap.relevantStats) {
-			statWeights = statWeights.withStat(stat, this.forcedHighestStat.equalsStat(stat) ? highestStatWeight : averagedWeight);
-		}
-
-		return statWeights;
+		const smallestConstrainedEP = Math.min(statWeights.getUnitStat(this.constrainedStats[0]), statWeights.getUnitStat(this.constrainedStats[1]))
+		return statWeights.withUnitStat(this.forcedHighestStat, Math.min(statWeights.getUnitStat(this.forcedHighestStat), smallestConstrainedEP - 0.01));
 	}
 }
 
