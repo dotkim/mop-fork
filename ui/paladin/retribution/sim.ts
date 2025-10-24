@@ -18,10 +18,6 @@ const getStatCaps = () => {
 	return hitCap.add(expCap);
 };
 
-const getEPDefaults = (_: Player<Spec.SpecRetributionPaladin>) => {
-	return Presets.P1_P2_EP_PRESET.epWeights;
-};
-
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	cssClass: 'retribution-paladin-sim-ui',
 	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Paladin),
@@ -186,9 +182,7 @@ export class RetributionPaladinSimUI extends IndividualSimUI<Spec.SpecRetributio
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
-			this.reforger = new ReforgeOptimizer(this, {
-				getEPDefaults,
-			});
+			this.reforger = new ReforgeOptimizer(this);
 		});
 	}
 }

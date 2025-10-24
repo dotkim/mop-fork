@@ -192,15 +192,8 @@ export class RelativeStatCap {
 	}
 
 	updateWeights(statWeights: Stats) {
-		const averagedWeight = 0.5 * (statWeights.getUnitStat(this.constrainedStats[0]) + statWeights.getUnitStat(this.constrainedStats[1]));
-		const secondaryGemmingThreshold = 0.5 * statWeights.getStat(Stat.StatAgility) + 0.01;
-		const highestStatWeight = averagedWeight > secondaryGemmingThreshold ? secondaryGemmingThreshold : 0;
-
-		for (const stat of RelativeStatCap.relevantStats) {
-			statWeights = statWeights.withStat(stat, this.forcedHighestStat.equalsStat(stat) ? highestStatWeight : averagedWeight);
-		}
-
-		return statWeights;
+		const smallestConstrainedEP = Math.min(statWeights.getUnitStat(this.constrainedStats[0]), statWeights.getUnitStat(this.constrainedStats[1]))
+		return statWeights.withUnitStat(this.forcedHighestStat, Math.min(statWeights.getUnitStat(this.forcedHighestStat), smallestConstrainedEP - 0.01));
 	}
 }
 
@@ -392,7 +385,15 @@ export class ReforgeOptimizer {
 	}
 
 	get preCapEPs(): Stats {
-		let weights = this.sim.getUseCustomEPValues() ? this.player.getEpWeights() : this.getEPDefaults?.(this.player) || this.defaults.epWeights;
+		let weights = this.player.getEpWeights();
+
+		if (!this.player.sim.getUseCustomEPValues()) {
+			if (this.getEPDefaults) {
+				weights = this.getEPDefaults?.(this.player);
+			} else if (!this.player.getSpecConfig().presets.epWeights.some(epw => epw.epWeights.equals(weights))) {
+				weights = this.defaults.epWeights;
+			}
+		}
 
 		// Replace Spirit EP for hybrid casters with a small value in order to break ties between Spirit and Hit Reforges
 		if (this.isHybridCaster) {
@@ -1867,11 +1868,11 @@ export class ReforgeOptimizer {
 
 				finalizedSocketKeys.push(socketKey);
 
-				if (!newGems[socketIdx] || !originalGems[socketIdx] || (newGems[socketIdx]!.id === originalGems[socketIdx]!.id)) {
+				if (!newGems[socketIdx] || !originalGems[socketIdx] || newGems[socketIdx]!.id === originalGems[socketIdx]!.id) {
 					continue;
 				}
 
-				if (!gemMatchesSocket(originalGems[socketIdx]!, socketColor)) {
+				if (gemMatchesSocket(newGems[socketIdx]!, socketColor) && !gemMatchesSocket(originalGems[socketIdx]!, socketColor)) {
 					continue;
 				}
 
@@ -1879,6 +1880,12 @@ export class ReforgeOptimizer {
 					const matchedSocketKey = `${matchedSlot}_${matchedSocketIdx}`;
 
 					if (finalizedSocketKeys.includes(matchedSocketKey)) {
+						continue;
+					}
+
+					const matchedSocketColor = newGear.getEquippedItem(matchedSlot)!.curSocketColors(isBlacksmithing)[matchedSocketIdx];
+
+					if (gemMatchesSocket(originalGems[socketIdx]!, matchedSocketColor) && !gemMatchesSocket(newGems[socketIdx]!, matchedSocketColor)) {
 						continue;
 					}
 
