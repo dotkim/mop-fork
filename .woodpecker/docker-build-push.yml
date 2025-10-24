@@ -25,5 +25,7 @@ steps:
     when:
       event:
         - cron
+        - push
+        - manual
       cron:
         - six-hourly-15
