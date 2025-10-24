@@ -170,8 +170,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWindwalkerMonk, {
 	],
 });
 
-let hasSoftCapBreakpointsOnInit = false;
-
 const hasTwoHandMainHand = (player: Player<Spec.SpecWindwalkerMonk>): boolean =>
 	player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item?.handType === HandType.HandTypeTwoHand;
 
@@ -185,8 +183,6 @@ export class WindwalkerMonkSimUI extends IndividualSimUI<Spec.SpecWindwalkerMonk
 		});
 
 		player.sim.waitForInit().then(() => {
-			hasSoftCapBreakpointsOnInit = player.sim.getUseSoftCapBreakpoints();
-
 			this.reforger = new ReforgeOptimizer(this, {
 				defaultRelativeStatCap: Stat.StatMasteryRating,
 				getEPDefaults: (player: Player<Spec.SpecWindwalkerMonk>) => {
@@ -194,7 +190,6 @@ export class WindwalkerMonkSimUI extends IndividualSimUI<Spec.SpecWindwalkerMonk
 						player.sim.setUseSoftCapBreakpoints(TypedEvent.nextEventID(), false);
 						return Presets.RORO_BIS_EP_PRESET.epWeights;
 					}
-					if (hasSoftCapBreakpointsOnInit) player.sim.setUseSoftCapBreakpoints(TypedEvent.nextEventID(), true);
 					return Presets.P1_BIS_EP_PRESET.epWeights;
 				},
 				updateSoftCaps: (softCaps: StatCap[]) => {
