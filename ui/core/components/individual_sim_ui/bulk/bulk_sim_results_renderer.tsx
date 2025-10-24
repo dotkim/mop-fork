@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { ref } from 'tsx-vanilla';
 
+import i18n from '../../../../i18n/config';
 import { IndividualSimUI } from '../../../individual_sim_ui';
 import { TypedEvent } from '../../../typed_event';
 import { formatDeltaTextElem, formatToNumber } from '../../../utils';
@@ -31,14 +32,14 @@ export default class BulkSimResultRenderer extends Component {
 					<div className="results-sim-dps damage-metrics">
 						<span className="topline-result-avg">{this.formatDps(result.dpsMetrics.avg)}</span>
 						<div className="results-reference">
-							{isBaseResult ? <span className="fw-bold">Current Gear</span> : <span ref={dpsDeltaRef} className="results-reference-diff" />}
+							{isBaseResult ? <span className="fw-bold">{i18n.t('bulk_tab.results.current_gear')}</span> : <span ref={dpsDeltaRef} className="results-reference-diff" />}
 						</div>
 					</div>
 				</div>
 				<div ref={itemsContainerRef} className="bulk-gear-combo" />
 				<div className="bulk-results-actions">
 					<button ref={equipButtonRef} className={clsx('btn btn-primary bulk-equip-btn', isBaseResult && 'd-none')}>
-						Equip
+						{i18n.t('bulk_tab.results.equip_button')}
 					</button>
 				</div>
 			</>,
@@ -65,7 +66,7 @@ export default class BulkSimResultRenderer extends Component {
 			simUI.simHeader.activateTab('gear-tab');
 			new Toast({
 				variant: 'success',
-				body: 'Batch gear equipped!',
+				body: i18n.t('bulk_tab.results.gear_equipped'),
 			});
 		});
 

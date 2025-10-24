@@ -11,6 +11,7 @@ import { StatCapType } from '../../core/proto/ui';
 import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
 import { defaultRaidBuffMajorDamageCooldowns } from '../../core/proto_utils/utils';
 import { Sim } from '../../core/sim';
+import { TypedEvent } from '../../core/typed_event';
 import * as MonkUtils from '../utils';
 import * as Presets from './presets';
 
@@ -169,19 +170,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWindwalkerMonk, {
 	],
 });
 
+let hasSoftCapBreakpointsOnInit = false;
+
 const hasTwoHandMainHand = (player: Player<Spec.SpecWindwalkerMonk>): boolean =>
 	player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item?.handType === HandType.HandTypeTwoHand;
-
-const getActiveEPWeight = (player: Player<Spec.SpecWindwalkerMonk>, sim: Sim): Stats => {
-	if (sim.getUseCustomEPValues()) {
-		return player.getEpWeights();
-	} else {
-		if (RelativeStatCap.hasRoRo(player)) {
-			return Presets.RORO_BIS_EP_PRESET.epWeights;
-		}
-		return Presets.P1_BIS_EP_PRESET.epWeights;
-	}
-};
 
 export class WindwalkerMonkSimUI extends IndividualSimUI<Spec.SpecWindwalkerMonk> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecWindwalkerMonk>) {
@@ -193,10 +185,17 @@ export class WindwalkerMonkSimUI extends IndividualSimUI<Spec.SpecWindwalkerMonk
 		});
 
 		player.sim.waitForInit().then(() => {
+			hasSoftCapBreakpointsOnInit = player.sim.getUseSoftCapBreakpoints();
+
 			this.reforger = new ReforgeOptimizer(this, {
 				defaultRelativeStatCap: Stat.StatMasteryRating,
 				getEPDefaults: (player: Player<Spec.SpecWindwalkerMonk>) => {
-					return getActiveEPWeight(player, this.sim);
+					if (RelativeStatCap.hasRoRo(player)) {
+						player.sim.setUseSoftCapBreakpoints(TypedEvent.nextEventID(), false);
+						return Presets.RORO_BIS_EP_PRESET.epWeights;
+					}
+					if (hasSoftCapBreakpointsOnInit) player.sim.setUseSoftCapBreakpoints(TypedEvent.nextEventID(), true);
+					return Presets.P1_BIS_EP_PRESET.epWeights;
 				},
 				updateSoftCaps: (softCaps: StatCap[]) => {
 					if (RelativeStatCap.hasRoRo(player)) {

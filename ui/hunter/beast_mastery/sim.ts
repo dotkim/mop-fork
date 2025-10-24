@@ -160,9 +160,6 @@ export class BeastMasteryHunterSimUI extends IndividualSimUI<Spec.SpecBeastMaste
 
 		player.sim.waitForInit().then(() => {
 			this.reforger = new ReforgeOptimizer(this, {
-				getEPDefaults: (_: Player<Spec.SpecBeastMasteryHunter>) => {
-					return Presets.P1_EP_PRESET.epWeights;
-				},
 				updateSoftCaps: softCaps => {
 					// Implement stepped EP reduction for haste breakpoints
 					this.individualConfig.defaults.softCapBreakpoints!.forEach(softCap => {

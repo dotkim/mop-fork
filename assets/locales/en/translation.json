@@ -223,6 +223,20 @@
 			"additional_information": "Additional Information:",
 			"action_has_warnings": "This action has warnings, and might not behave as expected.",
 			"action_has_errors": "This action has errors, and will not behave as expected."
+		},
+		"preset": {
+			"ep_weights": "EP Weights",
+			"gear": "Gear",
+			"talents": "Talents",
+			"rotation": "Rotation",
+			"encounter": "Encounter",
+			"settings": "Settings",
+			"description": "This preset affects the following settings:",
+			"stat_weights": "Stat Weights",
+			"class_spec_options": "Class/Spec Options",
+			"consumables": "Consumables",
+			"other_settings": "Other Settings",
+			"buffs": "Buffs"
 		}
 	},
 	"sim": {
@@ -259,24 +273,6 @@
 	},
 	"gear_tab": {
 		"title": "Gear",
-		"slots": {
-			"head": "Head",
-			"neck": "Neck",
-			"shoulder": "Shoulder",
-			"back": "Back",
-			"chest": "Chest",
-			"wrist": "Wrist",
-			"hands": "Hands",
-			"waist": "Waist",
-			"legs": "Legs",
-			"feet": "Feet",
-			"finger_1": "Ring 1",
-			"finger_2": "Ring 2",
-			"trinket_1": "Trinket 1",
-			"trinket_2": "Trinket 2",
-			"main_hand": "Main Hand",
-			"off_hand": "Off Hand"
-		},
 		"gem_summary": {
 			"title": "Gem Summary",
 			"reset_gems": "Reset gems"
@@ -782,6 +778,14 @@
 			"inherit_upgrades": {
 				"label": "Inherit Upgrades",
 				"tooltip": "When enabled, items will inherit upgrades from the equipped item. Otherwise, items will be simmed without any upgrades."
+			},
+			"freeze_ring": {
+				"label": "Freeze ring slot",
+				"tooltip": "Freeze one equipped ring to reduce combination counts"
+			},
+			"freeze_trinket": {
+				"label": "Freeze trinket slot",
+				"tooltip": "Freeze one equipped trinket to reduce combination counts"
 			}
 		},
 		"progress": {
@@ -798,8 +802,25 @@
 		"warning": {
 			"iterations_limit": "Simming over {{limit}} iterations in the web sim will take a long time or may not run at all. For larger batch sims we recommend using Fast Mode or downloading the executable and running on your machine."
 		},
+		"picker": {
+			"no_items": "No items selected.",
+			"remove_tooltip": "Remove this item from the batch.",
+			"failed_update": "Failed to update item, please report this issue.",
+			"failed_remove": "Failed to remove item, please report this issue."
+		},
 		"results": {
-			"run_simulation": "Run a simulation to view results"
+			"run_simulation": "Run a simulation to view results",
+			"equip_button": "Equip",
+			"gear_equipped": "Batch gear equipped!",
+			"current_gear": "Current Gear"
+		},
+		"gem_selector": {
+			"title": "Choose Default Gem"
+		},
+		"import_modal": {
+			"title": "Bag Item Import",
+			"description_line1": "Import bag items from a JSON file, which can be created by the WowSimsExporter in-game AddOn.",
+			"description_line2": "To import, upload the file or paste the text below, then click, 'Import'."
 		}
 	},
 	"rotation_tab": {
@@ -1592,7 +1613,12 @@
 					"strategy": "Strategy",
 					"buff_type": "Buff Type",
 					"min_icd": "Min ICD",
-					"min_icd_tooltip": "If non-zero, filter out any procs that either lack an ICD or for which the ICD is smaller than the specified value (in seconds). This can be useful for certain snapshotting checks, since procs with low ICDs are often too weak to snapshot."
+					"min_icd_tooltip": "If non-zero, filter out any procs that either lack an ICD or for which the ICD is smaller than the specified value (in seconds). This can be useful for certain snapshotting checks, since procs with low ICDs are often too weak to snapshot.",
+					"include_reaction_time": "Include Reaction Time",
+					"include_reaction_time_tooltip": "If checked, will use the configured reaction time.",
+					"use_base_value": "Use base value",
+					"use_base_value_tooltip": "If checked, will compare the current DoT to the the base value (on encounter start) of the DoT.",
+					"variable_assignment_tooltip": "Value to assign to variable '{{variableName}}'"
 				},
 				"eclipse_types": {
 					"lunar": "Lunar",
@@ -1632,6 +1658,10 @@
 					"pet": "Pet"
 				},
 				"placeholder_tooltip": "The Prepull Potion if CurrentTime < 0, or the Combat Potion if combat has started.",
+				"select_variable": "Select Variable",
+				"select_group": "Select Group",
+				"no_variables_defined": "No variables defined",
+				"no_groups_defined": "No groups defined",
 				"buttons": {
 					"enable_action": "Enable Action",
 					"disable_action": "Disable Action",
@@ -2117,21 +2147,6 @@
 			"simulate": "Simulate",
 			"stat_weights": {
 				"title": "Stat Weights",
-				"ep_weights": {
-					"use_custom": "Use custom EP Weights",
-					"description": {
-						"enable_modification": "This will enable modification of the default EP weights and setting custom stat caps.",
-						"modify_in_editor": "Ep weights can be modified in the Stat Weights editor.",
-						"hard_cap_info": "If you want to hard cap a stat make sure to put the EP for that stat higher."
-					},
-					"buttons": {
-						"edit_weights": "Edit weights"
-					},
-					"options": {
-						"include_gems": "Include gems",
-						"freeze_item_slots": "Freeze item slots"
-					}
-				},
 				"modal": {
 					"title": "Calculate Stat Weights",
 					"ep": "EP",
@@ -2241,7 +2256,18 @@
 				"no_limit_set": "No limit set",
 				"breakpoints_implemented": "The following breakpoints have been implemented for this spec:",
 				"post_cap_ep": "Post cap EP",
-				"reforge_optimization_failed": "Reforge optimization failed. Please try again, or report the issue if it persists."
+				"reforge_optimization_failed": "Reforge optimization failed. Please try again, or report the issue if it persists.",
+				"use_custom": "Use custom EP Weights",
+				"enable_modification": "This will enable modification of the default EP weights and setting custom stat caps.",
+				"modify_in_editor": "Ep weights can be modified in the Stat Weights editor.",
+				"hard_cap_info": "If you want to hard cap a stat make sure to put the EP for that stat higher.",
+				"edit_weights": "Edit weights",
+				"include_gems": "Include gems",
+				"freeze_item_slots": "Freeze item slots",
+				"include_eotbp_socket": "Include EotBP Socket",
+				"include_eotbp_socket_tooltip": "Allows the optimiser to also include the \"Eye of the Black Prince\" socket in the optimization.",
+				"limit_execution_time": "Limit execution time",
+				"limit_execution_time_tooltip": "If checked, the solver will error out if the total computation time exceeds 30 seconds. If unchecked, then total computation time will be capped at 1 hour instead."
 			}
 		},
 		"header": {
