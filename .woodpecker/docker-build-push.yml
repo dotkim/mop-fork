@@ -2,23 +2,25 @@ kind: pipeline
 type: docker
 name: docker-build-and-push
 
-# Note: Woodpecker cron schedules are created in the server/UI.
-# Create a cron named "six-hourly-15" with schedule: 15 */6 * * *
-# This pipeline is filtered to run only for that cron event.
-
 steps:
   - name: docker-build-push
     image: plugins/kaniko
+    environment:
+      REGISTRY:
+        from_secret: registry_url
+      REGISTRY_USER:
+        from_secret: registry_username
+      REGISTRY_PASS:
+        from_secret: registry_password
+      IMAGE_NAME: mop
     settings:
       # Local, insecure registry
-      registry: ${REGISTRY:-registry:5000}
-      repo: ${REGISTRY:-registry:5000}/${IMAGE_NAME:-mop}
+      registry: ${REGISTRY}
+      repo: ${REGISTRY}/${IMAGE_NAME}
+      username: ${REGISTRY_USER}
+      password: ${REGISTRY_PASS}
       dockerfile: Dockerfile
       context: .
-      # Allow pushing to HTTP registry and skip TLS if any
-      insecure: true
-      skip_tls_verify: true
-      # Tags: latest and full commit SHA
       tags:
         - latest
         - ${CI_COMMIT_SHA}
