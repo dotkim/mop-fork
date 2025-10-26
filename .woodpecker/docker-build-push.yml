@@ -23,13 +23,7 @@ steps:
       - '[ -n "$REGISTRY_REPO" ] || { echo "Missing REGISTRY_REPO"; exit 1; }'
       - '[ -n "$REGISTRY_USERNAME" ] || { echo "Missing REGISTRY_USERNAME"; exit 1; }'
       - '[ -n "$REGISTRY_PASSWORD" ] || { echo "Missing REGISTRY_PASSWORD"; exit 1; }'
-    when:
-      event:
-        - cron
-        - push
-        - manual
-      cron:
-        - six-hourly-15
+
   - name: docker-build-push
     image: woodpeckerci/plugin-kaniko
     settings:
@@ -46,8 +40,8 @@ steps:
       tags:
         - latest
         - ${CI_COMMIT_SHA}
-    when:
-      event:
-        - cron
-        - push
-        - manual
+when:
+  event:
+    - cron
+    - push
+    - manual
