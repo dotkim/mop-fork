@@ -13,8 +13,10 @@ steps:
       - |
         if ! command -v protoc >/dev/null 2>&1; then
           # Install a recent protoc
-          PROTOC_VERSION=${PROTOC_VERSION:-24.4}
-          curl -sSL -o /tmp/protoc.zip https://github.com/protocolbuffers/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip
+          PROTOC_VERSION="${PROTOC_VERSION:-24.4}"
+          echo "Using PROTOC_VERSION=$PROTOC_VERSION"
+          echo "Downloading: https://github.com/protocolbuffers/protobuf/releases/download/v$PROTOC_VERSION/protoc-$PROTOC_VERSION-linux-x86_64.zip"
+          curl -sSL -o /tmp/protoc.zip "https://github.com/protocolbuffers/protobuf/releases/download/v$PROTOC_VERSION/protoc-$PROTOC_VERSION-linux-x86_64.zip"
           unzip -o /tmp/protoc.zip -d /usr/local >/dev/null
           rm -f /tmp/protoc.zip
         fi
@@ -35,12 +37,15 @@ steps:
   - name: upload-to-minio
     image: minio/mc
     environment:
-      MINIO_ALIAS: ${MINIO_ALIAS:-minio}
-      MINIO_URL: ${MINIO_URL}
-      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
-      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
-      MINIO_BUCKET: ${MINIO_BUCKET:-artifacts}
-      OUT_PATH: ${OUT_PATH:-cli/wowsimcli}
+      MINIO_ALIAS: minio
+      MINIO_URL:
+        from_secret: minio_url
+      MINIO_ACCESS_KEY:
+        from_secret: minio_access_key
+      MINIO_SECRET_KEY:
+        from_secret: minio_secret_key
+      MINIO_BUCKET: artifacts
+      OUT_PATH: cli/wowsimcli
     commands:
       - mc alias set "$MINIO_ALIAS" "$MINIO_URL" "$MINIO_ACCESS_KEY" "$MINIO_SECRET_KEY"
       - mc mb -p "$MINIO_ALIAS/$MINIO_BUCKET" || true

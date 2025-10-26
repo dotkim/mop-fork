@@ -11,8 +11,10 @@ steps:
       - apt-get update && apt-get install -y --no-install-recommends unzip ca-certificates curl git build-essential && rm -rf /var/lib/apt/lists/*
       - |
         if ! command -v protoc >/dev/null 2>&1; then
-          PROTOC_VERSION=${PROTOC_VERSION:-24.4}
-          curl -sSL -o /tmp/protoc.zip https://github.com/protocolbuffers/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip
+          PROTOC_VERSION="${PROTOC_VERSION:-24.4}"
+          echo "Using PROTOC_VERSION=$PROTOC_VERSION"
+          echo "Downloading: https://github.com/protocolbuffers/protobuf/releases/download/v$PROTOC_VERSION/protoc-$PROTOC_VERSION-linux-x86_64.zip"
+          curl -sSL -o /tmp/protoc.zip "https://github.com/protocolbuffers/protobuf/releases/download/v$PROTOC_VERSION/protoc-$PROTOC_VERSION-linux-x86_64.zip"
           unzip -o /tmp/protoc.zip -d /usr/local >/dev/null
           rm -f /tmp/protoc.zip
         fi
@@ -33,17 +35,21 @@ steps:
   - name: upload-to-minio
     image: minio/mc
     environment:
-      MINIO_ALIAS: ${MINIO_ALIAS:-minio}
-      MINIO_URL: ${MINIO_URL}
-      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
-      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
-      MINIO_BUCKET: ${MINIO_BUCKET:-artifacts}
-      OUT_PATH: ${OUT_PATH:-lib/wowsimmop.so}
+      MINIO_ALIAS: minio
+      MINIO_URL:
+        from_secret: minio_url
+      MINIO_ACCESS_KEY:
+        from_secret: minio_access_key
+      MINIO_SECRET_KEY:
+        from_secret: minio_secret_key
+      MINIO_BUCKET: artifacts
+      OUT_PATH: lib/wowsimmop
     commands:
       - mc alias set "$MINIO_ALIAS" "$MINIO_URL" "$MINIO_ACCESS_KEY" "$MINIO_SECRET_KEY"
       - mc mb -p "$MINIO_ALIAS/$MINIO_BUCKET" || true
       - mc cp --attr "version=${CI_COMMIT_SHA}" wowsimmop.so "$MINIO_ALIAS/$MINIO_BUCKET/$OUT_PATH-${CI_COMMIT_SHA}"
-      - mc cp wowsimmop.so "$MINIO_ALIAS/$MINIO_BUCKET/$OUT_PATH-latest"
+      - mc cp wowsimmop.so "$MINIO_ALIAS/$MINIO_BUCKET/$OUT_PATH.so-latest"
+      - mc cp wowsimmop.h "$MINIO_ALIAS/$MINIO_BUCKET/$OUT_PATH.h-latest"
 
 when:
   event:
