@@ -5,20 +5,14 @@ name: docker-build-and-push
 steps:
   - name: docker-build-push
     image: plugins/kaniko
-    environment:
-      REGISTRY:
-        from_secret: registry_url
-      REGISTRY_USER:
-        from_secret: registry_username
-      REGISTRY_PASS:
-        from_secret: registry_password
-      IMAGE_NAME: mop
     settings:
-      # Local, insecure registry
-      registry: ${REGISTRY}
-      repo: ${REGISTRY}/${IMAGE_NAME}
-      username: ${REGISTRY_USER}
-      password: ${REGISTRY_PASS}
+      registry:
+        from_secret: registry_url
+      repo: mop
+      username:
+        from_secret: registry_username
+      password:
+        from_secret: registry_password
       dockerfile: Dockerfile
       context: .
       tags:
