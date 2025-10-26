@@ -44,7 +44,8 @@ steps:
     commands:
       - mc alias set "$MINIO_ALIAS" "$MINIO_URL" "$MINIO_ACCESS_KEY" "$MINIO_SECRET_KEY"
       - mc mb -p "$MINIO_ALIAS/$MINIO_BUCKET" || true
-      - mc cp --attr "version=${CI_COMMIT_SHA}" wowsimmop.so "$MINIO_ALIAS/$MINIO_BUCKET/$OUT_PATH-${CI_COMMIT_SHA}"
+      - mc cp --attr "version=${CI_COMMIT_SHA}" wowsimmop.so "$MINIO_ALIAS/$MINIO_BUCKET/$OUT_PATH.so-${CI_COMMIT_SHA}"
+      - mc cp --attr "version=${CI_COMMIT_SHA}" wowsimmop.h "$MINIO_ALIAS/$MINIO_BUCKET/$OUT_PATH.h-${CI_COMMIT_SHA}"
       - mc cp wowsimmop.so "$MINIO_ALIAS/$MINIO_BUCKET/$OUT_PATH.so-latest"
       - mc cp wowsimmop.h "$MINIO_ALIAS/$MINIO_BUCKET/$OUT_PATH.h-latest"
 
