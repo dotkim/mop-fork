@@ -43,7 +43,6 @@ steps:
         from_secret: registry_password
       dockerfile: Dockerfile
       context: .
-      dry_run: true
       tags:
         - latest
         - ${CI_COMMIT_SHA}
