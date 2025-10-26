@@ -133,7 +133,9 @@ jobs:
             git push origin "$BR" --force-with-lease
 
             # Maintain an upstream mirror branch for reference (optional)
-            git push origin "refs/remotes/upstream/$BR:refs/heads/upstream-$BR" --force
+            git push origin "refs/remotes/upstream/$BR:refs/heads/upstream-$BR" --force || {
+              echo "Mirror push for upstream-$BR failed (likely due to workflows permission). Skipping mirror push." >&2
+            }
           done < /tmp/branches.txt
 
       - name: Summary
