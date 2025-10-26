@@ -18,11 +18,8 @@ steps:
           unzip -o /tmp/protoc.zip -d /usr/local >/dev/null
           rm -f /tmp/protoc.zip
         fi
-
-  - name: gen-protos
-    image: golang:1.22
-    commands:
-      - protoc -I=./proto --go_out=./sim/core ./proto/*.proto
+        export PATH="$PATH:/go/bin"
+        /usr/local/bin/protoc -I=./proto --go_out=./sim/core ./proto/*.proto
 
   - name: build-shared-lib
     image: golang:1.22
