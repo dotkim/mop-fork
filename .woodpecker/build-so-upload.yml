@@ -4,7 +4,7 @@ name: build-so-upload
 
 steps:
   - name: setup-go
-    image: golang:1.22
+    image: golang:1.23
     commands:
       - go version
       - go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.34.2
@@ -22,7 +22,7 @@ steps:
         /usr/local/bin/protoc -I=./proto --go_out=./sim/core ./proto/*.proto
 
   - name: build-shared-lib
-    image: golang:1.22
+    image: golang:1.23
     environment:
       CGO_ENABLED: 1
     commands:

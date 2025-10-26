@@ -4,7 +4,7 @@ name: build-cli-upload
 
 steps:
   - name: setup-go
-    image: golang:1.22
+    image: golang:1.23
     commands:
       - go env -w GOPRIVATE=${GOPRIVATE}
       - go version
@@ -24,7 +24,7 @@ steps:
         /usr/local/bin/protoc -I=./proto --go_out=./sim/core ./proto/*.proto
 
   - name: build-cli
-    image: golang:1.22
+    image: golang:1.23
     environment:
       CGO_ENABLED: 0
     commands:
