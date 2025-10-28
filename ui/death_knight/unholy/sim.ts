@@ -117,8 +117,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.DEFAULT_ROTATION_PRESET, Presets.FESTERBLIGHT_ROTATION_PRESET],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PREBIS_GEAR_PRESET, Presets.P1_BIS_GEAR_PRESET, Presets.P2_BIS_GEAR_PRESET, Presets.P3_BIS_GEAR_PRESET],
-		builds: [Presets.PREBIS_PRESET, Presets.P1_PRESET, Presets.P2_PRESET, Presets.P3_PRESET],
+		gear: [Presets.PREBIS_GEAR_PRESET, Presets.P2_BIS_GEAR_PRESET, Presets.P3_BIS_GEAR_PRESET],
+		builds: [Presets.PREBIS_PRESET, Presets.P2_PRESET, Presets.P3_PRESET],
 	},
 
 	raidSimPresets: [
