@@ -27,12 +27,10 @@ export const FESTERBLIGHT_ROTATION_PRESET = PresetUtils.makePresetAPLRotation('F
 		PresetUtils.makeSpecChangeWarningToast(
 			[
 				{
-					condition(player: Player<Spec.SpecUnholyDeathKnight>) {
-						const gear = player.getGear();
-						return !gear.hasTrinketFromOptions([95726, 94515, 96470, 96098, 96842]) || !gear.hasTrinket(94508);
-					},
+					condition: (player: Player<Spec.SpecUnholyDeathKnight>) =>
+						!player.getGear().hasTrinketFromOptions([95726, 94515, 96470, 96098, 96842]),
 					message:
-						'You have selected a rotation that requires both Fabled Feather of Ji-Kun and Brutal Talisman of the Shado-Pan Assault to be equipped.',
+						'You have selected a rotation that requires Fabled Feather of Ji-Kun to be equipped.',
 				},
 			],
 			player,
