@@ -135,13 +135,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 	},
 
 	presets: {
-		epWeights: [Presets.SURVIVAL_EP_PRESET, Presets.BALANCED_EP_PRESET],
+		epWeights: [Presets.SURVIVAL_EP_PRESET, Presets.BALANCED_EP_PRESET, Presets.OFFENSIVE_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.DefaultTalents],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_DEFAULT, Presets.ROTATION_HOTW, Presets.ROTATION_EMPRESS, Presets.ROTATION_SHA],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET, Presets.MSV_PRESET, Presets.HOF_PRESET, Presets.P2_PRESET],
+		gear: [Presets.PRERAID_PRESET, Presets.MSV_PRESET, Presets.HOF_PRESET, Presets.P2_PRESET, Presets.P2_OFFENSIVE_PRESET],
 		itemSwaps: [Presets.ITEM_SWAP_PRESET],
 		builds: [
 			Presets.PRESET_BUILD_DEFAULT,
