@@ -755,7 +755,7 @@ export function variableNameFieldConfig(field: string, options?: Partial<APLPick
 			const picker = new TextDropdownPicker(parent, player, {
 				id: randomUUID(),
 				...config,
-				defaultLabel: 'Select Variable',
+				defaultLabel: i18n.t('rotation_tab.apl.helpers.select_variable'),
 				equals: (a, b) => a === b,
 				values: [],
 				changedEvent: (player: Player<any>) => player.rotationChangeEmitter,
@@ -772,7 +772,7 @@ export function variableNameFieldConfig(field: string, options?: Partial<APLPick
 				if (values.length === 0) {
 					values.push({
 						value: '',
-						label: 'No variables defined',
+						label: i18n.t('rotation_tab.apl.helpers.no_variables_defined'),
 					});
 				}
 
@@ -797,7 +797,7 @@ export function groupNameFieldConfig(field: string, options?: Partial<APLPickerB
 			const picker = new TextDropdownPicker(parent, player, {
 				id: randomUUID(),
 				...config,
-				defaultLabel: 'Select Group',
+				defaultLabel: i18n.t('rotation_tab.apl.helpers.select_group'),
 				equals: (a, b) => a === b,
 				values: [],
 				changedEvent: (player: Player<any>) => player.rotationChangeEmitter,
@@ -814,7 +814,7 @@ export function groupNameFieldConfig(field: string, options?: Partial<APLPickerB
 				if (values.length === 0) {
 					values.push({
 						value: '',
-						label: 'No groups defined',
+						label: i18n.t('rotation_tab.apl.helpers.no_groups_defined'),
 					});
 				}
 
@@ -1011,8 +1011,8 @@ class APLGroupVariablePicker extends Input<Player<any>, any> {
 		this.valuePicker = new TextDropdownPicker(this.rootElem, this.modObject, {
 			id: randomUUID(),
 			label: '',
-			labelTooltip: `Value to assign to variable '${this.variableName}'`,
-			defaultLabel: 'Select Variable',
+			labelTooltip: i18n.t('rotation_tab.apl.helpers.field_configs.variable_assignment_tooltip', { variableName: this.variableName }),
+			defaultLabel: i18n.t('rotation_tab.apl.helpers.select_variable'),
 			equals: (a, b) => a === b,
 			values: [],
 			changedEvent: (player: Player<any>) => player.rotationChangeEmitter,
@@ -1235,14 +1235,20 @@ export function aplInputBuilder<T>(
 }
 
 export function reactionTimeCheckbox(): APLPickerBuilderFieldConfig<any, any> {
-	return booleanFieldConfig('includeReactionTime', 'Include Reaction Time', {
-		labelTooltip: 'If checked, will use the configured reaction time.',
+	return booleanFieldConfig('includeReactionTime', i18n.t('rotation_tab.apl.helpers.field_configs.include_reaction_time'), {
+		labelTooltip: i18n.t('rotation_tab.apl.helpers.field_configs.include_reaction_time_tooltip'),
 	});
 }
 
 export function useDotBaseValueCheckbox(): APLPickerBuilderFieldConfig<any, any> {
+	return booleanFieldConfig('useBaseValue', i18n.t('rotation_tab.apl.helpers.field_configs.use_base_value'), {
+		labelTooltip: i18n.t('rotation_tab.apl.helpers.field_configs.use_base_value_tooltip'),
+	});
+}
+
+export function useRuneRegenBaseValueCheckbox(): APLPickerBuilderFieldConfig<any, any> {
 	return booleanFieldConfig('useBaseValue', 'Use base value', {
-		labelTooltip: 'If checked, will compare the current DoT to the the base value (on encounter start) of the DoT.',
+		labelTooltip: 'If checked, will return your base (unmodified by procs/lust etc) rune regen rate',
 	});
 }
 

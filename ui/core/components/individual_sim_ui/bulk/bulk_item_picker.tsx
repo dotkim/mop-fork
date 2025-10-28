@@ -1,6 +1,7 @@
 import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
+import i18n from '../../../../i18n/config';
 import { IndividualSimUI } from '../../../individual_sim_ui';
 import { ItemSlot } from '../../../proto/common';
 import { EquippedItem } from '../../../proto_utils/equipped_item';
@@ -152,7 +153,7 @@ export default class BulkItemPicker extends Component {
 
 		if (removeBtnRef.value) {
 			const removeBtn = removeBtnRef.value;
-			tippy(removeBtn, { content: 'Remove this item from the batch.' });
+			tippy(removeBtn, { content: i18n.t('bulk_tab.picker.remove_tooltip') });
 			const removeItem = () => this.bulkUI.removeItemByIndex(this.index);
 			removeBtn.addEventListener('click', removeItem);
 			this.addOnDisposeCallback(() => removeBtn.removeEventListener('click', removeItem));

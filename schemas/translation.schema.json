@@ -898,6 +898,62 @@
             "action_has_warnings",
             "action_has_errors"
           ]
+        },
+        "preset": {
+          "type": "object",
+          "properties": {
+            "ep_weights": {
+              "type": "string"
+            },
+            "gear": {
+              "type": "string"
+            },
+            "talents": {
+              "type": "string"
+            },
+            "rotation": {
+              "type": "string"
+            },
+            "encounter": {
+              "type": "string"
+            },
+            "settings": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "stat_weights": {
+              "type": "string"
+            },
+            "class_spec_options": {
+              "type": "string"
+            },
+            "consumables": {
+              "type": "string"
+            },
+            "other_settings": {
+              "type": "string"
+            },
+            "buffs": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "ep_weights",
+            "gear",
+            "talents",
+            "rotation",
+            "encounter",
+            "settings",
+            "description",
+            "stat_weights",
+            "class_spec_options",
+            "consumables",
+            "other_settings",
+            "buffs"
+          ]
         }
       },
       "additionalProperties": false,
@@ -922,7 +978,8 @@
         "mastery_spell_names",
         "currency",
         "copy_button",
-        "list_picker"
+        "list_picker",
+        "preset"
       ]
     },
     "sim": {
@@ -1063,78 +1120,6 @@
       "properties": {
         "title": {
           "type": "string"
-        },
-        "slots": {
-          "type": "object",
-          "properties": {
-            "head": {
-              "type": "string"
-            },
-            "neck": {
-              "type": "string"
-            },
-            "shoulder": {
-              "type": "string"
-            },
-            "back": {
-              "type": "string"
-            },
-            "chest": {
-              "type": "string"
-            },
-            "wrist": {
-              "type": "string"
-            },
-            "hands": {
-              "type": "string"
-            },
-            "waist": {
-              "type": "string"
-            },
-            "legs": {
-              "type": "string"
-            },
-            "feet": {
-              "type": "string"
-            },
-            "finger_1": {
-              "type": "string"
-            },
-            "finger_2": {
-              "type": "string"
-            },
-            "trinket_1": {
-              "type": "string"
-            },
-            "trinket_2": {
-              "type": "string"
-            },
-            "main_hand": {
-              "type": "string"
-            },
-            "off_hand": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": [
-            "head",
-            "neck",
-            "shoulder",
-            "back",
-            "chest",
-            "wrist",
-            "hands",
-            "waist",
-            "legs",
-            "feet",
-            "finger_1",
-            "finger_2",
-            "trinket_1",
-            "trinket_2",
-            "main_hand",
-            "off_hand"
-          ]
         },
         "gem_summary": {
           "type": "object",
@@ -1574,7 +1559,6 @@
       "additionalProperties": false,
       "required": [
         "title",
-        "slots",
         "gem_summary",
         "reforge_summary",
         "reforge_success",
@@ -2276,6 +2260,38 @@
               "additionalProperties": false,
               "required": [
                 "title",
+                "tooltip"
+              ]
+            },
+            "shaman_disable_immolate" : {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "tooltip": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "label",
+                "tooltip"
+              ]
+            },
+            "shaman_disable_immolate_duration" : {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "tooltip": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "label",
                 "tooltip"
               ]
             }
@@ -3251,6 +3267,38 @@
                 "label",
                 "tooltip"
               ]
+            },
+            "freeze_ring": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "tooltip": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "label",
+                "tooltip"
+              ]
+            },
+            "freeze_trinket": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "tooltip": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "label",
+                "tooltip"
+              ]
             }
           },
           "additionalProperties": false,
@@ -3259,7 +3307,9 @@
             "combination_singular",
             "iterations",
             "default_gems",
-            "inherit_upgrades"
+            "inherit_upgrades",
+            "freeze_ring",
+            "freeze_trinket"
           ]
         },
         "progress": {
@@ -3318,16 +3368,84 @@
             "iterations_limit"
           ]
         },
-        "results": {
+        "picker": {
           "type": "object",
           "properties": {
-            "run_simulation": {
+            "no_items": {
+              "type": "string"
+            },
+            "remove_tooltip": {
+              "type": "string"
+            },
+            "failed_update": {
+              "type": "string"
+            },
+            "failed_remove": {
               "type": "string"
             }
           },
           "additionalProperties": false,
           "required": [
-            "run_simulation"
+            "no_items",
+            "remove_tooltip",
+            "failed_update",
+            "failed_remove"
+          ]
+        },
+        "results": {
+          "type": "object",
+          "properties": {
+            "run_simulation": {
+              "type": "string"
+            },
+            "equip_button": {
+              "type": "string"
+            },
+            "gear_equipped": {
+              "type": "string"
+            },
+            "current_gear": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "run_simulation",
+            "equip_button",
+            "gear_equipped",
+            "current_gear"
+          ]
+        },
+        "gem_selector": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "title"
+          ]
+        },
+        "import_modal": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description_line1": {
+              "type": "string"
+            },
+            "description_line2": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "title",
+            "description_line1",
+            "description_line2"
           ]
         }
       },
@@ -3343,7 +3461,10 @@
         "progress",
         "notifications",
         "warning",
-        "results"
+        "picker",
+        "results",
+        "gem_selector",
+        "import_modal"
       ]
     },
     "rotation_tab": {
@@ -5248,6 +5369,22 @@
                     "tooltip"
                   ]
                 },
+				"full_rune_cooldown": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "type": "string"
+                    },
+                    "tooltip": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "label",
+                    "tooltip"
+                  ]
+                },
                 "gcd_is_ready": {
                   "type": "object",
                   "properties": {
@@ -6235,6 +6372,7 @@
                 "rune_cooldown",
                 "next_rune_cooldown",
                 "rune_slot_cooldown",
+				"full_rune_cooldown",
                 "gcd_is_ready",
                 "gcd_time_to_ready",
                 "time_to_next_auto",
@@ -6639,6 +6777,21 @@
                     },
                     "min_icd_tooltip": {
                       "type": "string"
+                    },
+                    "include_reaction_time": {
+                      "type": "string"
+                    },
+                    "include_reaction_time_tooltip": {
+                      "type": "string"
+                    },
+                    "use_base_value": {
+                      "type": "string"
+                    },
+                    "use_base_value_tooltip": {
+                      "type": "string"
+                    },
+                    "variable_assignment_tooltip": {
+                      "type": "string"
                     }
                   },
                   "additionalProperties": false,
@@ -6647,7 +6800,12 @@
                     "strategy",
                     "buff_type",
                     "min_icd",
-                    "min_icd_tooltip"
+                    "min_icd_tooltip",
+                    "include_reaction_time",
+                    "include_reaction_time_tooltip",
+                    "use_base_value",
+                    "use_base_value_tooltip",
+                    "variable_assignment_tooltip"
                   ]
                 },
                 "eclipse_types": {
@@ -6801,6 +6959,18 @@
                 "placeholder_tooltip": {
                   "type": "string"
                 },
+                "select_variable": {
+                  "type": "string"
+                },
+                "select_group": {
+                  "type": "string"
+                },
+                "no_variables_defined": {
+                  "type": "string"
+                },
+                "no_groups_defined": {
+                  "type": "string"
+                },
                 "buttons": {
                   "type": "object",
                   "properties": {
@@ -6833,6 +7003,10 @@
                 "hotw_strategies",
                 "unit_labels",
                 "placeholder_tooltip",
+                "select_variable",
+                "select_group",
+                "no_variables_defined",
+                "no_groups_defined",
                 "buttons"
               ]
             }
@@ -8851,69 +9025,6 @@
                 "title": {
                   "type": "string"
                 },
-                "ep_weights": {
-                  "type": "object",
-                  "properties": {
-                    "use_custom": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "object",
-                      "properties": {
-                        "enable_modification": {
-                          "type": "string"
-                        },
-                        "modify_in_editor": {
-                          "type": "string"
-                        },
-                        "hard_cap_info": {
-                          "type": "string"
-                        }
-                      },
-                      "additionalProperties": false,
-                      "required": [
-                        "enable_modification",
-                        "modify_in_editor",
-                        "hard_cap_info"
-                      ]
-                    },
-                    "buttons": {
-                      "type": "object",
-                      "properties": {
-                        "edit_weights": {
-                          "type": "string"
-                        }
-                      },
-                      "additionalProperties": false,
-                      "required": [
-                        "edit_weights"
-                      ]
-                    },
-                    "options": {
-                      "type": "object",
-                      "properties": {
-                        "include_gems": {
-                          "type": "string"
-                        },
-                        "freeze_item_slots": {
-                          "type": "string"
-                        }
-                      },
-                      "additionalProperties": false,
-                      "required": [
-                        "include_gems",
-                        "freeze_item_slots"
-                      ]
-                    }
-                  },
-                  "additionalProperties": false,
-                  "required": [
-                    "use_custom",
-                    "description",
-                    "buttons",
-                    "options"
-                  ]
-                },
                 "modal": {
                   "type": "object",
                   "properties": {
@@ -9294,7 +9405,6 @@
               "additionalProperties": false,
               "required": [
                 "title",
-                "ep_weights",
                 "modal",
                 "saved_ep_weights"
               ]
@@ -9355,6 +9465,39 @@
                 },
                 "reforge_optimization_failed": {
                   "type": "string"
+                },
+                "use_custom": {
+                  "type": "string"
+                },
+                "enable_modification": {
+                  "type": "string"
+                },
+                "modify_in_editor": {
+                  "type": "string"
+                },
+                "hard_cap_info": {
+                  "type": "string"
+                },
+                "edit_weights": {
+                  "type": "string"
+                },
+                "include_gems": {
+                  "type": "string"
+                },
+                "freeze_item_slots": {
+                  "type": "string"
+                },
+                "include_eotbp_socket": {
+                  "type": "string"
+                },
+                "include_eotbp_socket_tooltip": {
+                  "type": "string"
+                },
+                "limit_execution_time": {
+                  "type": "string"
+                },
+                "limit_execution_time_tooltip": {
+                  "type": "string"
                 }
               },
               "additionalProperties": false,
@@ -9376,7 +9519,18 @@
                 "no_limit_set",
                 "breakpoints_implemented",
                 "post_cap_ep",
-                "reforge_optimization_failed"
+                "reforge_optimization_failed",
+                "use_custom",
+                "enable_modification",
+                "modify_in_editor",
+                "hard_cap_info",
+                "edit_weights",
+                "include_gems",
+                "freeze_item_slots",
+                "include_eotbp_socket",
+                "include_eotbp_socket_tooltip",
+                "limit_execution_time",
+                "limit_execution_time_tooltip"
               ]
             }
           },

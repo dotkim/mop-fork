@@ -192,15 +192,8 @@ export class RelativeStatCap {
 	}
 
 	updateWeights(statWeights: Stats) {
-		const averagedWeight = 0.5 * (statWeights.getUnitStat(this.constrainedStats[0]) + statWeights.getUnitStat(this.constrainedStats[1]));
-		const secondaryGemmingThreshold = 0.5 * statWeights.getStat(Stat.StatAgility) + 0.01;
-		const highestStatWeight = averagedWeight > secondaryGemmingThreshold ? secondaryGemmingThreshold : 0;
-
-		for (const stat of RelativeStatCap.relevantStats) {
-			statWeights = statWeights.withStat(stat, this.forcedHighestStat.equalsStat(stat) ? highestStatWeight : averagedWeight);
-		}
-
-		return statWeights;
+		const smallestConstrainedEP = Math.min(statWeights.getUnitStat(this.constrainedStats[0]), statWeights.getUnitStat(this.constrainedStats[1]))
+		return statWeights.withUnitStat(this.forcedHighestStat, Math.min(statWeights.getUnitStat(this.forcedHighestStat), smallestConstrainedEP - 0.01));
 	}
 }
 
@@ -266,7 +259,7 @@ export class ReforgeOptimizer {
 				trackEvent({
 					action: 'settings',
 					category: 'reforging',
-					label: 'suggest',
+					label: 'suggest_start',
 				});
 				const button = currentTarget as HTMLButtonElement;
 				if (button) {
@@ -289,13 +282,19 @@ export class ReforgeOptimizer {
 						simUI.player.setChallengeModeEnabled(TypedEvent.nextEventID(), true);
 					}
 					performance.mark('reforge-optimization-end');
-					if (isDevMode())
-						console.log(
-							'Reforge optimization took:',
-							`${performance
-								.measure('reforge-optimization-measure', 'reforge-optimization-start', 'reforge-optimization-end')
-								.duration.toFixed(2)}ms`,
-						);
+					const completionTimeInMs = performance.measure(
+						'reforge-optimization-measure',
+						'reforge-optimization-start',
+						'reforge-optimization-end',
+					).duration;
+					if (isDevMode()) console.log('Reforge optimization took:', `${completionTimeInMs.toFixed(2)}ms`);
+
+					trackEvent({
+						action: 'settings',
+						category: 'reforging',
+						label: 'suggest_duration',
+						value: Math.ceil(completionTimeInMs / 1000),
+					});
 					if (button) {
 						button.classList.remove('loading');
 						button.disabled = false;
@@ -386,7 +385,15 @@ export class ReforgeOptimizer {
 	}
 
 	get preCapEPs(): Stats {
-		let weights = this.sim.getUseCustomEPValues() ? this.player.getEpWeights() : this.getEPDefaults?.(this.player) || this.defaults.epWeights;
+		let weights = this.player.getEpWeights();
+
+		if (!this.player.sim.getUseCustomEPValues()) {
+			if (this.getEPDefaults) {
+				weights = this.getEPDefaults?.(this.player);
+			} else if (!this.player.getSpecConfig().presets.epWeights.some(epw => epw.epWeights.equals(weights))) {
+				weights = this.defaults.epWeights;
+			}
+		}
 
 		// Replace Spirit EP for hybrid casters with a small value in order to break ties between Spirit and Hit Reforges
 		if (this.isHybridCaster) {
@@ -579,7 +586,7 @@ export class ReforgeOptimizer {
 				const useCustomEPValuesInput = new BooleanPicker(null, this.player, {
 					extraCssClasses: ['mb-2'],
 					id: 'reforge-optimizer-enable-custom-ep-weights',
-					label: i18n.t('sidebar.buttons.stat_weights.ep_weights.use_custom'),
+					label: i18n.t('sidebar.buttons.suggest_reforges.use_custom'),
 					inline: true,
 					changedEvent: () => this.sim.useCustomEPValuesChangeEmitter,
 					getValue: () => this.sim.getUseCustomEPValues(),
@@ -659,7 +666,7 @@ export class ReforgeOptimizer {
 				const includeGemsInput = new BooleanPicker(null, this.player, {
 					extraCssClasses: ['mb-2'],
 					id: 'reforge-optimizer-include-gems',
-					label: i18n.t('sidebar.buttons.stat_weights.ep_weights.options.include_gems'),
+					label: i18n.t('sidebar.buttons.suggest_reforges.include_gems'),
 					labelTooltip: i18n.t('sidebar.buttons.suggest_reforges.optimize_gems_tooltip'),
 					inline: true,
 					changedEvent: () => this.includeGemsChangeEmitter,
@@ -681,8 +688,8 @@ export class ReforgeOptimizer {
 				const includeEOTBPGemSocket = new BooleanPicker(null, this.player, {
 					extraCssClasses: ['mb-2'],
 					id: 'reforge-optimizer-include-eotbp-socket',
-					label: 'Include EotBP Socket',
-					labelTooltip: 'Allows the optimiser to also include the "Eye of the Black Prince" socket in the optimization.',
+					label: i18n.t('sidebar.buttons.suggest_reforges.include_eotbp_socket'),
+					labelTooltip: i18n.t('sidebar.buttons.suggest_reforges.include_eotbp_socket_tooltip'),
 					inline: true,
 					changedEvent: () =>
 						TypedEvent.onAny([this.includeGemsChangeEmitter, this.includeEOTBPGemSocketChangeEmitter, this.player.gearChangeEmitter]),
@@ -696,7 +703,7 @@ export class ReforgeOptimizer {
 				const freezeItemSlotsInput = new BooleanPicker(null, this.player, {
 					extraCssClasses: ['mb-2'],
 					id: 'reforge-optimizer-freeze-item-slots',
-					label: i18n.t('sidebar.buttons.stat_weights.ep_weights.options.freeze_item_slots'),
+					label: i18n.t('sidebar.buttons.suggest_reforges.freeze_item_slots'),
 					labelTooltip: i18n.t('sidebar.buttons.suggest_reforges.freeze_item_slots_tooltip'),
 					inline: true,
 					changedEvent: () => this.freezeItemSlotsChangeEmitter,
@@ -715,9 +722,8 @@ export class ReforgeOptimizer {
 				const includeTimeoutInput = new BooleanPicker(null, this.player, {
 					extraCssClasses: ['mb-2'],
 					id: 'reforge-optimizer-include-timeout',
-					label: 'Limit execution time',
-					labelTooltip:
-						'If checked, the solver will error out if the total computation time exceeds 30 seconds. If unchecked, then total computation time will be capped at 1 hour instead.',
+					label: i18n.t('sidebar.buttons.suggest_reforges.limit_execution_time'),
+					labelTooltip: i18n.t('sidebar.buttons.suggest_reforges.limit_execution_time_tooltip'),
 					inline: true,
 					changedEvent: () => TypedEvent.onAny([this.includeTimeoutChangeEmitter, this.includeGemsChangeEmitter]),
 					getValue: () => this.includeTimeout,
@@ -731,9 +737,9 @@ export class ReforgeOptimizer {
 					<>
 						{useCustomEPValuesInput.rootElem}
 						<div ref={descriptionRef} className={clsx('mb-0', this.sim.getUseCustomEPValues() && 'hide')}>
-							<p>{i18n.t('sidebar.buttons.stat_weights.ep_weights.description.enable_modification')}</p>
-							<p>{i18n.t('sidebar.buttons.stat_weights.ep_weights.description.modify_in_editor')}</p>
-							<p>{i18n.t('sidebar.buttons.stat_weights.ep_weights.description.hard_cap_info')}</p>
+							<p>{i18n.t('sidebar.buttons.suggest_reforges.enable_modification')}</p>
+							<p>{i18n.t('sidebar.buttons.suggest_reforges.modify_in_editor')}</p>
+							<p>{i18n.t('sidebar.buttons.suggest_reforges.hard_cap_info')}</p>
 						</div>
 						{this.buildCapsList({
 							useCustomEPValuesInput: useCustomEPValuesInput,
@@ -998,7 +1004,7 @@ export class ReforgeOptimizer {
 							this.simUI.epWeightsModal?.open();
 							hideAll();
 						}}>
-						{i18n.t('sidebar.buttons.stat_weights.ep_weights.buttons.edit_weights')}
+						{i18n.t('sidebar.buttons.suggest_reforges.edit_weights')}
 					</button>
 				)}
 			</>
@@ -1742,6 +1748,10 @@ export class ReforgeOptimizer {
 			}
 		}
 
+		if (this.includeGems) {
+			updatedGear = this.minimizeRegems(updatedGear);
+		}
+
 		await this.updateGear(updatedGear);
 		return updatedGear;
 	}
@@ -1835,6 +1845,72 @@ export class ReforgeOptimizer {
 		return [anyCapsExceeded, updatedConstraints, updatedWeights];
 	}
 
+	minimizeRegems(newGear: Gear): Gear {
+		const originalGear = this.previousGear;
+
+		if (!originalGear) {
+			return newGear;
+		}
+
+		const isBlacksmithing = this.player.isBlacksmithing();
+		const finalizedSocketKeys: string[] = [];
+
+		for (const slot of newGear.getItemSlots()) {
+			const newItem = newGear.getEquippedItem(slot);
+			const originalItem = originalGear.getEquippedItem(slot);
+
+			if (!newItem || !originalItem) {
+				continue;
+			}
+
+			const newGems = newItem.curGems(isBlacksmithing);
+			const originalGems = originalItem.curGems(isBlacksmithing);
+
+			for (const [socketIdx, socketColor] of newItem.curSocketColors(isBlacksmithing).entries()) {
+				const socketKey = `${slot}_${socketIdx}`;
+
+				if (finalizedSocketKeys.includes(socketKey)) {
+					continue;
+				}
+
+				finalizedSocketKeys.push(socketKey);
+
+				if (!newGems[socketIdx] || !originalGems[socketIdx] || newGems[socketIdx]!.id === originalGems[socketIdx]!.id) {
+					continue;
+				}
+
+				if (gemMatchesSocket(newGems[socketIdx]!, socketColor) && !gemMatchesSocket(originalGems[socketIdx]!, socketColor)) {
+					continue;
+				}
+
+				for (const [matchedSlot, matchedSocketIdx] of newGear.findGem(originalGems[socketIdx]!, isBlacksmithing)) {
+					if (this.frozenItemSlots.get(matchedSlot)) {
+						continue;
+					}
+
+					const matchedSocketKey = `${matchedSlot}_${matchedSocketIdx}`;
+
+					if (finalizedSocketKeys.includes(matchedSocketKey)) {
+						continue;
+					}
+
+					const matchedSocketColor = newGear.getEquippedItem(matchedSlot)!.curSocketColors(isBlacksmithing)[matchedSocketIdx];
+
+					if (gemMatchesSocket(originalGems[socketIdx]!, matchedSocketColor) && !gemMatchesSocket(newGems[socketIdx]!, matchedSocketColor)) {
+						continue;
+					}
+
+					finalizedSocketKeys.push(matchedSocketKey);
+					newGear = newGear.withGem(slot, socketIdx, originalGems[socketIdx]);
+					newGear = newGear.withGem(matchedSlot, matchedSocketIdx, newGems[socketIdx]);
+					break;
+				}
+			}
+		}
+
+		return newGear;
+	}
+
 	private get baseMastery() {
 		return this.player.getBaseMastery() * Mechanics.MASTERY_RATING_PER_MASTERY_POINT;
 	}
@@ -1920,6 +1996,11 @@ export class ReforgeOptimizer {
 				});
 		}
 
+		trackEvent({
+			action: 'settings',
+			category: 'reforging',
+			label: 'suggest_success',
+		});
 		new Toast({
 			variant: 'success',
 			body: hasReforgeChanges ? changedReforgeMessage : <>{i18n.t('gear_tab.reforge_success.no_changes')}</>,
@@ -1931,6 +2012,12 @@ export class ReforgeOptimizer {
 		if (isDevMode()) console.log(error);
 
 		if (this.previousGear) this.updateGear(this.previousGear);
+		trackEvent({
+			action: 'settings',
+			category: 'reforging',
+			label: 'suggest_error',
+			value: error,
+		});
 		new Toast({
 			variant: 'error',
 			body: (

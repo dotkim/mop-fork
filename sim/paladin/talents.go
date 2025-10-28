@@ -562,7 +562,7 @@ func (paladin *Paladin) registerSanctifiedWrath() {
 type AuraDeactivationCheck func(aura *core.Aura, spell *core.Spell) bool
 
 func (paladin *Paladin) divinePurposeFactory(label string, spellID int32, duration time.Duration, auraDeactivationCheck AuraDeactivationCheck) *core.Aura {
-	procChances := []float64{0, 0.25 * (1 / 3), 0.25 * (2 / 3), 0.25}
+	procChances := []float64{0, 0.25 * (1.0 / 3.0), 0.25 * (2.0 / 3.0), 0.25}
 	aura := paladin.RegisterAura(core.Aura{
 		Label:    label + paladin.Label,
 		ActionID: core.ActionID{SpellID: spellID},

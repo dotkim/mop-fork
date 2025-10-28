@@ -70,6 +70,7 @@ import {
 	APLValueMonkCurrentChi,
 	APLValueMonkMaxChi,
 	APLValueNextRuneCooldown,
+	APLValueFullRuneCooldown,
 	APLValueNot,
 	APLValueNumberTargets,
 	APLValueNumEquippedStatProcTrinkets,
@@ -974,6 +975,14 @@ const valueKindFactories: { [f in ValidAPLValueKind]: ValueKindConfig<APLValueIm
 		newValue: APLValueRuneSlotCooldown.create,
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassDeathKnight,
 		fields: [AplHelpers.runeSlotFieldConfig('runeSlot')],
+	}),
+	fullRuneCooldown: inputBuilder({
+		label: i18n.t('rotation_tab.apl.values.full_rune_cooldown.label'),
+		submenu: ['resources', 'runes'],
+		shortDescription: i18n.t('rotation_tab.apl.values.full_rune_cooldown.tooltip'),
+		newValue: APLValueFullRuneCooldown.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassDeathKnight,
+		fields: [AplHelpers.useRuneRegenBaseValueCheckbox()],
 	}),
 
 	// GCD

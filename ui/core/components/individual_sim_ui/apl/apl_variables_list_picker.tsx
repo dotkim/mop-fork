@@ -2,7 +2,8 @@ import i18n from '../../../../i18n/config';
 import { IndividualSimUI } from '../../../individual_sim_ui';
 import { Player } from '../../../player';
 import { APLValueVariable } from '../../../proto/apl';
-import { EventID, TypedEvent } from '../../../typed_event';
+import { UUID } from '../../../proto/common';
+import { EventID } from '../../../typed_event';
 import { randomUUID } from '../../../utils';
 import { Component } from '../../component';
 import { Input } from '../../input';
@@ -78,6 +79,15 @@ class APLValueVariablePicker extends Input<Player<any>, APLValueVariable> {
 
 		const container = this.rootElem.appendChild(<div className="apl-action-picker-root" />) as HTMLElement;
 
+		if (this.rootElem.parentElement!.classList.contains('list-picker-item')) {
+			const itemHeaderElem = ListPicker.getItemHeaderElem(this) || this.rootElem;
+			ListPicker.makeListItemValidations(
+				itemHeaderElem,
+				player,
+				player => player.getCurrentStats().rotationStats?.uuidValidations?.find(v => v.uuid?.value === this.rootElem.id)?.validations || [],
+			);
+		}
+
 		this.namePicker = new AdaptiveStringPicker(container, player, {
 			id: randomUUID(),
 			label: i18n.t('rotation_tab.apl.variables.attributes.name'),
@@ -123,5 +133,12 @@ class APLValueVariablePicker extends Input<Player<any>, APLValueVariable> {
 	setInputValue(newValue: APLValueVariable) {
 		this.namePicker.setInputValue(newValue.name);
 		this.valuePicker.setInputValue(newValue.value);
+
+		if (newValue.value) {
+			if (!newValue.value.uuid || newValue.value.uuid.value == '') {
+				newValue.value.uuid = UUID.create({ value: randomUUID() });
+			}
+			this.rootElem.id = newValue.value.uuid!.value;
+		}
 	}
 }

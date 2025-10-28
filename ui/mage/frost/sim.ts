@@ -176,10 +176,6 @@ export class FrostMageSimUI extends IndividualSimUI<Spec.SpecFrostMage> {
 				statSelectionPresets: [MAGE_BREAKPOINTS],
 				enableBreakpointLimits: true,
 				getEPDefaults: player => {
-					if (this.sim.getUseCustomEPValues()) {
-						return player.getEpWeights();
-					}
-
 					const avgIlvl = player.getGear().getAverageItemLevel(false);
 					if (avgIlvl >= 517) {
 						return Presets.P3_BIS_EP_PRESET.epWeights;

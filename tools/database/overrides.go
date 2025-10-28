@@ -698,6 +698,14 @@ var ItemDenyList = map[int32]struct{}{
 	87575:  {}, // Bubbliest Brightbrew Charm
 	87576:  {}, // Bitterest Balebrew Charm
 	107217: {}, // Direbrew's Bloodied Shanker
+
+	// MOP - Hallows End - Old items
+	87569: {}, // The Horseman's Horrific Hood
+	87570: {}, // The Horseman's Sinister Slicer
+	88166: {}, // Wicked Witch's Signet
+	88167: {}, // Band of the Petrified Pumpkin
+	88168: {}, // Seal of Ghoulish Glee
+	88169: {}, // The Horseman's Ring
 }
 
 // Item icons to include in the DB, so they don't need to be separately loaded in the UI.

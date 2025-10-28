@@ -68,7 +68,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 		gear: Presets.P1_BALANCED_PRESET.gear,
 		itemSwap: Presets.P1_ITEM_SWAP.itemSwap,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P1_EP_PRESET.epWeights,
+		epWeights: Presets.P2_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
 			const hitCap = new Stats().withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 7.5);
@@ -132,13 +132,20 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET],
+		epWeights: [Presets.P2_EP_PRESET, Presets.P2_OFFENSIVE_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.StandardTalents],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_GENERIC, Presets.ROTATION_GARAJAL, Presets.ROTATION_SHA],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_BALANCED_PRESET, Presets.P1_BALANCED_PRESET, Presets.P2_BALANCED_PRESET],
+		gear: [
+			Presets.PRERAID_BALANCED_PRESET,
+			Presets.P1_BALANCED_PRESET,
+			Presets.P2_BALANCED_PRESET,
+			Presets.P2_OFFENSIVE_PRESET,
+			Presets.P3_BALANCED_PRESET,
+			Presets.P3_OFFENSIVE_PRESET,
+		],
 		itemSwaps: [Presets.PRERAID_ITEM_SWAP, Presets.P1_ITEM_SWAP, Presets.P2_ITEM_SWAP],
 		builds: [Presets.PRESET_BUILD_GARAJAL, Presets.PRESET_BUILD_SHA],
 	},
