@@ -7,11 +7,9 @@ import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import DefaultApl from '../../death_knight/unholy/apls/default.apl.json';
 import FesterblightApl from '../../death_knight/unholy/apls/festerblight.apl.json';
-import P1Build from '../../death_knight/unholy/builds/p1.build.json';
 import P2Build from '../../death_knight/unholy/builds/p2.build.json';
 import P3Build from '../../death_knight/unholy/builds/p3.build.json';
 import PrebisBuild from '../../death_knight/unholy/builds/prebis.build.json';
-import P1Gear from '../../death_knight/unholy/gear_sets/p1.gear.json';
 import P2Gear from '../../death_knight/unholy/gear_sets/p2.gear.json';
 import P3Gear from '../../death_knight/unholy/gear_sets/p3.gear.json';
 import PrebisGear from '../../death_knight/unholy/gear_sets/prebis.gear.json';
@@ -20,7 +18,6 @@ import PrebisGear from '../../death_knight/unholy/gear_sets/prebis.gear.json';
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 export const PREBIS_GEAR_PRESET = PresetUtils.makePresetGear('Prebis', PrebisGear);
-export const P1_BIS_GEAR_PRESET = PresetUtils.makePresetGear('P1', P1Gear);
 export const P2_BIS_GEAR_PRESET = PresetUtils.makePresetGear('P2', P2Gear);
 export const P3_BIS_GEAR_PRESET = PresetUtils.makePresetGear('P3', P3Gear);
 
@@ -30,12 +27,10 @@ export const FESTERBLIGHT_ROTATION_PRESET = PresetUtils.makePresetAPLRotation('F
 		PresetUtils.makeSpecChangeWarningToast(
 			[
 				{
-					condition(player: Player<Spec.SpecUnholyDeathKnight>) {
-						const gear = player.getGear();
-						return !gear.hasTrinketFromOptions([95726, 94515, 96470, 96098, 96842]) || !gear.hasTrinket(94508);
-					},
+					condition: (player: Player<Spec.SpecUnholyDeathKnight>) =>
+						!player.getGear().hasTrinketFromOptions([95726, 94515, 96470, 96098, 96842]),
 					message:
-						'You have selected a rotation that requires both Fabled Feather of Ji-Kun and Brutal Talisman of the Shado-Pan Assault to be equipped.',
+						'You have selected a rotation that requires Fabled Feather of Ji-Kun to be equipped.',
 				},
 			],
 			player,
@@ -95,10 +90,6 @@ export const FesterblightTalents = {
 };
 
 export const PREBIS_PRESET = PresetUtils.makePresetBuildFromJSON('Prebis', Spec.SpecUnholyDeathKnight, PrebisBuild, {
-	epWeights: DEFAULT_UNHOLY_EP_PRESET,
-	rotationType: APLRotation_Type.TypeAuto,
-});
-export const P1_PRESET = PresetUtils.makePresetBuildFromJSON('P1', Spec.SpecUnholyDeathKnight, P1Build, {
 	epWeights: DEFAULT_UNHOLY_EP_PRESET,
 	rotationType: APLRotation_Type.TypeAuto,
 });

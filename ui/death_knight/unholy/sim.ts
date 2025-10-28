@@ -87,7 +87,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 
 	autoRotation(player: Player<Spec.SpecUnholyDeathKnight>): APLRotation {
 		const gear = player.getGear();
-		// If both Fabled Feather of Ji-Kun and Brutal Talisman of the Shado-Pan Assault are equipped, use the appropriate rotation
+		// If both Fabled Feather of Ji-Kun and Brutal Talisman of the Shado-Pan Assault are equipped, use Festerblight
 		if (gear.hasTrinketFromOptions([95726, 94515, 96470, 96098, 96842]) && gear.hasTrinket(94508)) {
 			return Presets.FESTERBLIGHT_ROTATION_PRESET.rotation.rotation!;
 		}
@@ -117,8 +117,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.DEFAULT_ROTATION_PRESET, Presets.FESTERBLIGHT_ROTATION_PRESET],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PREBIS_GEAR_PRESET, Presets.P1_BIS_GEAR_PRESET, Presets.P2_BIS_GEAR_PRESET, Presets.P3_BIS_GEAR_PRESET],
-		builds: [Presets.PREBIS_PRESET, Presets.P1_PRESET, Presets.P2_PRESET, Presets.P3_PRESET],
+		gear: [Presets.PREBIS_GEAR_PRESET, Presets.P2_BIS_GEAR_PRESET, Presets.P3_BIS_GEAR_PRESET],
+		builds: [Presets.PREBIS_PRESET, Presets.P2_PRESET, Presets.P3_PRESET],
 	},
 
 	raidSimPresets: [
