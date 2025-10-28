@@ -102,24 +102,14 @@ export const BALANCED_EP_PRESET = PresetUtils.makePresetEpWeights(
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/mop-classic/talent-calc and copy the numbers in the url.
-export const DefensiveTalents = {
-	name: 'Defensive',
+export const DefaultTalents = {
+	name: 'Default',
 	data: SavedTalents.create({
 		talentsString: '010101',
 		glyphs: Glyphs.create({
 			major1: DruidMajorGlyph.GlyphOfMightOfUrsoc,
 			major2: DruidMajorGlyph.GlyphOfMaul,
-		}),
-	}),
-};
-
-export const OffensiveTalents = {
-	name: 'Offensive',
-	data: SavedTalents.create({
-		talentsString: '010103',
-		glyphs: Glyphs.create({
-			major1: DruidMajorGlyph.GlyphOfMightOfUrsoc,
-			major2: DruidMajorGlyph.GlyphOfMaul,
+			major3: DruidMajorGlyph.GlyphOfStampedingRoar,
 		}),
 	}),
 };

@@ -82,7 +82,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 		rotationType: APLRotationType.TypeAPL,
 		simpleRotation: Presets.DefaultSimpleRotation,
 		// Default talents.
-		talents: Presets.DefensiveTalents.data,
+		talents: Presets.DefaultTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
@@ -137,7 +137,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 	presets: {
 		epWeights: [Presets.SURVIVAL_EP_PRESET, Presets.BALANCED_EP_PRESET],
 		// Preset talents that the user can quickly select.
-		talents: [Presets.DefensiveTalents, Presets.OffensiveTalents],
+		talents: [Presets.DefaultTalents],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_DEFAULT, Presets.ROTATION_HOTW, Presets.ROTATION_EMPRESS, Presets.ROTATION_SHA],
 		// Preset gear configurations that the user can quickly select.
@@ -233,7 +233,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 	raidSimPresets: [
 		{
 			spec: Spec.SpecGuardianDruid,
-			talents: Presets.DefensiveTalents.data,
+			talents: Presets.DefaultTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumables: Presets.DefaultConsumables,
 			defaultFactionRaces: {
