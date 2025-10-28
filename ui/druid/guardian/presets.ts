@@ -15,7 +15,7 @@ export const HOF_PRESET = PresetUtils.makePresetGear('Pre-ToES BiS', HofGear);
 import P1Gear from './gear_sets/p1.gear.json';
 export const P1_PRESET = PresetUtils.makePresetGear('P1/P2', P1Gear);
 import P2Gear from './gear_sets/p2.gear.json';
-export const P2_PRESET = PresetUtils.makePresetGear('P2 Farm BiS', P2Gear);
+export const P2_PRESET = PresetUtils.makePresetGear('P2 BiS (Balanced)', P2Gear);
 import P3Gear from './gear_sets/p3.gear.json';
 export const P3_PRESET = PresetUtils.makePresetGear('P3', P3Gear);
 import P4Gear from './gear_sets/p4.gear.json';
@@ -129,7 +129,7 @@ export const OtherDefaults = {
 	profession2: Profession.ProfessionUnknown,
 };
 
-export const PRESET_BUILD_DEFAULT = PresetUtils.makePresetBuildFromJSON("Default", Spec.SpecGuardianDruid, DefaultBuild);
+export const PRESET_BUILD_DEFAULT = PresetUtils.makePresetBuildFromJSON("All Defaults", Spec.SpecGuardianDruid, DefaultBuild);
 export const PRESET_BUILD_GARAJAL = PresetUtils.makePresetBuildFromJSON("Gara'jal", Spec.SpecGuardianDruid, GarajalBuild);
 export const PRESET_BUILD_EMPRESS = PresetUtils.makePresetBuildFromJSON("Empress P2 Adds", Spec.SpecGuardianDruid, EmpressBuild);
 export const PRESET_BUILD_SHA = PresetUtils.makePresetBuildFromJSON("Sha of Fear P2", Spec.SpecGuardianDruid, ShaBuild);
