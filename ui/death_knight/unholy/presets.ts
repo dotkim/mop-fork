@@ -111,6 +111,7 @@ export const OtherDefaults = {
 	profession2: Profession.Blacksmithing,
 	distanceFromTarget: 5,
 	race: Race.RaceOrc,
+	iterationCount: 25000,
 };
 
 export const DefaultConsumables = ConsumesSpec.create({
