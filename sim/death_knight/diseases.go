@@ -38,8 +38,8 @@ func (dk *DeathKnight) getFrostFeverConfig(character *core.Character) core.Spell
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				baseTickDamage := dk.CalcScalingSpellDmg(0.13300000131) + dot.Spell.MeleeAttackPower()*0.15800000727
 				dot.SnapshotPhysical(target, baseTickDamage)
-				tricksAura := dk.GetAuraByIDIgnoreTag(core.ActionID{SpellID: 57933})
-				if tricksAura != nil && tricksAura.IsActive() {
+				//Tricks of the Trade does not snapshot on diseases
+				if dk.HasActiveAuraWithTag(core.TricksOfTheTradeAuraTag) {
 					dot.SnapshotAttackerMultiplier /= 1.15
 				}
 			},
@@ -90,8 +90,8 @@ func (dk *DeathKnight) getBloodPlagueConfig(character *core.Character) core.Spel
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				baseTickDamage := dk.CalcScalingSpellDmg(0.15800000727) + dot.Spell.MeleeAttackPower()*0.15800000727
 				dot.SnapshotPhysical(target, baseTickDamage)
-				tricksAura := dk.GetAuraByIDIgnoreTag(core.ActionID{SpellID: 57933})
-				if tricksAura != nil && tricksAura.IsActive() {
+				//Tricks of the Trade does not snapshot on diseases
+				if dk.HasActiveAuraWithTag(core.TricksOfTheTradeAuraTag) {
 					dot.SnapshotAttackerMultiplier /= 1.15
 				}
 			},

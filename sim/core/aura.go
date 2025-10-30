@@ -436,14 +436,6 @@ func (at *auraTracker) GetAuraByID(actionID ActionID) *Aura {
 	}
 	return nil
 }
-func (at *auraTracker) GetAuraByIDIgnoreTag(actionID ActionID) *Aura {
-	for _, aura := range at.auras {
-		if aura.ActionID.SameActionIgnoreTag(actionID) {
-			return aura
-		}
-	}
-	return nil
-}
 func (at *auraTracker) GetIcdAuraByID(actionID ActionID) *Aura {
 	for _, aura := range at.auras {
 		if (aura.ActionID.SameAction(actionID) || aura.ActionIDForProc.SameAction(actionID)) && aura.Icd != nil {
