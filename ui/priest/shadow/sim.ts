@@ -143,10 +143,6 @@ export class ShadowPriestSimUI extends IndividualSimUI<Spec.SpecShadowPriest> {
 			this.reforger = new ReforgeOptimizer(this, {
 				statSelectionPresets: [Presets.SHADOW_BREAKPOINTS],
 				getEPDefaults: player => {
-					if (this.sim.getUseCustomEPValues()) {
-						return player.getEpWeights();
-					}
-
 					const avgIlvl = player.getGear().getAverageItemLevel(false);
 					if (avgIlvl >= 500) {
 						return Presets.P2_EP_PRESET.epWeights;

@@ -75,7 +75,7 @@
     "talentsString": "213332",
     "glyphs": {
       "major1": 43415,
-      "major2": 67482,
+      "major2": 83096,
       "major3": 43424
     },
     "profession1": "Engineering",
@@ -103,8 +103,8 @@
         {"action":{"condition":{"and":{"vals":[{"auraIsActive":{"sourceUnit":{"type":"Target"},"auraId":{"spellId":132007},"includeReactionTime":true}},{"auraIsInactive":{"auraId":{"spellId":120669},"includeReactionTime":true}},{"auraIsInactive":{"auraId":{"spellId":871}}},{"auraIsInactive":{"auraId":{"spellId":12975}}}]}},"castSpell":{"spellId":{"spellId":114030,"tag":-1}}}},
         {"action":{"condition":{"and":{"vals":[{"auraIsActive":{"sourceUnit":{"type":"Target"},"auraId":{"spellId":131996},"includeReactionTime":true}},{"auraIsInactive":{"auraId":{"spellId":120669},"includeReactionTime":true}},{"auraIsInactive":{"auraId":{"spellId":2565}}}]}},"castSpell":{"spellId":{"spellId":114030,"tag":-1}}}},
         {"action":{"condition":{"and":{"vals":[{"auraIsActive":{"sourceUnit":{"type":"Target"},"auraId":{"spellId":131996},"includeReactionTime":true}},{"auraIsInactive":{"auraId":{"spellId":120669},"includeReactionTime":true}},{"auraIsInactive":{"auraId":{"spellId":1160}}}]}},"castSpell":{"spellId":{"spellId":114203}}}},
-        {"action":{"condition":{"and":{"vals":[{"auraIsActive":{"sourceUnit":{"type":"Target"},"auraId":{"spellId":131996},"includeReactionTime":true}},{"auraIsInactive":{"auraId":{"spellId":120669},"includeReactionTime":true}},{"auraIsInactive":{"auraId":{"spellId":1160}}},{"auraIsInactive":{"auraId":{"spellId":114203}}}]}},"castAllStatBuffCooldowns":{"statType1":9,"statType2":11,"statType3":-1}}},
-        {"action":{"condition":{"and":{"vals":[{"auraIsActive":{"sourceUnit":{"type":"Target"},"auraId":{"spellId":132007},"includeReactionTime":true}},{"auraIsInactive":{"auraId":{"spellId":120669},"includeReactionTime":true}},{"auraIsInactive":{"auraId":{"spellId":2565}}}]}},"castAllStatBuffCooldowns":{"statType1":9,"statType2":11,"statType3":-1}}},
+        {"action":{"condition":{"and":{"vals":[{"auraIsActive":{"sourceUnit":{"type":"Target"},"auraId":{"spellId":131996},"includeReactionTime":true}},{"auraIsInactive":{"auraId":{"spellId":120669},"includeReactionTime":true}},{"auraIsInactive":{"auraId":{"spellId":1160}}},{"auraIsInactive":{"auraId":{"spellId":114203}}}]}},"castAllStatBuffCooldowns":{"statType1":9,"statType2":11,"statType3":19}}},
+        {"action":{"condition":{"and":{"vals":[{"auraIsActive":{"sourceUnit":{"type":"Target"},"auraId":{"spellId":132007},"includeReactionTime":true}},{"auraIsInactive":{"auraId":{"spellId":120669},"includeReactionTime":true}},{"auraIsInactive":{"auraId":{"spellId":2565}}}]}},"castAllStatBuffCooldowns":{"statType1":9,"statType2":11,"statType3":19}}},
         {"action":{"condition":{"and":{"vals":[{"auraIsActive":{"sourceUnit":{"type":"Target"},"auraId":{"spellId":131996},"includeReactionTime":true}},{"auraIsInactive":{"auraId":{"spellId":120669},"includeReactionTime":true}},{"auraIsInactive":{"auraId":{"spellId":1160}}},{"auraIsInactive":{"auraId":{"spellId":114203}}}]}},"castSpell":{"spellId":{"spellId":31821,"tag":-1}}}},
         {"action":{"condition":{"and":{"vals":[{"auraIsActive":{"sourceUnit":{"type":"Target"},"auraId":{"spellId":132007},"includeReactionTime":true}},{"auraIsInactive":{"auraId":{"spellId":120669},"includeReactionTime":true}},{"auraIsInactive":{"auraId":{"spellId":2565}}}]}},"castSpell":{"spellId":{"itemId":76090}}}},
         {"action":{"condition":{"and":{"vals":[{"auraIsActive":{"sourceUnit":{"type":"Target"},"auraId":{"spellId":132007},"includeReactionTime":true}},{"auraIsInactive":{"auraId":{"spellId":120669},"includeReactionTime":true}},{"auraIsInactive":{"auraId":{"spellId":871}}}]}},"castSpell":{"spellId":{"spellId":12975}}}},

@@ -80,7 +80,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 		// Default equipped gear.
 		gear: Presets.P2_BIS_DW_GEAR_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.PREPATCH_EP_PRESET.epWeights,
+		epWeights: Presets.P1_BALANCED_EP_PRESET.epWeights,
 		// Stat caps for reforge optimizer
 		statCaps: (() => {
 			const hitCap = new Stats().withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 7.5);
@@ -140,7 +140,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 	},
 
 	presets: {
-		epWeights: [Presets.PREPATCH_EP_PRESET],
+		epWeights: [Presets.P1_BALANCED_EP_PRESET, Presets.P2_OFFENSIVE_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.DefaultTalents, Presets.DungeonTalents],
 		// Preset rotations that the user can quickly select.
@@ -149,6 +149,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 		gear: [
 			Presets.P1_BIS_DW_GEAR_PRESET,
 			Presets.P2_BIS_DW_GEAR_PRESET,
+			Presets.P2_BIS_OFFENSIVE_DW_GEAR_PRESET,
+			Presets.P2_BIS_OFFENSIVE_TIERLESS_DW_GEAR_PRESET,
 		],
 		builds: [Presets.PRESET_BUILD_GARAJAL, Presets.PRESET_BUILD_SHA],
 	},
@@ -188,14 +190,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 	],
 });
 
-const getActiveEPWeight = (player: Player<Spec.SpecBrewmasterMonk>, sim: Sim): Stats => {
-	if (sim.getUseCustomEPValues()) {
-		return player.getEpWeights();
-	} else {
-		return Presets.PREPATCH_EP_PRESET.epWeights;
-	}
-};
-
 export class BrewmasterMonkSimUI extends IndividualSimUI<Spec.SpecBrewmasterMonk> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecBrewmasterMonk>) {
 		super(parentElem, player, SPEC_CONFIG);
@@ -206,11 +200,7 @@ export class BrewmasterMonkSimUI extends IndividualSimUI<Spec.SpecBrewmasterMonk
 		});
 
 		player.sim.waitForInit().then(() => {
-			this.reforger = new ReforgeOptimizer(this, {
-				getEPDefaults: (player: Player<Spec.SpecBrewmasterMonk>) => {
-					return getActiveEPWeight(player, this.sim);
-				},
-			});
+			this.reforger = new ReforgeOptimizer(this);
 		});
 	}
 }
