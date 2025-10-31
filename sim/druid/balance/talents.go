@@ -89,9 +89,11 @@ func (moonkin *BalanceDruid) registerDreamOfCenarius() {
 	})
 
 	moonkin.MakeProcTriggerAura(core.ProcTrigger{
-		Name:           "Dream of Cenarius Trigger",
-		Callback:       core.CallbackOnCastComplete,
-		ClassSpellMask: druid.DruidSpellHealingTouch,
+		Name:               "Dream of Cenarius Trigger",
+		Callback:           core.CallbackOnCastComplete,
+		ClassSpellMask:     druid.DruidSpellHealingTouch,
+		TriggerImmediately: true,
+
 		Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
 			moonkin.DreamOfCenarius.Activate(sim)
 		},
