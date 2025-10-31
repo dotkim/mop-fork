@@ -217,14 +217,16 @@ var ItemSetCelesialHarmonyBattlegear = core.NewItemSet(core.ItemSet{
 					imbueSpells = append(imbueSpells, spell)
 				}
 			})
-			procAura := core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
-				Name:       "Celestial Harmony Battlegear 2P Proc",
-				Callback:   core.CallbackOnSpellHitDealt,
-				Outcome:    core.OutcomeLanded,
-				ProcMask:   core.ProcMaskMeleeOrMeleeProc,
-				ICD:        time.Millisecond * 100,
-				ProcChance: 0.1,
-				Duration:   time.Second * 10,
+			procAura := shaman.MakeProcTriggerAura(core.ProcTrigger{
+				Name:               "Celestial Harmony Battlegear 2P Proc",
+				Callback:           core.CallbackOnSpellHitDealt,
+				Outcome:            core.OutcomeLanded,
+				ProcMask:           core.ProcMaskMeleeOrMeleeProc,
+				ICD:                time.Millisecond * 100,
+				ProcChance:         0.1,
+				Duration:           time.Second * 10,
+				TriggerImmediately: true,
+
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if len(imbueSpells) == 0 {
 						return
