@@ -77,7 +77,11 @@ func (ancientGuardian *AncientGuardianPet) registerRetributionVariant() {
 		RequireDamageDealt: true,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			ancientGuardian.paladinOwner.GetAuraByID(ancientPowerID).AddStack(sim)
+			aura := ancientGuardian.paladinOwner.GetAuraByID(ancientPowerID)
+
+			if aura.IsActive() {
+				aura.AddStack(sim)
+			}
 		},
 	})
 
