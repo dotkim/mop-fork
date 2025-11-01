@@ -7,11 +7,18 @@ import { ContentBlock } from '../content_block';
 import { IndividualSimUI } from '../../individual_sim_ui';
 import { EquippedItem } from '../../proto_utils/equipped_item';
 import { trackEvent } from '../../../tracking/utils';
+import { RaidFilterOption, UIItemSource } from '../../proto/ui';
 
-export const COSTS = new Map<ItemQuality, number>([
+export const JUSTICECOSTS = new Map<ItemQuality, number>([
 	[ItemQuality.ItemQualityRare, 750],
 	[ItemQuality.ItemQualityEpic, 1000],
 	[ItemQuality.ItemQualityLegendary, 1000],
+]);
+
+export const VALORCOSTS = new Map<ItemQuality, number>([
+	[ItemQuality.ItemQualityRare, 250],
+	[ItemQuality.ItemQualityEpic, 250],
+	[ItemQuality.ItemQualityLegendary, 250],
 ]);
 
 export class UpgradeCostsSummary extends Component {
@@ -47,19 +54,38 @@ export class UpgradeCostsSummary extends Component {
 		this.rootElem.classList[!hasUpgradeItems ? 'add' : 'remove']('hide');
 
 		if (hasUpgradeItems) {
-			const total = itemsWithUpgrade.reduce<number>(
-				(acc, item) => (acc += (COSTS.get(item._item.quality) || 0) * (item.getMaxUpgradeCount() - item.upgrade)),
+			const raidID = Player.RAID_IDS[RaidFilterOption.RaidThroneOfThunder]
+			const pred = (item: UIItemSource) => item.source.oneofKind === 'drop' && item.source.drop.zoneId === raidID
+			const totalJustice = itemsWithUpgrade.filter(
+				item => !(item._item.sources.some(pred))
+			).reduce<number>(
+				(acc, item) => (acc += (JUSTICECOSTS.get(item._item.quality) || 0) * (item.getMaxUpgradeCount() - item.upgrade)),
+				0,
+			);
+			const totalValor = itemsWithUpgrade.filter(
+				item => (item._item.sources.some(pred))
+			).reduce<number>(
+				(acc, item) => (acc += (VALORCOSTS.get(item._item.quality) || 0) * (item.getMaxUpgradeCount() - item.upgrade)),
 				0,
 			);
 
 			body.appendChild(
-				<div className="summary-table-row d-flex align-items-center">
-					<div className="d-flex align-items-center">
-						<img className="gem-icon" src={'https://wow.zamimg.com/images/wow/icons/small/pvecurrency-justice.jpg'} />
-						<div>{i18n.t(`common.currency.justicePoints`)}</div>
+				<div>
+					<div className="summary-table-row d-flex align-items-center">
+						<div className="d-flex align-items-center">
+							<img className="gem-icon" src={'https://wow.zamimg.com/images/wow/icons/small/pvecurrency-justice.jpg'} />
+							<div>{i18n.t(`common.currency.justicePoints`)}</div>
+						</div>
+						<div>{totalJustice}</div>
 					</div>
-					<div>{total}</div>
-				</div>,
+					<div className="summary-table-row d-flex align-items-center">
+						<div className="d-flex align-items-center">
+							<img className="gem-icon" src={'https://wow.zamimg.com/images/wow/icons/small/pvecurrency-valor.jpg'} />
+							<div>{i18n.t(`common.currency.valorPoints`)}</div>
+						</div>
+						<div>{totalValor}</div>
+					</div>
+				</div>
 			);
 
 			// Replace rows in body
