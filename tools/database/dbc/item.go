@@ -42,6 +42,7 @@ type Item struct {
 	SocketModifier         []float64 // Todo: Figure out if this is socket modifier in disguise or something else - I call it that for now.
 	NameDescription        string    // Contains information for i.E. Thunderforging. Normal = Thunderforged, HC = Heroic Thunderforged
 	UpgradeID              int
+	UpgradePath            []int
 	LimitCategory          int
 }
 
@@ -94,9 +95,9 @@ func (item *Item) ToScaledUIItem(itemLevel int) *proto.UIItem {
 	// Amount of upgrade steps is defined in MAX_UPGRADE_LEVELS
 	// In P2 of MoP it is expected to be 2 steps
 	if item.CanUpgrade() {
-		for _, upgradeLevel := range item.GetMaxUpgradeCount() {
-			upgradedIlvl := item.ItemLevel + item.UpgradeItemLevelBy(upgradeLevel)
-			upgradeStep := proto.ItemLevelState(upgradeLevel)
+		for step, ilvl := range item.UpgradePath {
+			upgradedIlvl := item.ItemLevel + ilvl
+			upgradeStep := proto.ItemLevelState(step)
 			scalingProperties[int32(upgradeStep)] = &proto.ScalingItemProperties{
 				WeaponDamageMin: item.WeaponDmgMin(upgradedIlvl),
 				WeaponDamageMax: item.WeaponDmgMax(upgradedIlvl),
@@ -126,8 +127,7 @@ func (item *Item) CanUpgrade() bool {
 
 func (item *Item) GetMaxIlvl() int {
 	if item.CanUpgrade() {
-		maxUpgradeCount := item.GetMaxUpgradeCount()
-		return item.ItemLevel + item.UpgradeItemLevelBy(maxUpgradeCount[len(maxUpgradeCount)-1])
+		return item.ItemLevel + item.UpgradePath[len(item.UpgradePath)-1]
 	}
 	return item.ItemLevel
 }
@@ -420,29 +420,4 @@ func (item *Item) GetRandomSuffixType() int {
 	default:
 		return -1
 	}
-}
-
-func (item *Item) GetMaxUpgradeCount() []int {
-	switch item.OverallQuality {
-	// Rare items are limited to 1 upgrade level
-	case 3:
-		return MAX_UPGRADE_LEVELS[:1]
-	case 4, 5:
-		return MAX_UPGRADE_LEVELS
-	default:
-		return []int{}
-	}
-}
-
-func (item *Item) UpgradeItemLevelBy(upgradeLevel int) int {
-	if item.OverallQuality == 3 {
-		return upgradeLevel * 8
-	}
-	if item.OverallQuality == 4 {
-		return upgradeLevel * 4
-	}
-	if item.OverallQuality == 5 {
-		return upgradeLevel * 4
-	}
-	return 0
 }
