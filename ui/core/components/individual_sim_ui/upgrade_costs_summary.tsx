@@ -18,7 +18,7 @@ type UpgradeSummaryTotal = {
 export const COSTS = new Map<keyof UpgradeSummaryTotal, Map<ItemQuality, number>>([
 	[
 		'valorPoints',
-		new Map<ItemQuality,number>([
+		new Map<ItemQuality, number>([
 			[ItemQuality.ItemQualityRare, 250],
 			[ItemQuality.ItemQualityEpic, 250],
 			[ItemQuality.ItemQualityLegendary, 250],
@@ -26,7 +26,7 @@ export const COSTS = new Map<keyof UpgradeSummaryTotal, Map<ItemQuality, number>
 	],
 	[
 		'justicePoints',
-		new Map<ItemQuality,number>([
+		new Map<ItemQuality, number>([
 			[ItemQuality.ItemQualityRare, 750],
 			[ItemQuality.ItemQualityEpic, 1000],
 			[ItemQuality.ItemQualityLegendary, 1000],
@@ -34,7 +34,7 @@ export const COSTS = new Map<keyof UpgradeSummaryTotal, Map<ItemQuality, number>
 	],
 	[
 		'honorPoints',
-		new Map<ItemQuality,number>([
+		new Map<ItemQuality, number>([
 			[ItemQuality.ItemQualityRare, 750],
 			[ItemQuality.ItemQualityEpic, 1000],
 			[ItemQuality.ItemQualityLegendary, 1000],
@@ -81,8 +81,12 @@ export class UpgradeCostsSummary extends Component {
 				(acc, item) => {
 					let key: keyof UpgradeSummaryTotal = 'justicePoints';
 
-					if (item._item.sources.some(pred)) {key = 'valorPoints'}
-					if (item._item.name.includes("Gladiator's")) {key = 'honorPoints'}
+					if (item._item.sources.some(pred)) {
+						key = 'valorPoints';
+					}
+					if (item._item.name.includes("Gladiator's")) {
+						key = 'honorPoints';
+					}
 
 					acc[key] += (COSTS.get(key)?.get(item._item.quality) || 0) * (item.getMaxUpgradeCount() - item.upgrade);
 
@@ -95,9 +99,8 @@ export class UpgradeCostsSummary extends Component {
 				},
 			);
 
-
 			Object.entries(totals).forEach(([key, points]) => {
-				if(points > 0){
+				if (points > 0) {
 					body.appendChild(
 						<div>
 							<div className="summary-table-row d-flex align-items-center">
@@ -116,7 +119,7 @@ export class UpgradeCostsSummary extends Component {
 								</div>
 								<div>{points}</div>
 							</div>
-						</div>
+						</div>,
 					);
 				}
 			});
