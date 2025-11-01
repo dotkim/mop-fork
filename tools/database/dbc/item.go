@@ -8,8 +8,6 @@ import (
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
-var MAX_UPGRADE_LEVELS = []int{1, 2}
-
 const UPGRADE_SYSTEM_ACTIVE = true
 
 type Item struct {
@@ -92,12 +90,11 @@ func (item *Item) ToScaledUIItem(itemLevel int) *proto.UIItem {
 		Ilvl:            int32(item.ItemLevel),
 	}
 
-	// Amount of upgrade steps is defined in MAX_UPGRADE_LEVELS
 	// In P2 of MoP it is expected to be 2 steps
 	if item.CanUpgrade() {
-		for step, ilvl := range item.UpgradePath {
+		for step, ilvl := range item.UpgradePath[1:] {
 			upgradedIlvl := item.ItemLevel + ilvl
-			upgradeStep := proto.ItemLevelState(step)
+			upgradeStep := proto.ItemLevelState(step + 1)
 			scalingProperties[int32(upgradeStep)] = &proto.ScalingItemProperties{
 				WeaponDamageMin: item.WeaponDmgMin(upgradedIlvl),
 				WeaponDamageMax: item.WeaponDmgMax(upgradedIlvl),
